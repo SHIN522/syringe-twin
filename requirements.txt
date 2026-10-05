@@ -1,0 +1,9 @@
+streamlit==1.65.0
+fastapi==0.142.2
+uvicorn==0.54.0
+numpy>=1.26,<3
+pandas>=2.2,<4
+plotly==7.1.0
+PyYAML>=6,<7
+requests==2.34.2
+tzdata>=2025.1

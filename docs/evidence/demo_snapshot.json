@@ -1,0 +1,177 @@
+{
+  "snapshot": {
+    "t": 200.0,
+    "wall": "2026-10-05T15:22:02+05:30",
+    "run": true,
+    "speed": 10,
+    "lamp": "AMBER",
+    "stations": {
+      "IN": {
+        "state": "BLOCKED",
+        "reason": "B1 full",
+        "step": "RELEASE",
+        "part": "SYR-B07-000025",
+        "cycles": 25,
+        "last_ct": 3.0,
+        "down_s": 0.0,
+        "wear": null,
+        "force": null
+      },
+      "S1": {
+        "state": "RUNNING",
+        "reason": null,
+        "step": "CURE",
+        "part": "SYR-B07-000022",
+        "cycles": 21,
+        "last_ct": 6.0,
+        "down_s": 0.0,
+        "wear": null,
+        "force": null
+      },
+      "S2": {
+        "state": "RUNNING",
+        "reason": null,
+        "step": "INSERT",
+        "part": "SYR-B07-000019",
+        "cycles": 18,
+        "last_ct": 8.0,
+        "down_s": 0.0,
+        "wear": 0.37600000000000006,
+        "force": 132.85484354208484
+      },
+      "S3": {
+        "state": "RUNNING",
+        "reason": null,
+        "step": "CAP_PRESS",
+        "part": "SYR-B07-000018",
+        "cycles": 17,
+        "last_ct": 5.0,
+        "down_s": 0.0,
+        "wear": null,
+        "force": null
+      },
+      "S4": {
+        "state": "RUNNING",
+        "reason": null,
+        "step": "LEAK",
+        "part": "SYR-B07-000017",
+        "cycles": 16,
+        "last_ct": 5.0,
+        "down_s": 0.0,
+        "wear": null,
+        "force": null
+      },
+      "OUT": {
+        "state": "STARVED",
+        "reason": "waiting for pallet",
+        "step": "WAIT",
+        "part": null,
+        "cycles": 15,
+        "last_ct": 1.0,
+        "down_s": 0.0,
+        "wear": null,
+        "force": null
+      }
+    },
+    "buffers": {
+      "B1": [
+        "SYR-B07-000023",
+        "SYR-B07-000024"
+      ],
+      "B2": [
+        "SYR-B07-000020",
+        "SYR-B07-000021"
+      ],
+      "B3": [],
+      "B4": []
+    },
+    "bins": {
+      "hopper": 275,
+      "plunger": 131,
+      "stopper": 131,
+      "cap": 182
+    },
+    "counts": {
+      "in": 25,
+      "good": 15,
+      "reject": 1,
+      "wip": 9,
+      "boxes": 1
+    },
+    "alarms": [
+      {
+        "code": "W202",
+        "sev": "WARN",
+        "since": 49.0,
+        "text": "Tool wear high; plan a tool change."
+      }
+    ]
+  },
+  "kpi": {
+    "t": 200.0,
+    "win_s": 600,
+    "th_ph": 90,
+    "line_ct_s": 10.714285714285714,
+    "lead_s": 76.20625,
+    "A": 1.0,
+    "P": 0.9000000000000319,
+    "Q": 0.9375,
+    "oee": 0.8437500000000299,
+    "yield": 0.9375,
+    "wip_avg": 8.071500000000198,
+    "down_s": {
+      "S2": {
+        "unplanned": 0.0,
+        "planned": 0.0
+      }
+    },
+    "mtbf_s": null,
+    "mttr_s": null,
+    "pareto": {
+      "R2": 1,
+      "R3": 1
+    },
+    "s2": {
+      "health": 0.6239999999999999,
+      "cycles_to_fault": 67.25553399104743
+    },
+    "check": {
+      "conservation": true,
+      "little_err": null,
+      "pallet_conservation": true
+    }
+  },
+  "meta": {
+    "estop_active": false,
+    "estop_latched": false,
+    "revision": 1,
+    "model": "Reconstructed dashboard MVP",
+    "material_capacity": {
+      "hopper": 300,
+      "plunger": 150,
+      "stopper": 150,
+      "cap": 200
+    },
+    "buffer_capacity": {
+      "B1": 2,
+      "B2": 2,
+      "B3": 2,
+      "B4": 2
+    },
+    "refills": {},
+    "maintenance_remaining_s": 0.0,
+    "tool_ok": true,
+    "tool_change_queued": false,
+    "transfers": [
+      {
+        "pallet": 6,
+        "source": "OUT",
+        "destination": "RETURN",
+        "remaining": 6.2000000000000135,
+        "total": 10.0
+      }
+    ],
+    "empty_pallets": 0,
+    "decisions": 16
+  }
+}

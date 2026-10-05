@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#12231e">
+  <meta name="description" content="SyringeTwin: live simulation, process monitoring and traceability for a six-station syringe assembly cell.">
+  <title>SyringeTwin · Assembly cell</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+<svg class="icon-definitions" aria-hidden="true"><defs>
+  <symbol id="i-cell" viewBox="0 0 24 24"><path d="M3 21V9l6 3V7l6 3V3h6v18H3Z"/><path d="M7 16v2m5-2v2m5-2v2"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 4v16h16M7 15l4-5 4 3 5-7"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 9a6 6 0 0 1 12 0c0 8 3 7 3 9H3c0-2 3-1 3-9Zm4 12h4"/></symbol>
+  <symbol id="i-trace" viewBox="0 0 24 24"><path d="M3 5v14m4-14v14M10 5v14m3-14v14M17 5v14m4-14v14"/></symbol>
+  <symbol id="i-tool" viewBox="0 0 24 24"><path d="M14 3a6 6 0 0 0-7 8L2 16a3 3 0 0 0 4 4l5-5a6 6 0 0 0 8-7l-4 4-3-3 4-4Z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24"><path d="M7 5v14m10-14v14"/></symbol>
+  <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 10a8 8 0 1 1 1 7M4 4v6h6"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="m12 3 10 18H2L12 3Zm0 6v5m0 3v1"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol>
+  <symbol id="i-box" viewBox="0 0 24 24"><path d="m3 7 9-5 9 5v11l-9 5-9-5V7Zm0 0 9 5 9-5M12 12v11M7 4l10 5"/></symbol>
+</defs></svg>
+
+<aside class="sidebar">
+  <a class="brand" href="#live" aria-label="SyringeTwin live cell"><span class="brand-mark"><svg><use href="#i-cell"/></svg></span><span>SYRINGE<span class="brand-accent">TWIN</span><small>ASSEMBLY INTELLIGENCE</small></span></a>
+  <div class="cell-selector"><span class="cell-avatar">07</span><div><strong>Group 07</strong><span>Syringe assembly cell</span></div><span class="selector-dot"></span></div>
+  <div class="nav-label">WORKSPACE</div>
+  <nav aria-label="Workspaces">
+    <button class="nav-button active" data-page="live"><svg><use href="#i-cell"/></svg>Live cell<span class="nav-live-dot"></span></button>
+    <button class="nav-button" data-page="trends"><svg><use href="#i-chart"/></svg>Performance</button>
+    <button class="nav-button" data-page="alarms"><svg><use href="#i-bell"/></svg>Alarms &amp; audit<span id="nav-alarm-count" class="nav-count" hidden>0</span></button>
+    <button class="nav-button" data-page="trace"><svg><use href="#i-trace"/></svg>Traceability</button>
+    <button class="nav-button" data-page="maintenance"><svg><use href="#i-tool"/></svg>Maintenance</button>
+  </nav>
+  <div class="sidebar-model"><div class="model-icon"><svg><use href="#i-cell"/></svg></div><strong>One cell. Every part.</strong><p>Follow the process from material input to packed syringes.</p><div><span>Design rate</span><b>360 <small>units/h</small></b></div><div><span>Ideal cycle</span><b>10 <small>seconds</small></b></div><div><span>Pallet loop</span><b>10 <small>pallets</small></b></div></div>
+  <div class="sidebar-footer"><span class="status-dot" id="side-dot"></span><div><strong id="side-engine">Connecting</strong><small id="side-subtitle">Preparing the simulation</small></div></div>
+</aside>
+
+<main>
+  <header class="topbar"><span class="breadcrumb">GROUP 07 <span>/</span> DIGITAL TWIN</span><div class="topbar-right"><span class="runtime-tag" id="engine-tag">Connecting</span><span class="topbar-divider"></span><span class="connection-label" id="connection-label"><span class="status-dot"></span>Waiting for engine</span></div></header>
+  <div class="main-content">
+    <div class="page-heading"><div><div class="eyebrow">ASSEMBLY OPERATIONS</div><h1 id="page-title">Syringe assembly cell<span class="heading-dot">.</span></h1><p id="page-description">A live view of every station, pallet and production decision.</p></div><div class="line-state" id="line-state"><span class="status-dot"></span><div><b id="line-state-label">CONNECTING</b><span><svg><use href="#i-clock"/></svg><span id="sim-time">— sim-min</span><span class="state-separator">·</span><span id="state-speed">—×</span></span></div></div></div>
+
+    <section class="control-bar" aria-label="Simulation controls">
+      <div class="operator-field"><svg><use href="#i-user"/></svg><label for="operator">OPERATOR<input id="operator" maxlength="80" placeholder="Enter your name" autocomplete="name" aria-required="true"></label></div>
+      <div class="control-buttons"><button id="start" class="button primary" data-command="start" disabled><svg><use href="#i-play"/></svg>Start line</button><button id="stop" class="button" data-command="stop" disabled><svg><use href="#i-stop"/></svg>Stop</button><button id="reset" class="button" data-command="reset" disabled><svg><use href="#i-reset"/></svg>Reset alarms</button></div>
+      <div class="speed-field"><label for="speed">SPEED</label><select id="speed" aria-label="Simulation speed" disabled><option value="1">1×</option><option value="2">2×</option><option value="5">5×</option><option value="10" selected>10×</option><option value="50">50×</option></select></div>
+      <button id="estop" class="button emergency" disabled><span class="estop-symbol"></span><span id="estop-text">Emergency stop</span></button>
+    </section>
+    <div id="feedback" class="feedback" role="status" hidden></div>
+    <div id="recovery" class="recovery-banner" hidden><svg><use href="#i-alert"/></svg><div><strong>E-stop is latched</strong><span>Release E-stop → Reset alarms → Start line. Process progress is retained.</span></div></div>
+    <div id="runtime-notice" class="runtime-notice" role="status"><span class="loading-spinner"></span><div><strong id="runtime-notice-title">Connecting to the simulation</strong><p id="runtime-notice-text">Waiting for the engine. Controls become available when it is ready.</p></div><button id="retry" class="button" hidden>Retry connection</button><a id="browser-fallback" class="button" href="?engine=browser" hidden>Use browser simulation</a></div>
+
+    <section class="page active" id="page-live" aria-label="Live cell">
+      <div class="kpi-grid">
+        <article class="kpi-card throughput-card"><div class="kpi-label">GOOD THROUGHPUT<svg><use href="#i-arrow"/></svg></div><div class="kpi-number"><span data-value="throughput">—</span><small>units/h</small></div><div class="kpi-subtitle">Rolling <span data-value="window">600</span> sim-seconds<span class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div></article>
+        <article class="kpi-card"><div class="kpi-label">OVERALL EQUIPMENT EFFECTIVENESS</div><div class="kpi-number"><span data-value="oee">—</span><small>%</small></div><div class="kpi-subtitle"><span class="small-dot mint"></span>S2 bottleneck · run to date</div></article>
+        <article class="kpi-card"><div class="kpi-label">FIRST-PASS QUALITY</div><div class="kpi-number"><span data-value="quality">—</span><small>%</small></div><div class="kpi-subtitle">Passed / inspected decisions</div></article>
+        <article class="kpi-card"><div class="kpi-label">WORK IN PROGRESS</div><div class="kpi-number"><span data-value="wip">—</span><small>units</small></div><div class="kpi-subtitle"><span data-value="empty">—</span> empty pallets available</div></article>
+      </div>
+      <div class="production-strip"><div><span>LOADED</span><b data-value="loaded">—</b></div><div><span class="small-dot mint"></span><span>GOOD UNITS</span><b data-value="good">—</b></div><div><span class="small-dot red"></span><span>REJECTED</span><b data-value="reject">—</b></div><div><svg><use href="#i-box"/></svg><span>BOXES PACKED</span><b data-value="boxes">—</b></div><div class="conservation" id="conservation"><svg><use href="#i-check"/></svg>Conservation awaiting data</div></div>
+      <article class="panel process-panel"><div class="panel-heading"><div><span class="panel-kicker">THE PRODUCTION LOOP</span><h2><svg><use href="#i-cell"/></svg>Live process flow</h2></div><div class="process-heading-right"><span class="live-pill"><span class="status-dot"></span>LIVE MODEL</span><span>6 stations <span class="bullet">·</span> 2 s transfers</span></div></div><div class="process-scroll"><svg id="process-svg" viewBox="0 0 1350 350" role="img" aria-label="Live six-station assembly flow with buffers, moving pallets and the empty pallet return"></svg></div><div class="process-footer"><div class="legend"><span><i class="mint"></i>Processing</span><span><i class="amber"></i>Blocked / starved</span><span><i class="red"></i>Fault</span><span><i class="grey"></i>Stopped</span></div><span id="transfer-count">0 pallets in transit</span></div></article>
+      <div class="station-inspector" id="station-inspector" hidden></div>
+      <div class="bottom-grid"><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">PROCESS QUALITY</span><h2>S2 press force</h2></div><div class="chart-reading"><b data-value="force">—</b><span>N</span></div></div><div class="chart-legend"><span><i class="mint"></i>Press measurement</span><span><i class="amber"></i>Quality limit · 140 N</span><span><i class="red"></i>Overload · 160 N</span></div><div class="chart" id="live-force-chart"></div><div class="chart-footnote">Quality window 105–140 N. Each value is a sampled press measurement.</div></article><article class="panel alarm-panel"><div class="panel-heading compact"><div><span class="panel-kicker">ATTENTION REQUIRED</span><h2>Active alarms <span class="heading-count" id="alarm-count">0</span></h2></div><button class="text-button" data-navigate="alarms">View audit <svg><use href="#i-arrow"/></svg></button></div><div id="active-alarms" class="active-alarms"><div class="empty-state compact-empty"><span class="empty-check"><svg><use href="#i-check"/></svg></span><strong>Waiting for engine</strong><p>Alarm status will appear here.</p></div></div><div class="alarm-footer"><span>S2 downtime</span><b><span data-value="unplanned">—</span> s <small>unplanned</small><span class="bullet">·</span><span data-value="planned">—</span> s <small>planned</small></b></div></article></div>
+      <article class="panel materials-panel"><div class="panel-heading compact"><div><span class="panel-kicker">MATERIAL AVAILABILITY</span><h2>Feedstock &amp; consumables</h2></div><button class="text-button" data-navigate="maintenance">Manage supplies <svg><use href="#i-arrow"/></svg></button></div><div class="material-grid" id="live-materials"></div></article>
+    </section>
+
+    <section class="page" id="page-trends" aria-label="Performance trends">
+      <div class="metric-trio"><article class="panel simple-metric"><span>AVAILABILITY</span><b><span data-value="availability">—</span><small>%</small></b><p>Available / planned run time</p></article><article class="panel simple-metric"><span>PERFORMANCE</span><b><span data-value="performance">—</span><small>%</small></b><p>Ideal cycle × S2 cycles / available time</p></article><article class="panel simple-metric"><span>QUALITY</span><b><span data-value="quality">—</span><small>%</small></b><p>Passed / inspected decisions</p></article></div>
+      <div class="trends-grid"><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">ROLLING 600 SIM-SECONDS</span><h2>Good throughput</h2></div><span class="unit-label">UNITS / H</span></div><div class="chart" id="throughput-chart"></div></article><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">S2 BOTTLENECK</span><h2>Overall equipment effectiveness</h2></div><span class="unit-label">PERCENT</span></div><div class="chart" id="oee-chart"></div></article></div>
+      <article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">PRESS QUALITY</span><h2>Force measurement history</h2></div><span class="unit-label">NEWTONS</span></div><div class="chart" id="force-chart"></div><div class="chart-footnote">105–140 N quality window · Overload above 160 N</div></article>
+      <div class="trends-grid"><article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">INSPECTION OUTCOMES</span><h2>Reject codes</h2></div><span class="muted">One unit may have multiple codes</span></div><div id="pareto" class="pareto"></div></article><article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">FLOW EFFICIENCY</span><h2>Cycle &amp; lead time</h2></div></div><div class="flow-metrics"><div><span>Line cycle · last 20 good-exit intervals</span><b><span data-value="line-cycle">—</span><small>s</small></b></div><div><span>Mean lead time · all completed units</span><b><span data-value="lead">—</span><small>s</small></b></div><div><span>Average work in progress · run to date</span><b><span data-value="wip-average">—</span><small>units</small></b></div></div></article></div>
+      <div class="export-row"><p>Unmeasured values remain “—”. Throughput ramps up during warm-up.</p><button class="button" id="export-trends"><svg><use href="#i-download"/></svg>Export trends CSV</button></div>
+    </section>
+
+    <section class="page" id="page-alarms" aria-label="Alarms and operator audit">
+      <article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">RAISED &amp; CLEARED</span><h2>Alarm history</h2></div><span class="muted">Latest 100 records</span></div><div class="table-wrap" id="alarm-history"></div></article>
+      <article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">OPERATOR ACCOUNTABILITY</span><h2>Command audit</h2></div><button class="button small" id="export-audit"><svg><use href="#i-download"/></svg>Export CSV</button></div><div class="table-wrap" id="command-history"></div></article>
+      <article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">MODEL TIMELINE</span><h2>Recent events</h2></div><span class="muted">Latest 50 records</span></div><div class="table-wrap" id="event-history"></div></article>
+    </section>
+
+    <section class="page" id="page-trace" aria-label="Part traceability">
+      <article class="panel trace-search"><div><span class="panel-kicker">EVERY SYRINGE HAS A STORY</span><h2>Find a part</h2><p>Inspect measurements, quality decisions and its journey through the cell.</p></div><form id="trace-form"><input id="serial-search" placeholder="SYR-B07-000001" aria-label="Part serial" autocomplete="off"><button class="button primary" type="submit">Find serial <svg><use href="#i-arrow"/></svg></button></form></article>
+      <div id="trace-detail" class="trace-detail" hidden></div>
+      <article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">CURRENT SIMULATION RUN</span><h2>Recent parts</h2></div><span class="muted">Select a serial to inspect it</span></div><div class="table-wrap" id="recent-parts"></div></article>
+    </section>
+
+    <section class="page" id="page-maintenance" aria-label="Maintenance and supplies">
+      <div class="maintenance-grid"><article class="panel tool-panel"><div class="panel-heading compact"><div><span class="panel-kicker">S2 · PRESS &amp; INSERT</span><h2>Tool condition</h2></div><svg class="tool-icon"><use href="#i-tool"/></svg></div><div class="tool-health"><b><span data-value="health">—</span><small>%</small></b><span>Remaining tool health</span></div><div class="progress-track large"><span id="health-progress"></span></div><div class="condition-grid"><div><span>LAST PRESS FORCE</span><b><span data-value="force">—</span><small>N</small></b></div><div><span>CYCLES TO OVERLOAD</span><b data-value="cycles-to-fault">—</b></div><div><span>MAINTENANCE REMAINING</span><b><span data-value="maintenance-time">—</span><small>sim-s</small></b></div></div><p class="panel-note">Prediction fits the latest 30 press samples. “—” means there is insufficient evidence or no rising trend.</p></article><article class="panel maintenance-actions"><div class="panel-heading compact"><div><span class="panel-kicker">MAINTENANCE ACTIONS</span><h2>Keep the cell moving</h2></div></div><button class="action-row" data-command="tool_change" data-args='{"station":"S2"}'><span class="action-icon"><svg><use href="#i-tool"/></svg></span><span><b>Schedule tool change</b><small>Next S2 WAIT boundary · 20 sim-s</small></span><svg><use href="#i-arrow"/></svg></button><button class="action-row" data-command="repair" data-args='{"station":"S2"}'><span class="action-icon"><svg><use href="#i-reset"/></svg></span><span><b>Repair S2</b><small>Fault recovery · 90 sim-s, then Reset</small></span><svg><use href="#i-arrow"/></svg></button><button class="action-row fault-action" data-command="inject_fault" data-args='{"code":"F201"}'><span class="action-icon"><svg><use href="#i-alert"/></svg></span><span><b>Inject F201 overload</b><small>While S2 is processing a part</small></span><svg><use href="#i-arrow"/></svg></button><div id="maintenance-status" class="maintenance-status">Waiting for the engine.</div></article></div>
+      <div class="maintenance-guide"><svg><use href="#i-alert"/></svg><div><strong>F201 recovery sequence</strong><p>Keep the line running → Repair S2 → wait 90 sim-seconds → Reset alarms. The affected part retains its force trace and is rejected at inspection. Refills and maintenance timers advance while the line runs.</p></div></div>
+      <article class="panel materials-panel"><div class="panel-heading compact"><div><span class="panel-kicker">30 SIM-SECOND REPLENISHMENT</span><h2>Material supplies</h2></div><span class="muted">Automatic low-stock refill enabled</span></div><div class="material-grid" id="maintenance-materials"></div></article>
+    </section>
+    <footer class="main-footer"><span><span class="small-dot mint"></span>SyringeTwin <span class="bullet">·</span> Reconstructed dashboard MVP</span><span id="mode-footnote">Simulated process controls · No physical hardware connected</span></footer>
+  </div>
+</main>
+</body>
+</html>

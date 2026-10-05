@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-05",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "services": {
+    "api": 200,
+    "streamlit": 200,
+    "dashboard": 200
+  },
+  "background_launch": true,
+  "repeat_start_reused_session": true,
+  "stop_and_restart_verified": true,
+  "ports": [
+    8000,
+    8501
+  ]
+}

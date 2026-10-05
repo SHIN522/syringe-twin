@@ -1,0 +1,37 @@
+seed: 7
+dt: 0.1
+pallets: 10
+transfer_s: 2.0
+return_s: 10.0
+design_cycle_s: 10.0
+buffers: {B1: 2, B2: 2, B3: 2, B4: 2}
+stations:
+  IN:
+    steps: {PICK: 1.5, PLACE: 1.0, WRITE_ID: 0.5}
+  S1:
+    steps: {CLAMP: 0.5, PRINT: 2.0, CURE: 3.0, UNCLAMP: 0.5}
+    print_sigma: 0.05
+  S2:
+    steps: {PRESS: 2.0, INSERT: 3.0, RETRACT: 1.5, RELEASE: 0.5, HANDLING: 1.0}
+    force: {base: 120, wear_gain: 40, sigma: 4, win: [105, 140], trip: 160}
+    wear_per_cycle: 0.004
+    initial_wear: 0.3
+    mttr_s: 90.0
+    tool_change_s: 20.0
+  S3:
+    steps: {CAP_PRESS: 1.5, LASER: 2.5, VERIFY: 1.0}
+    cap_probability: 0.995
+    mark_probabilities: [0.80, 0.15, 0.04, 0.01]
+  S4:
+    steps: {VISION: 1.0, LEAK: 3.0, DECIDE: 0.5, DIVERT_PASS: 0.5}
+    leak_base: 2.0
+    leak_sigma: 0.5
+    damaged_leak_base: 6.0
+    damaged_leak_sigma: 2.0
+    leak_limit: 5.0
+  OUT:
+    steps: {UNLOAD: 1.0}
+bins: {hopper: 300, plunger: 150, stopper: 150, cap: 200}
+low_levels: {hopper: 30, plunger: 15, stopper: 15, cap: 20}
+refill_delay_s: 30.0
+policy: {predictive_tool_change: false}
