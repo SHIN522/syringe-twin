@@ -52,9 +52,12 @@ def run():
         checks.append('Release → Reset → Start recovery works from dashboard')
         at.radio[0].set_value('Maintenance').run()
         # Wait for an active S2 cycle, then use the actual dashboard fault button.
-        for _ in range(80):
+        # 1x speed keeps S2 mid-cycle for ~8 s wall, so a slow CI runner cannot miss the window.
+        requests.post(env['SYRINGETWIN_API_URL']+'/api/commands',json={'cmd':'set_speed','args':{'x':1},'user':'QA'})
+        for _ in range(200):
             d=requests.get(env['SYRINGETWIN_API_URL']+'/api/live').json()
-            if d['snapshot']['stations']['S2']['state']=='RUNNING': break
+            s2=d['snapshot']['stations']['S2']
+            if s2['state']=='RUNNING' and s2['step'] in ('PRESS','INSERT'): break
             time.sleep(0.1)
         at.button(key='inject').click().run()
         assert not at.exception,str(at.exception)

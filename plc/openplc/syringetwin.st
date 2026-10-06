@@ -45,8 +45,10 @@ PROGRAM syringetwin
     C_REJECT_CV AT %QW4 : INT;
     BOX_FILL AT %QW5 : INT;
     BOXES_TOTAL AT %QW6 : INT;
+  END_VAR
 
-    (* ---- internal ---- *)
+  (* ---- internal (matiec needs these in their own VAR block) ---- *)
+  VAR
     START_B : BOOL;  STOP_B : BOOL;  RESET_B : BOOL;
     ESTOP_OK : BOOL; TOOL_OK : BOOL;
     START_RE : BOOL; RESET_RE : BOOL; INJECT_RE : BOOL; TOOL_OK_RE : BOOL;
