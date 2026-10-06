@@ -11,7 +11,8 @@
     trends:['Production performance','Measured quality, throughput and availability across the simulation.'],
     alarms:['Alarms & audit','Every alarm, operator action and process event in this run.'],
     trace:['Part traceability','Follow a serial from material input to its inspection outcome.'],
-    maintenance:['Cell maintenance','Manage the press tool, recover faults and replenish material.']
+    maintenance:['Cell maintenance','Manage the press tool, recover faults and replenish material.'],
+    decide:['Decision support','Copy the live twin, change one decision, run it forward and compare before acting.']
   };
   let currentPage = pages[location.hash.slice(1)] ? location.hash.slice(1) : 'live';
   let latest = null, engine = null, ready = false, requestBusy = false, connected = false;
@@ -25,9 +26,9 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   class LocalEngine {
-    async request(path, method = 'GET', body) {
+    async request(path, method = 'GET', body, timeoutMs = 5000) {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 5000);
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
       try {
         const response = await fetch(`/api/${path}`, {method, headers:body ? {'Content-Type':'application/json'} : {}, body:body ? JSON.stringify(body) : undefined, signal:controller.signal, cache:'no-store'});
         const payload = await response.json();
@@ -149,6 +150,7 @@
     $('runtime-notice').hidden = true;
     render(data); updateControls();
     if (['alarms','trace'].includes(currentPage) && performance.now() - lastLogAt > 1800) loadPageRecords();
+    if (currentPage === 'decide' && !scenarioOptions) loadScenarios();
   }
   function updateControls() {
     const s = latest?.snapshot, m = latest?.meta;
@@ -194,6 +196,7 @@
     if (location.hash !== `#${page}`) history.replaceState(null,'',`${location.pathname}${location.search}#${page}`);
     if (latest) render(latest);
     if (['alarms','trace'].includes(page)) loadPageRecords(true);
+    if (page === 'decide') loadScenarios();
   }
 
   function render({snapshot:s,kpi:k,meta:m,history:h = []}) {
@@ -204,7 +207,7 @@
     $('speed').value = String(s.speed);
     $('recovery').hidden = !m.estop_latched;
     $('recovery').querySelector('strong').textContent = m.estop_active ? 'E-stop active · release it to recover' : 'E-stop released · reset the latch';
-    setValue('throughput',fmt(k.th_ph,0)); setValue('window',fmt(k.win_s,0)); setValue('oee',percent(k.oee)); setValue('quality',percent(k.Q));
+    setValue('throughput',fmt(k.th_ph,0)); setValue('window',fmt(k.win_s,0)); setValue('oee',percent(k.oee)); setValue('oee-win',percent(k.oee_win?.oee)); setValue('quality',percent(k.Q));
     setValue('wip',fmt(s.counts.wip,0)); setValue('empty',fmt(m.empty_pallets,0)); setValue('loaded',fmt(s.counts.in,0));
     setValue('good',fmt(s.counts.good,0)); setValue('reject',fmt(s.counts.reject,0)); setValue('boxes',fmt(s.counts.boxes,0));
     setValue('force',fmt(s.stations.S2.force)); setValue('unplanned',fmt(k.down_s.S2.unplanned)); setValue('planned',fmt(k.down_s.S2.planned));
@@ -223,12 +226,130 @@
     if (currentPage === 'live') drawChart('live-force-chart',h,'force_N',{color:'#8caa66',min:95,max:175,limits:[[105,'105','#c9d5b6'],[140,'140','#d0b36f'],[160,'160','#cb9373']],band:[105,140]});
     if (currentPage === 'trends') {
       drawChart('throughput-chart',h,'throughput',{color:'#91af6d',min:0,design:360});
-      drawChart('oee-chart',h,'oee_pct',{color:'#88a964',min:0,max:100});
+      drawChart('oee-chart',h,'oee_win_pct',{color:'#88a964',min:0,max:100});
       drawChart('force-chart',h,'force_N',{color:'#8caa66',min:95,max:175,limits:[[105,'105','#c9d5b6'],[140,'140','#d0b36f'],[160,'160','#cb9373']],band:[105,140]});
       const rows = Object.entries(k.pareto).sort((a,b) => b[1] - a[1]); const max = Math.max(1,...rows.map((row) => row[1]));
       $('pareto').innerHTML = rows.length ? rows.map(([code,count]) => `<div class="pareto-row"><strong>${esc(code)}</strong><div class="progress-track"><span style="width:${count/max*100}%"></span></div><b>${count}</b></div>`).join('') : '<div class="empty-state"><strong>No rejects recorded</strong><p>Reject codes appear after inspection decisions.</p></div>';
     }
     if (!$('station-inspector').hidden) inspectStation($('station-inspector').dataset.station);
+    renderControl(m.plc);
+    $('profile-tag').hidden = !m.profile; $('profile-tag').textContent = m.profile || '';
+    if (currentPage === 'decide' && !whatifResult) renderFork(liveFork(),'Live twin now');
+  }
+
+  function renderControl(plc) {
+    const tag = $('control-tag'), strip = $('plc-strip');
+    tag.hidden = browserMode;
+    if (!plc || plc.mode !== 'plc') { tag.textContent = 'Internal control'; tag.className = 'runtime-tag control-tag'; strip.hidden = true; return; }
+    const down = !plc.link_ok || plc.link_fault, c = plc.coils || {}, n = plc.counters || {};
+    tag.textContent = down ? 'OpenPLC link down' : 'OpenPLC control'; tag.className = `runtime-tag control-tag ${down ? 'down' : 'plc'}`;
+    const lamp = (on,cls) => `<i class="${on ? 'on ' : ''}${cls}"></i>`;
+    const check = plc.counters_consistent == null ? 'Counter check pending' : plc.counters_consistent ? 'Counters match twin' : 'Counter mismatch';
+    strip.hidden = false; strip.className = `plc-strip${down ? ' down' : ''}`;
+    strip.innerHTML = `<strong>${icon('plc')}OpenPLC · ${esc(plc.endpoint)}</strong><span>${down ? `Link lost · ${esc(plc.error || 'watchdog')}` : `Modbus TCP · ${fmt(plc.latency_ms)} ms`}</span><span class="plc-lamps" title="PLC tower light">${lamp(c.Q_LAMP_GREEN,'g')}${lamp(c.Q_LAMP_AMBER,'a')}${lamp(c.M_ANY_FAULT,'r')}</span><span>Run permissive <b>${c.M_SYS_RUN ? 'ON' : 'OFF'}</b></span>${['F001','F201','F002'].filter((k) => c[k]).map((k) => `<span class="plc-tag bad">${k}${k === 'F201' && c.M_S2_REPAIRED ? ' · reset allowed' : ''}</span>`).join('')}<span>PLC counters <b>${fmt(n.C_IN,0)} in · ${fmt(n.C_GOOD,0)} good · ${fmt(n.C_REJECT,0)} reject · ${fmt(n.BOXES_TOTAL,0)} boxes</b></span><span class="plc-tag ${plc.counters_consistent === false ? 'bad' : ''}">${check}</span>`;
+  }
+
+  /* ---- Decision support: the Python sandbox owns every number shown here ---- */
+  let scenarioOptions = null, scenario = 'maintenance', whatifResult = null, whatifBusy = false;
+  const loopSteps = () => document.querySelectorAll('#loop-steps li');
+  function setStep(active) { loopSteps().forEach((el,i) => {el.classList.toggle('done',i < active); el.classList.toggle('active',i === active);}); }
+  function liveFork() {
+    if (!latest) return null;
+    const s = latest.snapshot, k = latest.kpi;
+    return {t:s.t,wear:s.stations.S2.wear,health:k.s2.health,force:s.stations.S2.force,cycles_to_fault:k.s2.cycles_to_fault,counts:s.counts,s2_state:s.stations.S2.state,active_alarms:s.alarms.map((a) => a.code)};
+  }
+  function renderFork(f,title) {
+    if (!f) return;
+    $('fork-title').textContent = title;
+    const cells = [
+      ['SIMULATION TIME',fmt(f.t/60),'sim-min'],['S2 TOOL HEALTH',percent(f.health),'%',f.health < .3],
+      ['LAST PRESS FORCE',fmt(f.force),'N',f.force > 135],['CYCLES TO OVERLOAD',fmt(f.cycles_to_fault,0),'estimated',f.cycles_to_fault != null && f.cycles_to_fault < 60],
+      ['GOOD / REJECTED',`${fmt(f.counts.good,0)} / ${fmt(f.counts.reject,0)}`,'units'],['S2 STATE · ALARMS',esc(f.s2_state),esc(f.active_alarms.join(' ') || 'none'),f.active_alarms.length > 0]];
+    $('fork-grid').innerHTML = cells.map(([label,value,unit,warn]) => `<div class="${warn ? 'warn' : ''}"><span>${label}</span><b>${value}</b><small>${unit}</small></div>`).join('');
+  }
+  async function loadScenarios() {
+    if (browserMode) {
+      $('scenario-question').textContent = 'What-if analysis runs on the local engine. Start the Windows launcher and open http://127.0.0.1:8000 to use it.';
+      $('run-whatif').disabled = true; return;
+    }
+    if (scenarioOptions || !ready) return;
+    try { scenarioOptions = await engine.request('whatif/scenarios'); setupScenario(); }
+    catch (error) { feedback(`Scenarios unavailable: ${error.message}`,'error'); }
+  }
+  function setupScenario() {
+    document.querySelectorAll('.scenario-tab').forEach((el) => {const on = el.dataset.scenario === scenario; el.classList.toggle('active',on); el.setAttribute('aria-selected',String(on));});
+    if (!scenarioOptions) return;
+    $('scenario-question').textContent = scenarioOptions[scenario].question;
+    $('cycle-controls').hidden = scenario !== 'cycle_time';
+    if (scenario === 'cycle_time' && !$('cycle-preset').options.length) {
+      const o = scenarioOptions.cycle_time;
+      $('cycle-preset').innerHTML = o.presets.map((p,i) => `<option value="${i}">${esc(p.label)}</option>`).join('')+'<option value="custom">Custom</option>';
+      $('cycle-station').innerHTML = Object.keys(o.params.steps).map((name) => `<option>${name}</option>`).join('');
+      applyPreset(0);
+    }
+  }
+  function fillSteps() {
+    const steps = scenarioOptions.cycle_time.params.steps[$('cycle-station').value];
+    $('cycle-step').innerHTML = Object.entries(steps).map(([step,value]) => `<option value="${esc(step)}">${esc(step)} · ${fmt(value)} s now</option>`).join('');
+  }
+  function applyPreset(index) {
+    const p = scenarioOptions.cycle_time.presets[index]; if (!p) return;
+    $('cycle-station').value = p.station; fillSteps(); $('cycle-step').value = p.step; $('cycle-value').value = p.value;
+  }
+  async function runWhatIf() {
+    if (browserMode || !ready || whatifBusy || !scenarioOptions) return;
+    const body = {scenario,horizon_s:Number($('whatif-horizon').value),replications:Number($('whatif-reps').value),params:{}};
+    if (scenario === 'cycle_time') body.params = {station:$('cycle-station').value,step:$('cycle-step').value,value:Number($('cycle-value').value)};
+    whatifBusy = true; document.body.classList.add('decide-busy'); $('run-whatif').disabled = true;
+    setStep(1); renderFork(liveFork(),'Copied from the live twin');
+    const timers = [setTimeout(() => setStep(2),300),setTimeout(() => setStep(3),700)];
+    feedback(`Running ${body.replications > 1 ? `${body.replications} seeds of ` : ''}the virtual copy for ${fmt(body.horizon_s/3600,1)} sim-hours per option…`,'pending');
+    try {
+      const result = await engine.request('whatif','POST',body,120000);
+      timers.forEach(clearTimeout); whatifResult = result;
+      setStep(4); renderWhatIf(result); setTimeout(() => setStep(5),350); setTimeout(() => setStep(6),800);
+      const simHours = result.horizon_s/3600*result.arms.length*result.replications;
+      feedback(`Simulated ${fmt(simHours,1)} sim-hours in ${fmt(result.runtime_s)} s. The live line was not changed.`);
+    } catch (error) { timers.forEach(clearTimeout); setStep(0); feedback(`What-if failed: ${error.message}`,'error'); }
+    finally { whatifBusy = false; document.body.classList.remove('decide-busy'); $('run-whatif').disabled = !ready; }
+  }
+  function cell(value,unit,reps) {
+    if (value == null) return '—';
+    if (unit === '%') return `${percent(value)} %`;
+    if (unit === 's') return `${fmt(value,0)} s`;
+    if (unit === 'units/h') return `${fmt(value,0)} /h`;
+    return fmt(value,reps > 1 ? 1 : 0);
+  }
+  function deltaText(delta,unit,better,reps) {
+    if (delta == null) return '';
+    const tiny = Math.abs(delta) < (unit === '%' ? .0005 : unit === 's' ? .5 : .05);
+    const good = (delta > 0) === (better === 'higher');
+    const shown = unit === '%' ? `${delta > 0 ? '+' : ''}${fmt(delta*100)} pp` : `${delta > 0 ? '+' : ''}${cell(delta,unit,reps)}`;
+    return `<span class="delta ${tiny ? 'same' : good ? 'better' : 'worse'}">${tiny ? 'no change' : shown}</span>`;
+  }
+  function renderWhatIf(r) {
+    $('whatif-result').hidden = false;
+    renderFork(r.fork,`Copied at ${fmt(r.fork.t/60)} sim-min`);
+    const rec = r.recommendation, keep = rec.arm === r.arms[0].id;
+    $('recommendation').className = `recommendation${keep ? ' keep' : ''}`;
+    $('recommendation').innerHTML = `${icon(keep ? 'alert' : 'check')}<div><div class="kicker">RECOMMENDED ACTION · ${esc(r.title.toUpperCase())}</div><h3>${esc(rec.headline)}</h3><ul>${rec.reasons.map((x) => `<li>${esc(x)}</li>`).join('')}</ul></div>`;
+    const hours = r.horizon_s/3600;
+    $('compare-title').textContent = `KPI comparison · ${hours === 1 ? '1 sim-hour' : hours < 1 ? `${hours*60} sim-min` : `${hours} sim-hours`} after the copy${r.replications > 1 ? ` · mean of ${r.replications} seeds` : ''}`;
+    const recommended = (a) => a.id === rec.arm ? 'recommended' : '';
+    const head = `<tr><th>KPI</th>${r.arms.map((a) => `<th class="${recommended(a)}">${esc(a.label.toUpperCase())}${a.id === rec.arm ? ' ✓' : ''}</th>`).join('')}</tr>`;
+    const rows = r.comparison.map((row) => `<tr><td>${esc(row.label)}</td>${row.values.map((v,i) => `<td class="${recommended(r.arms[i])}"><b>${cell(v,row.unit,r.replications)}</b>${i ? deltaText(row.deltas[i],row.unit,row.better,r.replications) : ''}</td>`).join('')}</tr>`);
+    const extra = [
+      ['Design capacity (static)',(a) => `${fmt(a.kpi.design.rate_ph,0)} /h · ${esc(a.kpi.design.bottleneck)}`],
+      ['Simulated bottleneck',(a) => `${esc(a.kpi.bottleneck)} · ${percent(a.kpi.active_share[a.kpi.bottleneck])} % active`],
+      ['First F201 after the copy',(a) => a.kpi.first_f201_s == null ? 'none' : `${fmt(a.kpi.first_f201_s/60)} sim-min`]
+    ].map(([label,read]) => `<tr><td>${label}</td>${r.arms.map((a) => `<td class="${recommended(a)}"><b>${read(a)}</b></td>`).join('')}</tr>`);
+    $('compare-table').innerHTML = `<table><thead>${head}</thead><tbody>${rows.join('')}${extra.join('')}</tbody></table>`;
+    const bar = (u,bottleneck) => {
+      const run = u.RUNNING || 0, down = u.FAULT || 0, maint = u.MAINT || 0;
+      return `<div class="activity-cell${bottleneck ? ' bottleneck' : ''}"><div class="activity-bar"><i class="run" style="width:${run*100}%"></i><i class="down" style="width:${down*100}%"></i><i class="maint" style="width:${maint*100}%"></i></div><small>${fmt((run+down+maint)*100,0)}%</small></div>`;
+    };
+    $('activity-table').innerHTML = `<table><thead><tr><th>STATION</th>${r.arms.map((a) => `<th>${esc(a.label.toUpperCase())}</th>`).join('')}</tr></thead><tbody>${['IN','S1','S2','S3','S4'].map((name) => `<tr><td>${name}</td>${r.arms.map((a) => `<td>${bar(a.kpi.utilisation[name] || {},a.kpi.bottleneck === name)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+    $('whatif-assumptions').textContent = `Assumptions: ${r.assumptions.join(' ')} Activity bars: green running, orange fault, blue maintenance.`;
   }
 
   function renderMaterials(id,s,m,controls) {
@@ -292,7 +413,7 @@
     return `<g class="machine-lines"><path d="M-49 143V94h98v49M-43 149h86M-17 91v-13h34v13M-45 108h16m-16 6h16m-16 6h16M29 109h15m-15 6h15"/><path d="m-16 118 16-8 16 8v22l-16 8-16-8v-22Zm0 0 16 8 16-8M0 126v22"/></g><path class="machine-highlight" d="m-16 118 16-8 16 8-16 8Z"/>`;
   }
   function buildProcess() {
-    let out = `<defs><pattern id="belt-pattern" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 0v12" stroke="#d6e0cb" stroke-width="1"/></pattern></defs><rect x="20" y="213" width="1300" height="33" rx="15" fill="#eff3e7" stroke="#dbe6ce"/><rect x="33" y="222" width="1272" height="15" rx="7" fill="url(#belt-pattern)"/><path d="M1240 252V306H90V252" stroke="#e1e9d6" stroke-width="8" fill="none"/><path d="M1240 252V306H90V252" stroke="#cfddc0" stroke-width="1" fill="none" stroke-dasharray="3 5"/><text x="650" y="331" text-anchor="middle" fill="#adbda0" font-size="8" letter-spacing="1.4">EMPTY PALLET RETURN · 10 SIM-SECONDS</text><path d="m618 300-7 6 7 6m-329-12-7 6 7 6" fill="none" stroke="#b8cba6" stroke-width="1.3"/><text x="70" y="286" fill="#a4b795" font-size="9">AVAILABLE <tspan id="svg-empty" font-weight="650">10</tspan></text>`;
+    let out = `<defs><pattern id="belt-pattern" width="12" height="12" patternUnits="userSpaceOnUse"><path d="M0 0v12" stroke="#d6e0cb" stroke-width="1"/></pattern></defs><rect x="20" y="213" width="1300" height="33" rx="15" fill="#eff3e7" stroke="#dbe6ce"/><rect x="33" y="222" width="1272" height="15" rx="7" fill="url(#belt-pattern)"/><path d="M1240 252V306H90V252" stroke="#e1e9d6" stroke-width="8" fill="none"/><path d="M1240 252V306H90V252" stroke="#cfddc0" stroke-width="1" fill="none" stroke-dasharray="3 5"/><text x="650" y="331" text-anchor="middle" fill="#adbda0" font-size="8" letter-spacing="1.4">EMPTY PALLET RETURN · 10 SIM-SECONDS</text><path d="m618 300-7 6 7 6m-329-12-7 6 7 6" fill="none" stroke="#b8cba6" stroke-width="1.3"/><text x="40" y="331" fill="#a4b795" font-size="9">EMPTY PALLETS AVAILABLE <tspan id="svg-empty" font-weight="650">10</tspan></text>`;
     Object.entries(stationX).forEach(([name,x]) => {
       const labels = stationNames[name];
       out += `<g id="station-${name}" class="process-svg-station station-stopped" transform="translate(${x},0)" role="button" tabindex="0" aria-label="Inspect station ${name}"><text class="process-station-name" x="0" y="20" text-anchor="middle">${esc(name)} · ${labels[0]}</text><text class="process-station-title" x="0" y="36" text-anchor="middle">${labels[1]}</text><rect class="machine-shell" x="-73" y="55" width="146" height="134" rx="10"/><rect class="machine-interior" x="-61" y="68" width="122" height="92" rx="6"/>${machineDrawing(name)}<circle class="machine-lamp" cx="-51" cy="174" r="3"/><text id="station-state-${name}" class="process-svg-state" x="-42" y="177">STOPPED</text><rect class="process-progress-bg" x="-60" y="195" width="120" height="3" rx="1.5"/><rect id="station-progress-${name}" class="process-progress-fill" x="-60" y="195" width="0" height="3" rx="1.5"/><text id="station-step-${name}" class="process-step" x="0" y="264" text-anchor="middle">WAIT</text><text id="station-part-${name}" class="process-serial" x="0" y="278" text-anchor="middle">No part</text><text id="station-cycles-${name}" class="process-cycles" x="0" y="293" text-anchor="middle">0 cycles</text></g>`;
@@ -446,13 +567,19 @@
   $('estop').onclick = () => sendCommand('estop',{active:!latest?.meta.estop_active});
   $('speed').onchange = () => sendCommand('set_speed',{x:Number($('speed').value)});
   $('retry').onclick = boot;
+  document.querySelectorAll('.scenario-tab').forEach((el) => { el.onclick = () => {scenario = el.dataset.scenario; setupScenario();}; });
+  $('cycle-preset').onchange = () => applyPreset(Number($('cycle-preset').value));
+  $('cycle-station').onchange = () => {fillSteps(); $('cycle-preset').value = 'custom';};
+  $('cycle-step').onchange = $('cycle-value').oninput = () => {$('cycle-preset').value = 'custom';};
+  $('run-whatif').onclick = runWhatIf;
+  $('export-whatif').onclick = () => {if (whatifResult) download(JSON.stringify(whatifResult,null,2),`SyringeTwin-whatif-${whatifResult.scenario}.json`,'application/json');};
   $('operator').oninput = () => {
     document.querySelector('.operator-field').classList.remove('invalid');
     try {localStorage.setItem(operatorStorage,$('operator').value);} catch (_) {/* Browser storage may be unavailable. */}
   };
   try { $('operator').value = localStorage.getItem(operatorStorage) || ''; } catch (_) {/* Operator can still type a name. */}
   $('trace-form').onsubmit = (event) => {event.preventDefault(); findPart($('serial-search').value);};
-  $('export-trends').onclick = () => {if (latest) download(csv(latest.history || [],['t','throughput','force_N','oee_pct']),'SyringeTwin-trends.csv','text/csv');};
+  $('export-trends').onclick = () => {if (latest) download(csv(latest.history || [],['t','throughput','force_N','oee_pct','oee_win_pct']),'SyringeTwin-trends.csv','text/csv');};
   $('export-audit').onclick = () => download(csv(auditRows,['t','wall','user','cmd','args','result']),'SyringeTwin-audit.csv','text/csv');
   window.addEventListener('hashchange',() => navigate(location.hash.slice(1)));
   window.addEventListener('beforeunload',() => { if (engine instanceof BrowserEngine) engine.close(); });

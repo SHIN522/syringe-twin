@@ -123,3 +123,28 @@ These times assume evenings plus any free slots. If college hours collide, shift
 | R3 Data/Backend | |
 | R4 Dashboard | |
 | R5 QA/Docs/Video | |
+
+## 5. Rulings — 6 Oct 2026 (final scope)
+These override the scope cut in §2 where they conflict.
+
+### D9 — Control layer → OpenPLC with a live link to the twin
+- OpenPLC Runtime is the PLC. The twin connects over Modbus TCP in **PLC mode** (`launch.py --plc`). Internal mode stays the default.
+- The PLC owns: run permissive, E-stop latch, F201 detection and reset permissive, tower light, horn, counters and the link watchdog. The twin keeps sequences, physics, quality and KPIs.
+- Specification: `docs/plc/PLC_SPEC.md`. Every signal: `docs/plc/tag_dictionary.csv`.
+- If the 18:30 connection test fails, the GX Works3 + GT Designer3 standalone path (PLC_SPEC §8) is used instead. Only one PLC platform is built.
+
+### D10 — New alarm F002 and new tags
+- **F002 "PLC link lost"** (FAULT, global stop): either side stops seeing the other's heartbeat for 1 s. Recovery: link restored → Reset → Start.
+- New signals for the link, all listed in `tag_dictionary.csv`: command pulses, sequence numbers (`S2_PRESS_SEQ`, `GOOD_SEQ`, `REJECT_SEQ`, `IN_SEQ`), `S2_VERDICT_SEQ`, heartbeats, `M_S2_REPAIRED`, `F201_INJECTED`.
+- In PLC mode, S2 waits after PRESS until the PLC has evaluated that force sample (the INSERT permissive).
+
+### D11 — OPC UA, what-if and terminology
+- The twin exposes a **read-only OPC UA server**. Node IDs are listed in `tag_dictionary.csv`; it is verified with UaExpert.
+- The what-if sandbox (U4) is reinstated as a MUST and is the main decision-support feature.
+- S2 maintenance is described as **model-based condition monitoring with force-trend extrapolation**. It is not called AI or ML anywhere.
+- FUXA is the operator HMI on the OpenPLC path, bound directly to PLC tags (SHOULD).
+
+### D12 — Demo profile, W202 smoothing and rolling OEE
+- **Demo profile** `config/profiles/demo.yaml` (`launch.py --profile demo`): fresh S2 tool, wear 0.010 per cycle, W202 trend warning at < 25 cycles. Seed 7 at 10× gives, in video time: W202 ≈ 41 s, first R2 ≈ 45 s, natural F201 ≈ 87 s. The dashboard shows a "Demo profile" badge for every run that uses it.
+- **W202** is raised on the **mean of the last 5 press forces** > 135 N (not a single sample), or when the force trend predicts fewer than `warn.cycles` cycles to 160 N. The trend needs at least **15** samples. Thresholds live in `config/line.yaml` under `stations.S2.warn`.
+- **Rolling OEE**: the same A × P × Q formula over the trailing 600 sim-s (`kpi.oee_win`), next to the run-to-date value. The dashboard OEE tile and trend show the rolling value, so a fault dip and its recovery are both visible.

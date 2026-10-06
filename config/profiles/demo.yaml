@@ -1,0 +1,10 @@
+# Demo profile: overrides config/line.yaml for the recorded demonstration only.
+# Fresh S2 tool with accelerated wear, so normal production, force drift,
+# quality loss and a natural F201 all happen within about two minutes at 10x.
+# The dashboard labels every run that uses this profile.
+label: Demo profile · accelerated tool wear
+stations:
+  S2:
+    initial_wear: 0.0
+    wear_per_cycle: 0.010
+    warn: {cycles: 25}  # tool life is ~90 cycles here, so warn 25 cycles ahead

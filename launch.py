@@ -105,6 +105,12 @@ def background(options):
     RUNTIME.mkdir(exist_ok=True)
     command = [sys.executable, str(ROOT / 'launch.py'), '--no-browser',
                '--api-port', str(options.api_port), '--ui-port', str(options.ui_port)]
+    if options.plc:
+        command += ['--plc', options.plc]
+    if options.profile:
+        command += ['--profile', options.profile]
+    if options.opcua:
+        command += ['--opcua']
     flags = subprocess.CREATE_NO_WINDOW | subprocess.CREATE_NEW_PROCESS_GROUP if os.name == 'nt' else 0
     with (RUNTIME / 'stdout.log').open('a', encoding='utf-8') as output, (RUNTIME / 'stderr.log').open('a', encoding='utf-8') as error:
         process = subprocess.Popen(command, cwd=ROOT, stdin=subprocess.DEVNULL,
@@ -126,6 +132,12 @@ def main():
     parser.add_argument('--stop', action='store_true')
     parser.add_argument('--api-port', type=int, default=8000)
     parser.add_argument('--ui-port', type=int, default=8501)
+    parser.add_argument('--profile', choices=['demo'],
+                        help='Configuration profile from config/profiles (demo: fresh tool, accelerated wear)')
+    parser.add_argument('--opcua', action='store_true',
+                        help='serve the twin read-only over OPC UA at opc.tcp://127.0.0.1:4840/syringetwin/')
+    parser.add_argument('--plc', metavar='HOST[:PORT]',
+                        help='PLC mode: link the twin to OpenPLC Runtime over Modbus TCP')
     options = parser.parse_args()
     backend = dashboard = None
     instance_id = uuid.uuid4().hex
@@ -141,6 +153,12 @@ def main():
         api_url, ui_url = urls(options)
         env = dict(os.environ, SYRINGETWIN_API_PORT=str(options.api_port),
                    SYRINGETWIN_API_URL=api_url, SYRINGETWIN_INSTANCE_ID=instance_id)
+        if options.plc:
+            env['SYRINGETWIN_PLC'] = options.plc
+        if options.profile:
+            env['SYRINGETWIN_PROFILE'] = options.profile
+        if options.opcua:
+            env['SYRINGETWIN_OPCUA'] = '1'
         RUNTIME.mkdir(exist_ok=True)
         backend = subprocess.Popen([sys.executable, '-m', 'twin'], cwd=ROOT, env=env)
         wait_ready(api_url + '/api/health', backend)

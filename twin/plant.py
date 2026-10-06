@@ -1,7 +1,6 @@
 """Process durations, motion and quality measurements (brief sections 3 and 4).
 
 The controller authorizes processing and transfers; this module advances physics.
-This MVP uses sequence actions rather than the complete frozen PLC I/O map.
 """
 from .events import event, clear_alarm
 
@@ -67,6 +66,7 @@ def quality_sample(s, name, step):
         p.meas['force_N'] = st.force
         st.wear += c['wear_per_cycle']
         st.forces.append((st.cycles + 1, st.force))
+        st.press_samples += 1
     elif name == 'S3' and step == 'CAP_PRESS':
         p.meas['cap_ok'] = bool(r.random() < c['cap_probability'])
     elif name == 'S3' and step == 'LASER':
