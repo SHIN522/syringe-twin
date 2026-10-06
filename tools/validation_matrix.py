@@ -537,7 +537,7 @@ def t36():
         r.bridge.close(); r.server.close()
 
 
-MANUAL = [  # executed on OpenPLC Runtime; results recorded in docs/evidence/plc_manual_results.json
+MANUAL = [  # run on OpenPLC Runtime by tools/plc_acceptance.py -> docs/evidence/plc_manual_results.json
     ('PLC-01', 'Start pulse sets run permissive and green lamp'), ('PLC-02', 'Stop pulse drops run'),
     ('PLC-03', 'E-stop latches F001, red flashing, horn'), ('PLC-04', 'Reset ignored while E-stop open'),
     ('PLC-05', 'Release → Reset → Start recovers'), ('PLC-06', 'Force 145.0 N: no F201, verdict echoed'),
@@ -576,7 +576,7 @@ def main():
     lines = ['# Validation test matrix', '',
              f'Generated {stamp} by `python tools/validation_matrix.py`. Every *actual* value was measured in that run '
              '(seed 7). PLC-mode rows T33–T36 use the Modbus stand-in of `syringetwin.st`; PLC-xx rows are run on '
-             'OpenPLC Runtime.', '',
+             'OpenPLC Runtime by `tools/plc_acceptance.py`.', '',
              f'**Automated: {passed}/{len(auto)} PASS.**', '',
              '| ID | Area | Test | Expected | Actual (measured) | Result |', '|---|---|---|---|---|---|']
     for r in rows:

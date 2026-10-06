@@ -1,6 +1,6 @@
 # Validation test matrix
 
-Generated 2026-10-07T00:20:19+05:30 by `python tools/validation_matrix.py`. Every *actual* value was measured in that run (seed 7). PLC-mode rows T33–T36 use the Modbus stand-in of `syringetwin.st`; PLC-xx rows are run on OpenPLC Runtime.
+Generated 2026-10-07T01:19:19+05:30 by `python tools/validation_matrix.py`. Every *actual* value was measured in that run (seed 7). PLC-mode rows T33–T36 use the Modbus stand-in of `syringetwin.st`; PLC-xx rows are run on OpenPLC Runtime by `tools/plc_acceptance.py`.
 
 **Automated: 36/36 PASS.**
 
