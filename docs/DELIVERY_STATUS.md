@@ -20,6 +20,6 @@ Deployment: appgdep_6ac3ed8ce954819184a46d58f4a7f57d — succeeded
 
 The supported source helper pushed and verified the exact source. Its Bash packaging step did not work with Windows directory permissions/path handling; a standard-library fallback packaged only the exact committed static assets and validated archive contents. The native Sites deployment confirmed success.
 
-GitHub target: SHIN522/syringe-twin, private. Intended collaborator: shmizi. Source, Git repository, contribution guide and Windows/Ubuntu CI are prepared. The connected GitHub account is confirmed as SHIN522. Remote creation/push and collaborator invitation require an authenticated creation/push path; the connector has no repository-creation operation and the local GitHub CLI is not yet signed in. No remote push or invitation is claimed.
+GitHub target: SHIN522/syringe-twin, private. Intended collaborator: shmizi. Source, Git repository, contribution guide and Windows/Ubuntu CI are prepared. The connected GitHub account is confirmed as SHIN522. Publication has been requested; remote creation, push and collaborator invitation await completion of GitHub CLI sign-in. No remote push or invitation is claimed yet.
 
 Engineering limitations remain as described in README and OPERATIONAL_STATUS: this is the supplied Python SFC model, with no claim of full PLC ladder/I/O, external simulator integration, hardware/medical validation or model-state restoration across restarts.
