@@ -1,8 +1,8 @@
-# GitHub collaboration plan
+# GitHub collaboration
 
-The project includes local setup instructions, regression tests, GitHub Actions CI, and issue/PR templates. These files prepare a repository for collaboration; their presence does not mean a remote repository or collaborator invitation has been created.
+The private repository is [SHIN522/syringe-twin](https://github.com/SHIN522/syringe-twin). It includes local setup instructions, regression tests, GitHub Actions CI, and issue/PR templates.
 
-The intended collaborator is [shmizi](https://github.com/shmizi), with access to contribute branches and pull requests. An invitation has not been sent as part of this preparation. The repository owner should invite that account with write access after the remote repository is created; access becomes active after acceptance. See [GitHub's personal-repository invitation instructions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository). For an organization repository, select the [Write role](https://docs.github.com/en/organizations/managing-user-access-to-your-organizations-repositories/managing-repository-roles/repository-roles-for-an-organization).
+A write-access invitation was sent to [shmizi](https://github.com/shmizi) on 6 October 2026. Access becomes active after acceptance; the collaborator can then contribute branches and pull requests. See [GitHub's personal-repository invitation instructions](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository).
 
 ## Working agreement
 
