@@ -27,7 +27,8 @@ def _web_sample():
     _web_history.append({
         't': k['t'], 'throughput': k['th_ph'],
         'force_N': payload['snapshot']['stations']['S2']['force'],
-        'oee_pct': k['oee'] * 100 if k['oee'] is not None else None
+        'oee_pct': k['oee'] * 100 if k['oee'] is not None else None,
+        'oee_win_pct': k['oee_win']['oee'] * 100 if k['oee_win']['oee'] is not None else None
     })
     payload['history'] = list(_web_history)
     return json.dumps(payload)

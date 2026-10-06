@@ -8,9 +8,26 @@ import yaml
 STATIONS = ('IN', 'S1', 'S2', 'S3', 'S4', 'OUT')
 
 
-def load_config():
-    path = Path(__file__).resolve().parents[1] / 'config' / 'line.yaml'
-    return yaml.safe_load(path.read_text())
+def _merge(base, override):
+    for key, value in override.items():
+        if isinstance(value, dict) and isinstance(base.get(key), dict):
+            _merge(base[key], value)
+        else:
+            base[key] = value
+    return base
+
+
+def load_config(profile=None):
+    """line.yaml, optionally overlaid by config/profiles/<profile>.yaml."""
+    root = Path(__file__).resolve().parents[1] / 'config'
+    config = yaml.safe_load((root / 'line.yaml').read_text())
+    if profile:
+        path = root / 'profiles' / f'{profile}.yaml'
+        if not path.is_file():
+            raise ValueError(f'Unknown configuration profile: {profile}')
+        _merge(config, yaml.safe_load(path.read_text(encoding='utf-8')))
+        config['profile'] = profile
+    return config
 
 
 @dataclass
@@ -42,6 +59,7 @@ class Station:
     wear: float = 0.0
     force: float | None = None
     forces: deque = field(default_factory=lambda: deque(maxlen=30))
+    press_samples: int = 0
     unplanned: float = 0.0
     planned: float = 0.0
     state: str = 'STOPPED'
@@ -86,6 +104,8 @@ class State:
     faults_s2: int = 0
     wip_integral: float = 0.0
     rng: dict = field(default_factory=dict)
+    plc: dict = field(default_factory=dict)  # PLC-mode exchange area (twin/plc_bridge.py)
+    oee_samples: deque = field(default_factory=lambda: deque(maxlen=62))  # rolling-OEE counters, every 10 sim-s
     revision: int = 0
 
 

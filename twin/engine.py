@@ -4,13 +4,14 @@ from .model import new_state
 from .events import active_alarms, wall_time
 from .control import scan, material_policy, maintenance_policy
 from .plant import advance_motion, advance_sequences, advance_refills, advance_maintenance
-from .kpi import counts, calculate
+from .kpi import counts, calculate, oee_counters
 from .commands import execute
 
 
 class Engine:
-    def __init__(self, config=None):
-        self.state = new_state(config)
+    def __init__(self, config=None, state=None):
+        # A supplied state lets the what-if sandbox run a copy of the live twin.
+        self.state = state if state is not None else new_state(config)
 
     def tick(self):
         s, dt = self.state, self.state.config['dt']
@@ -32,6 +33,8 @@ class Engine:
             if st.done and st.step_i == 0:
                 maintenance_policy(s)
         s.wip_integral += counts(s)['wip'] * dt
+        if round(s.t / dt) % round(10 / dt) == 0:
+            s.oee_samples.append(oee_counters(s))
         s.t = round(s.t + dt, 6)
 
     def advance(self, duration_s):
@@ -74,7 +77,7 @@ class Engine:
             }
         return {'snapshot': self.snapshot(), 'kpi': calculate(s),
                 'meta': {'estop_active': s.estop_active, 'estop_latched': s.estop_latched,
-                         'revision': s.revision, 'model': 'Reconstructed dashboard MVP',
+                         'revision': s.revision, 'model': 'SyringeTwin v1.0', 'profile': s.config.get('label'),
                          'material_capacity': s.config['bins'], 'buffer_capacity': s.config['buffers'],
                          'refills': s.refills, 'maintenance_remaining_s': s.stations['S2'].remaining,
                          'tool_ok': s.stations['S2'].tool_ok, 'tool_change_queued': s.stations['S2'].pending_tool_change,

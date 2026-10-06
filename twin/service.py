@@ -8,8 +8,12 @@ from .events import wall_time
 
 
 class Service:
-    def __init__(self, data_dir='data', config=None):
+    def __init__(self, data_dir='data', config=None, plc=None, opcua=None):
         self.engine = Engine(config)
+        self.opcua = opcua  # OpcUaServer, or None when OPC UA is disabled
+        self.bridge = plc  # PlcBridge in PLC mode, None in internal mode
+        if plc:
+            plc.attach(self.engine.state)
         self.lock, self.closed = RLock(), Event()
         self.thread = None
         self.history = deque(maxlen=300)
@@ -19,6 +23,8 @@ class Service:
         self.sample()
 
     def start(self):
+        if self.opcua:
+            self.opcua.start()
         self.thread = Thread(target=self.loop, name='SyringeTwinEngine', daemon=True)
         self.thread.start()
 
@@ -26,6 +32,10 @@ class Service:
         self.closed.set()
         if self.thread:
             self.thread.join(timeout=2)
+        if self.bridge:
+            self.bridge.close()
+        if self.opcua:
+            self.opcua.close()
         with self.lock:
             self.sample()
 
@@ -40,6 +50,8 @@ class Service:
                     while credit >= s.config['dt']:
                         self.engine.tick()
                         credit -= s.config['dt']
+                    if self.bridge:
+                        self.bridge.exchange(s)
                     if now - sampled >= 0.5:
                         self.sample()
                         sampled = now
@@ -54,17 +66,26 @@ class Service:
         self.latest = self.engine.payload()
         self.latest['meta']['published_wall'] = wall_time()
         self.latest['meta']['database'] = self.historian.path.name
+        self.latest['meta']['plc'] = (self.bridge.status(self.engine.state) if self.bridge
+                                      else {'mode': 'internal'})
+        self.latest['meta']['opcua'] = self.opcua.status() if self.opcua else None
+        if self.opcua:
+            self.opcua.publish(self.latest)
         k = self.latest['kpi']
         st = self.latest['snapshot']['stations']['S2']
         self.history.append({'t': k['t'], 'throughput': k['th_ph'],
-                             'force_N': st['force'], 'oee_pct': k['oee']*100 if k['oee'] is not None else None})
+                             'force_N': st['force'], 'oee_pct': k['oee']*100 if k['oee'] is not None else None,
+                             'oee_win_pct': k['oee_win']['oee']*100 if k['oee_win']['oee'] is not None else None})
         self.historian.write(self.engine.state, self.latest)
 
     def command(self, cmd, args, user):
         with self.lock:
             if self.last_error:
                 raise ValueError('Engine halted: ' + self.last_error)
-            result = self.engine.command(cmd,args,user)
+            if self.bridge:
+                result = self.bridge.command(self.engine.state, cmd, args, user)
+            else:
+                result = self.engine.command(cmd,args,user)
             # Refresh states immediately for the operator's response.
             from .control import scan
             if not self.engine.state.run:

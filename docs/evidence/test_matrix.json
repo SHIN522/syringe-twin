@@ -1,0 +1,397 @@
+{
+  "generated": "2026-10-07T00:20:19+05:30",
+  "rows": [
+    {
+      "id": "T01",
+      "area": "Start",
+      "title": "Start from idle loads the first part",
+      "expected": "run = true; first serial loaded within 5 sim-s; IN RUNNING",
+      "actual": "run = True; SYR-B07-000001 loaded after 0.2 sim-s; IN RUNNING",
+      "result": "PASS"
+    },
+    {
+      "id": "T02",
+      "area": "Stop",
+      "title": "Stop freezes production and keeps progress",
+      "expected": "All stations STOPPED; pallets, buffers, transfers and counts unchanged for 30 sim-s",
+      "actual": "all STOPPED = True; state unchanged over 30 sim-s = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T03",
+      "area": "Stop",
+      "title": "Restart after Stop resumes from the same point",
+      "expected": "Production continues; no part lost or duplicated",
+      "actual": "loaded 6 → 19; in = good + reject + WIP (10 + 0 + 9)",
+      "result": "PASS"
+    },
+    {
+      "id": "T04",
+      "area": "E-stop",
+      "title": "E-stop stops every station and latches F001",
+      "expected": "run = false; F001 active; all stations STOPPED",
+      "actual": "run = False; active alarms ['F001']; stations {'STOPPED'}",
+      "result": "PASS"
+    },
+    {
+      "id": "T05",
+      "area": "E-stop",
+      "title": "Reset and Start are refused while E-stop is engaged",
+      "expected": "Reset leaves F001 latched; Start rejected",
+      "actual": "latched after Reset = True; Start → \"Release E-stop and reset its latch before Start.\"",
+      "result": "PASS"
+    },
+    {
+      "id": "T06",
+      "area": "E-stop",
+      "title": "Recovery order: release → Reset → Start",
+      "expected": "Start refused before Reset; running after Reset + Start",
+      "actual": "Start before Reset refused = True; after Reset + Start run = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T07",
+      "area": "F201",
+      "title": "Natural overload from tool wear",
+      "expected": "F201 when a press force exceeds 160 N (demo profile)",
+      "actual": "F201 at 869.2 sim-s; force 161.9 N on SYR-B07-000086; wear 0.86",
+      "result": "PASS"
+    },
+    {
+      "id": "T08",
+      "area": "F201",
+      "title": "Injected overload is traceable as injected",
+      "expected": "F201 latched; part event tagged injected = true",
+      "actual": "S2 fault F201; SYR-B07-000014 injected tag = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T09",
+      "area": "Fault propagation",
+      "title": "F201 is local: the line keeps running",
+      "expected": "run = true after F201; S2 FAULT; tower light RED",
+      "actual": "run = True; S2 FAULT; lamp RED",
+      "result": "PASS"
+    },
+    {
+      "id": "T10",
+      "area": "Fault propagation",
+      "title": "Upstream blocks and downstream starves",
+      "expected": "S1 BLOCKED within 30 sim-s; S3 STARVED within 25 sim-s; IN BLOCKED",
+      "actual": "after the trip: S1 BLOCKED at 4.1 sim-s, S3 STARVED at 5.0 sim-s, IN BLOCKED at 0.0 sim-s",
+      "result": "PASS"
+    },
+    {
+      "id": "T11",
+      "area": "Fault propagation",
+      "title": "Throughput drops while S2 is down",
+      "expected": "No good exit once the line has drained; downtime accumulates",
+      "actual": "good units 54 → 54 over 180 sim-s; S2 unplanned downtime 300 s",
+      "result": "PASS"
+    },
+    {
+      "id": "T12",
+      "area": "Reset/recovery",
+      "title": "Reset before repair is refused",
+      "expected": "F201 stays latched",
+      "actual": "S2 fault after Reset = F201; \"F201 remains latched: repair must finish before reset.\"",
+      "result": "PASS"
+    },
+    {
+      "id": "T13",
+      "area": "Reset/recovery",
+      "title": "Repair (90 sim-s) then Reset resumes S2 at RETRACT",
+      "expected": "tool_ok after 90 s, wear = 0; S2 resumes at RETRACT; line produces again",
+      "actual": "repair took 90.0 sim-s, wear after repair 0.000; resumed at RETRACT; good 54 → 71 in 200 sim-s",
+      "result": "PASS"
+    },
+    {
+      "id": "T14",
+      "area": "Reset/recovery",
+      "title": "Affected part is rejected R2 and keeps its trace",
+      "expected": "Part exits as FAIL with R2; overload event in its history",
+      "actual": "SYR-B07-000086: FAIL ['R2', 'R3']; overload event in trace = True; 42 events",
+      "result": "PASS"
+    },
+    {
+      "id": "T15",
+      "area": "Inspection",
+      "title": "Every decision matches its measurements",
+      "expected": "R1–R5 assigned exactly when a limit is violated; PASS parts are inside every limit",
+      "actual": "141 inspection decisions checked against raw measurements; 0 mismatches",
+      "result": "PASS"
+    },
+    {
+      "id": "T16",
+      "area": "Inspection",
+      "title": "Force out of window raises leak failures",
+      "expected": "Mean leak rate of out-of-window parts > 5 Pa/s; in-window ≈ 2 Pa/s",
+      "actual": "out-of-window mean leak 8.09 Pa/s (n = 85); in-window 2.01 Pa/s (n = 56)",
+      "result": "PASS"
+    },
+    {
+      "id": "T17",
+      "area": "Inspection",
+      "title": "Rejected parts are diverted at S4, never packed",
+      "expected": "Every FAIL part leaves at S4 (diverted); every PASS part is unloaded at OUT",
+      "actual": "141 completed parts checked; 0 routed incorrectly",
+      "result": "PASS"
+    },
+    {
+      "id": "T18",
+      "area": "Counting",
+      "title": "Part conservation on every tick",
+      "expected": "in = good + reject + WIP on each of 36 000 ticks (1 sim-hour)",
+      "actual": "max imbalance 0 required, measured 0; final in 148 = 56 + 85 + 7",
+      "result": "PASS"
+    },
+    {
+      "id": "T19",
+      "area": "Counting",
+      "title": "Ten unique pallets are always accounted for",
+      "expected": "Pallet check true on every tick; WIP ≤ 10",
+      "actual": "pallet check failures 0; max WIP 10",
+      "result": "PASS"
+    },
+    {
+      "id": "T20",
+      "area": "Counting",
+      "title": "Boxes of ten",
+      "expected": "boxes = good // 10 throughout the run",
+      "actual": "3600 checks; good 356 → boxes 35; mismatches 0",
+      "result": "PASS"
+    },
+    {
+      "id": "T21",
+      "area": "Material flow",
+      "title": "FIFO: parts finish in the order they were loaded",
+      "expected": "Completion order equals serial order",
+      "actual": "141 completions; in serial order = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T22",
+      "area": "Material flow",
+      "title": "Empty hopper starves IN; refill arrives after 30 sim-s",
+      "expected": "No load while empty; IN STARVED (material empty); production resumes after refill",
+      "actual": "loads while empty: 0; production resumed 30.2 sim-s after emptying",
+      "result": "PASS"
+    },
+    {
+      "id": "T23",
+      "area": "Material flow",
+      "title": "Low stock raises a warning and an automatic refill",
+      "expected": "W001 below 30 barrels; hopper back to 300 after 30 sim-s",
+      "actual": "W001 after 3.4 sim-s; hopper refilled to 300 after 30.0 sim-s",
+      "result": "PASS"
+    },
+    {
+      "id": "T24",
+      "area": "Material flow",
+      "title": "Planned tool change waits for the cycle boundary",
+      "expected": "20 sim-s planned downtime; no unplanned downtime; wear reset",
+      "actual": "planned 20.0 s; unplanned 0.0 s; wear after 0.008",
+      "result": "PASS"
+    },
+    {
+      "id": "T25",
+      "area": "Validation",
+      "title": "Design rate with wear and noise off",
+      "expected": "360 good units/h ± 5 % after a 300 sim-s warm-up",
+      "actual": "360 good units in 3600 sim-s (+0.0 %)",
+      "result": "PASS"
+    },
+    {
+      "id": "T26",
+      "area": "Validation",
+      "title": "Little's Law on the same window",
+      "expected": "|WIP − λ·W| / WIP < 10 %",
+      "actual": "WIP 8.99; λ 360/h; W 89.9 s; error 0.00%",
+      "result": "PASS"
+    },
+    {
+      "id": "T27",
+      "area": "Validation",
+      "title": "Determinism: same seed, same result",
+      "expected": "Identical counts and last force after 1000 sim-s",
+      "actual": "run A {'in': 105, 'good': 56, 'reject': 40}; run B {'in': 105, 'good': 56, 'reject': 40}; identical = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T28",
+      "area": "What-if",
+      "title": "The live twin is never modified",
+      "expected": "Live state identical before and after a what-if run",
+      "actual": "fingerprint unchanged = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T29",
+      "area": "What-if",
+      "title": "\"Keep running\" forecasts the live line",
+      "expected": "Forecast next-F201 time equals the live outcome (± 1 tick)",
+      "actual": "forecast 229.2 sim-s; live 229.2 sim-s",
+      "result": "PASS"
+    },
+    {
+      "id": "T30",
+      "area": "What-if",
+      "title": "Maintenance decision",
+      "expected": "Condition-based changes recommended; fewer F201 and rejects in 5/5 seeds",
+      "actual": "good/h: keep 217, change now 234, condition-based 337; F201 2.0 → 0.0; wins 5/5",
+      "result": "PASS"
+    },
+    {
+      "id": "T31",
+      "area": "What-if",
+      "title": "Speeding up a non-bottleneck gives nothing",
+      "expected": "S1 cure 3 → 2 s: < 2 % change; keep current recommended",
+      "actual": "good 336 → 336 (+0.0%); bottleneck S2; recommendation: keep",
+      "result": "PASS"
+    },
+    {
+      "id": "T32",
+      "area": "What-if",
+      "title": "Speeding up the bottleneck moves it",
+      "expected": "S2 insert 3 → 0.5 s: > 10 % gain; design bottleneck moves S2 → S1",
+      "actual": "good 336 → 429 (+27.7%); design capacity 360 → 450/h, bottleneck S2 → S1",
+      "result": "PASS"
+    },
+    {
+      "id": "T33",
+      "area": "PLC mode",
+      "title": "Start/Stop through the PLC run permissive",
+      "expected": "Twin runs only while M_SYS_RUN = 1",
+      "actual": "before Start run = False; after Start True; after Stop stopped = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T34",
+      "area": "PLC mode",
+      "title": "PLC detects the overload and gates recovery",
+      "expected": "F201 coil on force > 160 N; Reset refused until repair; resume after Reset",
+      "actual": "F201 at force 161.1 N; held after early Reset = True; cleared after repair + Reset = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T35",
+      "area": "PLC mode",
+      "title": "Lost PLC link stops the line safely",
+      "expected": "F002 within ~1 s; line stopped; Reset needed after the link returns",
+      "actual": "stopped with F002 = True; Start refused before Reset = True; running after Reset + Start = True",
+      "result": "PASS"
+    },
+    {
+      "id": "T36",
+      "area": "PLC mode",
+      "title": "PLC counters agree with the twin",
+      "expected": "C_IN, C_GOOD, C_REJECT match twin counts over 600 sim-s",
+      "actual": "PLC 64/48/7 vs twin 64/48/7; consistent = True",
+      "result": "PASS"
+    },
+    {
+      "id": "PLC-01",
+      "area": "OpenPLC Runtime",
+      "title": "Start pulse sets run permissive and green lamp",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-02",
+      "area": "OpenPLC Runtime",
+      "title": "Stop pulse drops run",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-03",
+      "area": "OpenPLC Runtime",
+      "title": "E-stop latches F001, red flashing, horn",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-04",
+      "area": "OpenPLC Runtime",
+      "title": "Reset ignored while E-stop open",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-05",
+      "area": "OpenPLC Runtime",
+      "title": "Release → Reset → Start recovers",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-06",
+      "area": "OpenPLC Runtime",
+      "title": "Force 145.0 N: no F201, verdict echoed",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-07",
+      "area": "OpenPLC Runtime",
+      "title": "Force 161.2 N: F201 set, line keeps running",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-08",
+      "area": "OpenPLC Runtime",
+      "title": "Reset before repair refused",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-09",
+      "area": "OpenPLC Runtime",
+      "title": "Repair (TOOL_OK 0→1) then Reset clears F201",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-10",
+      "area": "OpenPLC Runtime",
+      "title": "Counters and box of ten",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-11",
+      "area": "OpenPLC Runtime",
+      "title": "Frozen heartbeat trips F002 and drops run",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-12",
+      "area": "OpenPLC Runtime",
+      "title": "Heartbeat back, Reset, Start recovers",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    },
+    {
+      "id": "PLC-13",
+      "area": "OpenPLC Runtime",
+      "title": "Twin warning gives amber lamp",
+      "expected": "See PLC_SPEC.md §6",
+      "actual": "not yet run",
+      "result": "PENDING"
+    }
+  ]
+}

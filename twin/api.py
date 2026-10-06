@@ -1,16 +1,28 @@
 """HTTP adapter; snapshot keys and operator command shape follow brief section 8.
 
-Added read endpoints replace MQTT transport for the authorized Streamlit MVP.
+Dashboards poll /api/live over HTTP; /api/whatif runs the decision-support sandbox.
 """
 from contextlib import asynccontextmanager
 from copy import deepcopy
 from dataclasses import asdict
 import os
 from pathlib import Path
+from threading import Lock
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 from .service import Service
+from .whatif import run_whatif, scenarios
+from .plc_bridge import from_env
+from .model import load_config
+
+
+def opcua_from_env(value):
+    """SYRINGETWIN_OPCUA=1 (default endpoint) or an opc.tcp:// endpoint enables the server."""
+    if not value or value == '0':
+        return None
+    from .opcua_server import OpcUaServer, ENDPOINT
+    return OpcUaServer(value if value.startswith('opc.tcp://') else ENDPOINT)
 
 
 class Command(BaseModel):
@@ -19,15 +31,25 @@ class Command(BaseModel):
     user: str = Field(min_length=1, max_length=80)
 
 
+class WhatIf(BaseModel):
+    scenario: str
+    params: dict = Field(default_factory=dict)
+    horizon_s: int = 3600
+    replications: int = 1
+
+
 def create_app(service=None):
     @asynccontextmanager
     async def lifespan(app):
-        app.state.service = service or Service(os.getenv('SYRINGETWIN_DATA_DIR','data'))
+        app.state.service = service or Service(os.getenv('SYRINGETWIN_DATA_DIR','data'),
+                                               config=load_config(os.getenv('SYRINGETWIN_PROFILE') or None),
+                                               plc=from_env(os.getenv('SYRINGETWIN_PLC')),
+                                               opcua=opcua_from_env(os.getenv('SYRINGETWIN_OPCUA')))
         app.state.service.start()
         yield
         app.state.service.close()
 
-    app = FastAPI(title='SyringeTwin', version='0.2-browser', lifespan=lifespan)
+    app = FastAPI(title='SyringeTwin', version='1.0', lifespan=lifespan)
 
     @app.get('/api/health')
     def health():
@@ -91,6 +113,32 @@ def create_app(service=None):
     @app.get('/api/events')
     def events(limit: int = Query(50,ge=1,le=200)):
         return log('events',limit)
+
+    whatif_busy = Lock()
+
+    @app.get('/api/whatif/scenarios')
+    def whatif_scenarios():
+        srv = app.state.service
+        with srv.lock:
+            return scenarios(deepcopy(srv.engine.state.config))
+
+    @app.post('/api/whatif')
+    def whatif(payload: WhatIf):
+        srv = app.state.service
+        if not whatif_busy.acquire(blocking=False):
+            raise HTTPException(409, 'A what-if analysis is already running.')
+        try:
+            # Copy under the lock, simulate outside it: the live line keeps running.
+            with srv.lock:
+                if srv.last_error:
+                    raise HTTPException(409, 'Engine halted: ' + srv.last_error)
+                state = deepcopy(srv.engine.state)
+            return run_whatif(state, payload.scenario, payload.params,
+                              payload.horizon_s, payload.replications)
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        finally:
+            whatif_busy.release()
 
     web = Path(__file__).resolve().parents[1] / 'web'
     if web.is_dir():

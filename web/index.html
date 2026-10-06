@@ -26,6 +26,8 @@
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
   <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v6l4 2"/></symbol>
+  <symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="9" r="2"/><path d="M6 7v10m0-4c0-3 3-4 6-4h4"/></symbol>
+  <symbol id="i-plc" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h2m-2 4h2m-2 4h2m4-8h4m-4 4h4m-4 4h4"/></symbol>
   <symbol id="i-box" viewBox="0 0 24 24"><path d="m3 7 9-5 9 5v11l-9 5-9-5V7Zm0 0 9 5 9-5M12 12v11M7 4l10 5"/></symbol>
 </defs></svg>
 
@@ -39,13 +41,14 @@
     <button class="nav-button" data-page="alarms"><svg><use href="#i-bell"/></svg>Alarms &amp; audit<span id="nav-alarm-count" class="nav-count" hidden>0</span></button>
     <button class="nav-button" data-page="trace"><svg><use href="#i-trace"/></svg>Traceability</button>
     <button class="nav-button" data-page="maintenance"><svg><use href="#i-tool"/></svg>Maintenance</button>
+    <button class="nav-button" data-page="decide"><svg><use href="#i-branch"/></svg>Decision support</button>
   </nav>
   <div class="sidebar-model"><div class="model-icon"><svg><use href="#i-cell"/></svg></div><strong>One cell. Every part.</strong><p>Follow the process from material input to packed syringes.</p><div><span>Design rate</span><b>360 <small>units/h</small></b></div><div><span>Ideal cycle</span><b>10 <small>seconds</small></b></div><div><span>Pallet loop</span><b>10 <small>pallets</small></b></div></div>
   <div class="sidebar-footer"><span class="status-dot" id="side-dot"></span><div><strong id="side-engine">Connecting</strong><small id="side-subtitle">Preparing the simulation</small></div></div>
 </aside>
 
 <main>
-  <header class="topbar"><span class="breadcrumb">GROUP 07 <span>/</span> DIGITAL TWIN</span><div class="topbar-right"><span class="runtime-tag" id="engine-tag">Connecting</span><span class="topbar-divider"></span><span class="connection-label" id="connection-label"><span class="status-dot"></span>Waiting for engine</span></div></header>
+  <header class="topbar"><span class="breadcrumb">GROUP 07 <span>/</span> DIGITAL TWIN</span><div class="topbar-right"><span class="runtime-tag" id="engine-tag">Connecting</span><span class="runtime-tag control-tag" id="control-tag" hidden>Internal control</span><span class="runtime-tag profile-tag" id="profile-tag" hidden></span><span class="topbar-divider"></span><span class="connection-label" id="connection-label"><span class="status-dot"></span>Waiting for engine</span></div></header>
   <div class="main-content">
     <div class="page-heading"><div><div class="eyebrow">ASSEMBLY OPERATIONS</div><h1 id="page-title">Syringe assembly cell<span class="heading-dot">.</span></h1><p id="page-description">A live view of every station, pallet and production decision.</p></div><div class="line-state" id="line-state"><span class="status-dot"></span><div><b id="line-state-label">CONNECTING</b><span><svg><use href="#i-clock"/></svg><span id="sim-time">— sim-min</span><span class="state-separator">·</span><span id="state-speed">—×</span></span></div></div></div>
 
@@ -62,11 +65,12 @@
     <section class="page active" id="page-live" aria-label="Live cell">
       <div class="kpi-grid">
         <article class="kpi-card throughput-card"><div class="kpi-label">GOOD THROUGHPUT<svg><use href="#i-arrow"/></svg></div><div class="kpi-number"><span data-value="throughput">—</span><small>units/h</small></div><div class="kpi-subtitle">Rolling <span data-value="window">600</span> sim-seconds<span class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></div></article>
-        <article class="kpi-card"><div class="kpi-label">OVERALL EQUIPMENT EFFECTIVENESS</div><div class="kpi-number"><span data-value="oee">—</span><small>%</small></div><div class="kpi-subtitle"><span class="small-dot mint"></span>S2 bottleneck · run to date</div></article>
+        <article class="kpi-card"><div class="kpi-label">OVERALL EQUIPMENT EFFECTIVENESS</div><div class="kpi-number"><span data-value="oee-win">—</span><small>%</small></div><div class="kpi-subtitle"><span class="small-dot mint"></span>S2 · last 10 sim-min · run to date <span data-value="oee">—</span>%</div></article>
         <article class="kpi-card"><div class="kpi-label">FIRST-PASS QUALITY</div><div class="kpi-number"><span data-value="quality">—</span><small>%</small></div><div class="kpi-subtitle">Passed / inspected decisions</div></article>
         <article class="kpi-card"><div class="kpi-label">WORK IN PROGRESS</div><div class="kpi-number"><span data-value="wip">—</span><small>units</small></div><div class="kpi-subtitle"><span data-value="empty">—</span> empty pallets available</div></article>
       </div>
       <div class="production-strip"><div><span>LOADED</span><b data-value="loaded">—</b></div><div><span class="small-dot mint"></span><span>GOOD UNITS</span><b data-value="good">—</b></div><div><span class="small-dot red"></span><span>REJECTED</span><b data-value="reject">—</b></div><div><svg><use href="#i-box"/></svg><span>BOXES PACKED</span><b data-value="boxes">—</b></div><div class="conservation" id="conservation"><svg><use href="#i-check"/></svg>Conservation awaiting data</div></div>
+      <div id="plc-strip" class="plc-strip" hidden></div>
       <article class="panel process-panel"><div class="panel-heading"><div><span class="panel-kicker">THE PRODUCTION LOOP</span><h2><svg><use href="#i-cell"/></svg>Live process flow</h2></div><div class="process-heading-right"><span class="live-pill"><span class="status-dot"></span>LIVE MODEL</span><span>6 stations <span class="bullet">·</span> 2 s transfers</span></div></div><div class="process-scroll"><svg id="process-svg" viewBox="0 0 1350 350" role="img" aria-label="Live six-station assembly flow with buffers, moving pallets and the empty pallet return"></svg></div><div class="process-footer"><div class="legend"><span><i class="mint"></i>Processing</span><span><i class="amber"></i>Blocked / starved</span><span><i class="red"></i>Fault</span><span><i class="grey"></i>Stopped</span></div><span id="transfer-count">0 pallets in transit</span></div></article>
       <div class="station-inspector" id="station-inspector" hidden></div>
       <div class="bottom-grid"><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">PROCESS QUALITY</span><h2>S2 press force</h2></div><div class="chart-reading"><b data-value="force">—</b><span>N</span></div></div><div class="chart-legend"><span><i class="mint"></i>Press measurement</span><span><i class="amber"></i>Quality limit · 140 N</span><span><i class="red"></i>Overload · 160 N</span></div><div class="chart" id="live-force-chart"></div><div class="chart-footnote">Quality window 105–140 N. Each value is a sampled press measurement.</div></article><article class="panel alarm-panel"><div class="panel-heading compact"><div><span class="panel-kicker">ATTENTION REQUIRED</span><h2>Active alarms <span class="heading-count" id="alarm-count">0</span></h2></div><button class="text-button" data-navigate="alarms">View audit <svg><use href="#i-arrow"/></svg></button></div><div id="active-alarms" class="active-alarms"><div class="empty-state compact-empty"><span class="empty-check"><svg><use href="#i-check"/></svg></span><strong>Waiting for engine</strong><p>Alarm status will appear here.</p></div></div><div class="alarm-footer"><span>S2 downtime</span><b><span data-value="unplanned">—</span> s <small>unplanned</small><span class="bullet">·</span><span data-value="planned">—</span> s <small>planned</small></b></div></article></div>
@@ -75,7 +79,7 @@
 
     <section class="page" id="page-trends" aria-label="Performance trends">
       <div class="metric-trio"><article class="panel simple-metric"><span>AVAILABILITY</span><b><span data-value="availability">—</span><small>%</small></b><p>Available / planned run time</p></article><article class="panel simple-metric"><span>PERFORMANCE</span><b><span data-value="performance">—</span><small>%</small></b><p>Ideal cycle × S2 cycles / available time</p></article><article class="panel simple-metric"><span>QUALITY</span><b><span data-value="quality">—</span><small>%</small></b><p>Passed / inspected decisions</p></article></div>
-      <div class="trends-grid"><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">ROLLING 600 SIM-SECONDS</span><h2>Good throughput</h2></div><span class="unit-label">UNITS / H</span></div><div class="chart" id="throughput-chart"></div></article><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">S2 BOTTLENECK</span><h2>Overall equipment effectiveness</h2></div><span class="unit-label">PERCENT</span></div><div class="chart" id="oee-chart"></div></article></div>
+      <div class="trends-grid"><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">ROLLING 600 SIM-SECONDS</span><h2>Good throughput</h2></div><span class="unit-label">UNITS / H</span></div><div class="chart" id="throughput-chart"></div></article><article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">S2 BOTTLENECK · ROLLING 10 SIM-MIN</span><h2>Overall equipment effectiveness</h2></div><span class="unit-label">PERCENT</span></div><div class="chart" id="oee-chart"></div></article></div>
       <article class="panel chart-panel"><div class="panel-heading compact"><div><span class="panel-kicker">PRESS QUALITY</span><h2>Force measurement history</h2></div><span class="unit-label">NEWTONS</span></div><div class="chart" id="force-chart"></div><div class="chart-footnote">105–140 N quality window · Overload above 160 N</div></article>
       <div class="trends-grid"><article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">INSPECTION OUTCOMES</span><h2>Reject codes</h2></div><span class="muted">One unit may have multiple codes</span></div><div id="pareto" class="pareto"></div></article><article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">FLOW EFFICIENCY</span><h2>Cycle &amp; lead time</h2></div></div><div class="flow-metrics"><div><span>Line cycle · last 20 good-exit intervals</span><b><span data-value="line-cycle">—</span><small>s</small></b></div><div><span>Mean lead time · all completed units</span><b><span data-value="lead">—</span><small>s</small></b></div><div><span>Average work in progress · run to date</span><b><span data-value="wip-average">—</span><small>units</small></b></div></div></article></div>
       <div class="export-row"><p>Unmeasured values remain “—”. Throughput ramps up during warm-up.</p><button class="button" id="export-trends"><svg><use href="#i-download"/></svg>Export trends CSV</button></div>
@@ -98,7 +102,39 @@
       <div class="maintenance-guide"><svg><use href="#i-alert"/></svg><div><strong>F201 recovery sequence</strong><p>Keep the line running → Repair S2 → wait 90 sim-seconds → Reset alarms. The affected part retains its force trace and is rejected at inspection. Refills and maintenance timers advance while the line runs.</p></div></div>
       <article class="panel materials-panel"><div class="panel-heading compact"><div><span class="panel-kicker">30 SIM-SECOND REPLENISHMENT</span><h2>Material supplies</h2></div><span class="muted">Automatic low-stock refill enabled</span></div><div class="material-grid" id="maintenance-materials"></div></article>
     </section>
-    <footer class="main-footer"><span><span class="small-dot mint"></span>SyringeTwin <span class="bullet">·</span> Reconstructed dashboard MVP</span><span id="mode-footnote">Simulated process controls · No physical hardware connected</span></footer>
+    <section class="page" id="page-decide" aria-label="Decision support">
+      <ol class="loop-steps" id="loop-steps" aria-label="What-if loop">
+        <li data-step="0"><b>1</b>Live twin</li><li data-step="1"><b>2</b>Virtual copy</li><li data-step="2"><b>3</b>Change one decision</li><li data-step="3"><b>4</b>Accelerated run</li><li data-step="4"><b>5</b>Compare KPIs</li><li data-step="5"><b>6</b>Recommend</li>
+      </ol>
+      <div class="decide-grid">
+        <article class="panel decide-setup"><div class="panel-heading compact"><div><span class="panel-kicker">WHAT-IF SANDBOX</span><h2>Ask the twin</h2></div></div>
+          <div class="decide-body">
+            <div class="scenario-switch" role="tablist" aria-label="Scenario"><button class="scenario-tab active" role="tab" data-scenario="maintenance" aria-selected="true">Maintenance decision</button><button class="scenario-tab" role="tab" data-scenario="cycle_time" aria-selected="false">Process change</button></div>
+            <p class="scenario-question" id="scenario-question">Loading scenarios…</p>
+            <div class="cycle-controls" id="cycle-controls" hidden>
+              <label>PRESET<select id="cycle-preset"></select></label>
+              <label>STATION<select id="cycle-station"></select></label>
+              <label>STEP<select id="cycle-step"></select></label>
+              <label>NEW DURATION · S<input id="cycle-value" type="number" min="0.1" max="30" step="0.1"></label>
+            </div>
+            <div class="decide-options">
+              <label>HORIZON<select id="whatif-horizon"><option value="1800">30 sim-min</option><option value="3600" selected>1 sim-hour</option><option value="7200">2 sim-hours</option></select></label>
+              <label>RANDOM SEEDS<select id="whatif-reps"><option value="1">1 · twin's own future</option><option value="5">5 · robustness check</option></select></label>
+            </div>
+            <button id="run-whatif" class="button primary"><svg><use href="#i-branch"/></svg>Copy live twin &amp; run</button>
+            <p class="panel-note" id="whatif-note">The copy runs headless from the live state. The live line keeps running and is never changed.</p>
+          </div>
+        </article>
+        <article class="panel fork-panel"><div class="panel-heading compact"><div><span class="panel-kicker">VIRTUAL COPY</span><h2 id="fork-title">Starting point</h2></div></div><div class="fork-grid" id="fork-grid"></div></article>
+      </div>
+      <div id="whatif-result" hidden>
+        <div class="recommendation" id="recommendation"></div>
+        <article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">SAME START · SAME RANDOM EVENTS · ONE CHANGE</span><h2 id="compare-title">KPI comparison</h2></div><button class="button small" id="export-whatif"><svg><use href="#i-download"/></svg>Export JSON</button></div><div class="table-wrap compare-wrap" id="compare-table"></div></article>
+        <article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">WHERE THE TIME GOES</span><h2>Station activity per option</h2></div><span class="muted">Active = running + fault + maintenance; the busiest station is the bottleneck</span></div><div class="table-wrap" id="activity-table"></div></article>
+        <p class="panel-note assumptions" id="whatif-assumptions"></p>
+      </div>
+    </section>
+    <footer class="main-footer"><span><span class="small-dot mint"></span>SyringeTwin <span class="bullet">·</span> Digital twin v1.0</span><span id="mode-footnote">Simulated process controls · No physical hardware connected</span></footer>
   </div>
 </main>
 </body>

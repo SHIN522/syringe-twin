@@ -14,6 +14,7 @@ stations:
   S2:
     steps: {PRESS: 2.0, INSERT: 3.0, RETRACT: 1.5, RELEASE: 0.5, HANDLING: 1.0}
     force: {base: 120, wear_gain: 40, sigma: 4, win: [105, 140], trip: 160}
+    warn: {force: 135, cycles: 60, min_samples: 15}  # W202: 5-press mean force or trend (>= 15 samples)
     wear_per_cycle: 0.004
     initial_wear: 0.3
     mttr_s: 90.0
@@ -35,3 +36,4 @@ bins: {hopper: 300, plunger: 150, stopper: 150, cap: 200}
 low_levels: {hopper: 30, plunger: 15, stopper: 15, cap: 20}
 refill_delay_s: 30.0
 policy: {predictive_tool_change: false}
+control: {f201_source: twin}  # 'plc' in PLC mode

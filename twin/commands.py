@@ -2,13 +2,24 @@
 from .events import event, alarm, clear_alarm, trip_s2, wall_time
 
 
-def execute(s, cmd, args, user):
+COMMANDS = {'start','stop','estop','reset','repair','tool_change',
+            'inject_fault','refill','set_speed'}
+
+
+def validate(cmd, user):
     if not isinstance(user, str) or not user.strip():
         raise ValueError('Enter an operator name before sending a command.')
-    if cmd not in {'start','stop','estop','reset','repair','tool_change',
-                   'inject_fault','refill','set_speed'}:
+    if cmd not in COMMANDS:
         raise ValueError('Unsupported command: ' + cmd)
-    result = apply(s, cmd, args)
+
+
+def execute(s, cmd, args, user):
+    validate(cmd, user)
+    return audit(s, cmd, args, user, apply(s, cmd, args))
+
+
+def audit(s, cmd, args, user, result):
+    """Every operator command is logged, whether the twin or the PLC acts on it."""
     row = {'t': round(s.t, 3), 'wall': wall_time(), 'user': user.strip(),
            'cmd': cmd, 'args': args, 'result': result}
     s.commands.append(row)
@@ -39,10 +50,8 @@ def apply(s, cmd, args):
         return reset(s)
     if cmd == 'inject_fault':
         if args.get('code') != 'F201':
-            raise ValueError('This dashboard MVP implements F201 only.')
-        st = s.stations['S2']
-        if st.pallet is None or st.step_i < 0 or st.done or st.fault or st.maintenance:
-            raise ValueError('Inject F201 while S2 is processing a part.')
+            raise ValueError('Fault injection is available for F201 only.')
+        check_injectable(s)
         trip_s2(s, injected=True)
         return 'Injected F201 at S2; affected unit marked injected.'
     if cmd == 'set_speed':
@@ -67,13 +76,25 @@ def reset(s):
     clear_alarm(s, 'F001')
     st = s.stations['S2']
     if st.fault and st.tool_ok:
-        st.fault, st.step_i, st.elapsed, st.done = None, 2, 0.0, False
-        clear_alarm(s, 'F201')
-        event(s, 'maintenance', 'S2', action='reset_resume_retract')
+        resume_s2(s)
         return 'F201 cleared; S2 resumes at RETRACT.'
     if st.fault:
         return 'F201 remains latched: repair must finish before reset.'
     return 'Alarm reset complete. Start separately after E-stop recovery.'
+
+
+def check_injectable(s):
+    st = s.stations['S2']
+    if st.pallet is None or st.step_i < 0 or st.done or st.fault or st.maintenance:
+        raise ValueError('Inject F201 while S2 is processing a part.')
+
+
+def resume_s2(s):
+    """F201 cleared: S2 resumes at RETRACT; the affected unit flows on to inspection (D6)."""
+    st = s.stations['S2']
+    st.fault, st.step_i, st.elapsed, st.done = None, 2, 0.0, False
+    clear_alarm(s, 'F201')
+    event(s, 'maintenance', 'S2', action='reset_resume_retract')
 
 
 def maintenance(s, cmd, args):

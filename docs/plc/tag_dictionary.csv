@@ -1,0 +1,62 @@
+signal,direction,type,description,twin_source,openplc,modbus,gx_fallback,opcua_node,hmi_use
+CMD_START,twin->plc,INT(bool),Start request; 200 ms pulse,dashboard start command,%MW0,HR 1024,M0 / X1,,Start button
+CMD_STOP,twin->plc,INT(bool),Stop request; 200 ms pulse (physical PB is NC),dashboard stop command,%MW1,HR 1025,M1 / X2 (NC),,Stop button
+CMD_RESET,twin->plc,INT(bool),Alarm reset; 200 ms pulse,dashboard reset command,%MW2,HR 1026,M2 / X3,,Reset button
+I_ESTOP_OK,twin->plc,INT(bool),"E-stop chain healthy (1) / engaged (0), maintained",not state.estop_active,%MW3,HR 1027,X0 AND NOT M3,ns=2;s=Line1.Panel.EStopActive (inverted),E-stop button (latching)
+I_S2_TOOL_OK,twin->plc,INT(bool),S2 tool usable; 0 after F201 until repair completes,stations['S2'].tool_ok,%MW4,HR 1028,M210 (PLANT_SIM),ns=2;s=Line1.S2.ToolOK,Tool OK lamp
+AI_S2_FORCE,twin->plc,INT,Last S2 press force in N x 10,round(stations['S2'].force*10),%MW5,HR 1029,D100,ns=2;s=Line1.S2.Force (N),Force numeric + bar 105/140/160
+S2_PRESS_SEQ,twin->plc,INT,Press-sample sequence number (mod 32768),stations['S2'].press_samples (new field),%MW6,HR 1030,D110,,
+GOOD_SEQ,twin->plc,INT,Good-unit sequence number (mod 32768),counts['good'],%MW7,HR 1031,D111,ns=2;s=Line1.Counts.Good,
+REJECT_SEQ,twin->plc,INT,Rejected-unit sequence number (mod 32768),counts['reject'],%MW8,HR 1032,D112,ns=2;s=Line1.Counts.Reject,
+HEARTBEAT,twin->plc,INT,Incremented every bridge cycle (20 ms),bridge counter,%MW9,HR 1033,n/a,,
+TWIN_WARN,twin->plc,INT(bool),Any active WARN alarm (W001 W202 W210 W211 W310),active_alarms sev == WARN,%MW10,HR 1034,M202 (PLANT_SIM),ns=2;s=Line1.Alarms.AnyWarn,Warning banner
+ANY_BLOCKED,twin->plc,INT(bool),Any station BLOCKED,any station.state == BLOCKED,%MW11,HR 1035,M192 (PLANT_SIM),,
+S2_DONE,twin->plc,INT(bool),S2 sequence complete and waiting for release (SHOULD),S2 step_i past last step,%MW12,HR 1036,M32,,
+B3_ROOM,twin->plc,INT(bool),B3 has room for a pallet (occupied + reserved < capacity) (SHOULD),control.room(state 'B3'),%MW13,HR 1037,M63,,
+IN_SEQ,twin->plc,INT,Loaded-unit sequence number (mod 32768),counts['in'],%MW14,HR 1038,D113,ns=2;s=Line1.Counts.In,
+CMD_INJECT_F201,twin->plc,INT(bool),Operator fault-injection test; 200 ms pulse,dashboard inject_fault F201,%MW15,HR 1039,M5,,Inject F201 (test)
+ST_IN,twin->plc,INT,"IN state code (0 STOPPED,1 STARVED,2 RUNNING,3 BLOCKED,4 FAULT,5 MAINT)",stations['IN'].state,%MW20,HR 1044,D20,ns=2;s=Line1.Stations.IN.StateCode,Station lamp IN
+ST_S1,twin->plc,INT,S1 state code (same enum),stations['S1'].state,%MW21,HR 1045,D21,ns=2;s=Line1.Stations.S1.StateCode,Station lamp S1
+ST_S2,twin->plc,INT,S2 state code (same enum),stations['S2'].state,%MW22,HR 1046,D22,ns=2;s=Line1.Stations.S2.StateCode,Station lamp S2
+ST_S3,twin->plc,INT,S3 state code (same enum),stations['S3'].state,%MW23,HR 1047,D23,ns=2;s=Line1.Stations.S3.StateCode,Station lamp S3
+ST_S4,twin->plc,INT,S4 state code (same enum),stations['S4'].state,%MW24,HR 1048,D24,ns=2;s=Line1.Stations.S4.StateCode,Station lamp S4
+ST_OUT,twin->plc,INT,OUT state code (same enum),stations['OUT'].state,%MW25,HR 1049,D25,ns=2;s=Line1.Stations.OUT.StateCode,Station lamp OUT
+S2_WEAR_PM,twin->plc,INT,S2 tool wear in per-mille (display only),round(stations['S2'].wear*1000),%MW26,HR 1050,D26,ns=2;s=Line1.S2.Wear,Wear numeric
+S2_CYCLES_TO_FAULT,twin->plc,INT,Estimated cycles to overload; -1 when undefined (display only),kpi s2.cycles_to_fault,%MW27,HR 1051,D27,ns=2;s=Line1.S2.CyclesToFault,Cycles-to-overload numeric
+M_SYS_RUN,plc->twin,BOOL,Line run permissive (P1-R1),drives state.run,%QX0.0,coil 0,M10,ns=2;s=Line1.PLC.Run,Line state text
+Q_LAMP_GREEN,plc->twin,BOOL,Tower light green (P1-R6),,%QX0.1,coil 1,Y0,ns=2;s=Line1.PLC.LampGreen,Tower lamp
+Q_LAMP_AMBER,plc->twin,BOOL,Tower light amber (P1-R5),,%QX0.2,coil 2,Y1,ns=2;s=Line1.PLC.LampAmber,Tower lamp
+Q_LAMP_RED,plc->twin,BOOL,Tower light red; flashing (P1-R4),,%QX0.3,coil 3,Y2,ns=2;s=Line1.PLC.LampRed,Tower lamp
+Q_HORN,plc->twin,BOOL,Horn (P1-R4),,%QX0.4,coil 4,Y3,ns=2;s=Line1.PLC.Horn,Horn icon
+F201,plc->twin,BOOL,S2 press overload latched (P5-R1/R2; reset P8-R2),rising -> trip_s2; falling -> S2 resume at RETRACT,%QX0.5,coil 5,M201,ns=2;s=Line1.PLC.F201,F201 alarm banner
+F001,plc->twin,BOOL,E-stop latched (P1-R2),mirrors state.estop_latched,%QX0.6,coil 6,M100,ns=2;s=Line1.PLC.F001,E-stop alarm banner
+F002,plc->twin,BOOL,Twin-PLC link watchdog tripped (P8-R3),twin alarm F002; state.run = False,%QX0.7,coil 7,n/a,ns=2;s=Line1.PLC.F002,Link alarm banner
+M_ANY_FAULT,plc->twin,BOOL,F001 OR F201 OR F002 (P8-R5),,%QX1.0,coil 8,M190,ns=2;s=Line1.PLC.AnyFault,
+F201_INJECTED,plc->twin,BOOL,Current F201 came from an operator injection (P5-R2),trip_s2 injected flag,%QX1.1,coil 9,M205,ns=2;s=Line1.PLC.F201Injected,"""Injected"" tag on banner"
+S2_RELEASE_PERMIT,plc->twin,BOOL,S2 may release its pallet (P2-R1) (SHOULD),gates S2 release,%QX1.2,coil 10,Y12,,
+M_S2_REPAIRED,plc->twin,BOOL,Repair acknowledged; reset now allowed (P8-R1),,%QX1.3,coil 11,M211,ns=2;s=Line1.PLC.S2Repaired,"""Reset allowed"" lamp"
+S2_VERDICT_SEQ,plc->twin,INT,Echo of the last evaluated S2_PRESS_SEQ (P5-R3); INSERT permissive,S2 waits until equal to S2_PRESS_SEQ,%QW0,HR 0,D120,,
+PLC_HEARTBEAT,plc->twin,INT,Incremented every PLC scan,twin watchdog (1 s),%QW1,HR 1,n/a,ns=2;s=Line1.PLC.Heartbeat,
+C_IN,plc->twin,INT,Loaded units since link start (P9-R1),consistency check vs counts['in'],%QW2,HR 2,C0,ns=2;s=Line1.PLC.Counters.In,In counter
+C_GOOD,plc->twin,INT,Good units since link start (P9-R2),consistency check vs counts['good'],%QW3,HR 3,C1,ns=2;s=Line1.PLC.Counters.Good,Good counter
+C_REJECT,plc->twin,INT,Rejected units since link start (P9-R3),consistency check vs counts['reject'],%QW4,HR 4,C2,ns=2;s=Line1.PLC.Counters.Reject,Reject counter
+BOX_FILL,plc->twin,INT,Good units in the current box 0-9 (P9-R4),,%QW5,HR 5,C3,ns=2;s=Line1.PLC.Counters.BoxFill,Box fill bar
+BOXES_TOTAL,plc->twin,INT,Completed boxes since link start (P9-R5),,%QW6,HR 6,D121,ns=2;s=Line1.PLC.Counters.Boxes,Boxes counter
+SIM_TIME,twin only,DOUBLE,Simulation time (s),state.t,,,,ns=2;s=Line1.SimTime,
+SPEED,twin only,INT,Simulation speed multiplier,state.speed,,,,ns=2;s=Line1.Speed,
+LAMP,twin only,STRING,Twin tower-light state GREEN/AMBER/RED/OFF,snapshot lamp,,,,ns=2;s=Line1.Lamp,
+COUNT_WIP,twin only,INT,Units in process,counts['wip'],,,,ns=2;s=Line1.Counts.WIP,
+COUNT_BOXES,twin only,INT,Cumulative boxes (MES; separate from PLC C_BOX by design D6),counts['boxes'],,,,ns=2;s=Line1.Counts.Boxes,
+STATION_STATE,twin only,STRING,"Per station <St> in IN,S1,S2,S3,S4,OUT",stations[<St>].state,,,,ns=2;s=Line1.Stations.<St>.State,
+STATION_STEP,twin only,STRING,Current SFC step per station,snapshot stations[<St>].step,,,,ns=2;s=Line1.Stations.<St>.Step,
+STATION_PART,twin only,STRING,Serial on the station,snapshot stations[<St>].part,,,,ns=2;s=Line1.Stations.<St>.Part,
+STATION_CYCLES,twin only,INT,Completed cycles per station,stations[<St>].cycles,,,,ns=2;s=Line1.Stations.<St>.Cycles,
+S2_HEALTH,twin only,DOUBLE,1 - wear,kpi s2.health,,,,ns=2;s=Line1.S2.Health,
+KPI_THROUGHPUT,twin only,DOUBLE,Good units/h over trailing 600 sim-s,kpi th_ph,,,,ns=2;s=Line1.KPI.Throughput,
+KPI_LINE_CT,twin only,DOUBLE,Mean interval between good exits (s),kpi line_ct_s,,,,ns=2;s=Line1.KPI.LineCycleTime,
+KPI_LEAD,twin only,DOUBLE,Mean lead time of completed units (s),kpi lead_s,,,,ns=2;s=Line1.KPI.LeadTime,
+KPI_OEE,twin only,DOUBLE,"OEE at S2 (A x P x Q), with A, P, Q as sibling nodes",kpi oee / A / P / Q,,,,ns=2;s=Line1.KPI.OEE,
+KPI_DOWNTIME,twin only,DOUBLE,S2 unplanned / planned downtime (s),kpi down_s.S2,,,,ns=2;s=Line1.KPI.S2Unplanned_s / S2Planned_s,
+ALARMS_ACTIVE,twin only,STRING[],Active alarm codes,active_alarms,,,,ns=2;s=Line1.Alarms.Active,
+CONTROL_MODE,twin only,STRING,internal or plc,bridge,,,,ns=2;s=Line1.PLC.Mode,
+PLC_LINK_OK,twin only,BOOL,Bridge sees a live PLC heartbeat,bridge,,,,ns=2;s=Line1.PLC.LinkOK,Link lamp

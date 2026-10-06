@@ -1,6 +1,7 @@
 """Sequence control and transfer interlocks (brief sections 4, 5 and 11).
 
-Dashboard MVP: explicit SFC actions, not a certified PLC or full P1-P9 I/O scan.
+Station sequences run as SFC step actions. In PLC mode (docs/plc/PLC_SPEC.md)
+the run permissive, E-stop latch and F201 decision come from OpenPLC instead.
 """
 from .model import Part, Transfer, STATIONS
 from .events import event, alarm, active_alarms, trip_s2
@@ -94,7 +95,11 @@ def finished_step(s, name):
     steps = list(s.config['stations'][name]['steps'])
     step = steps[st.step_i]
     if name == 'S2' and step == 'PRESS':
-        if st.force > s.config['stations']['S2']['force']['trip']:
+        if s.config['control']['f201_source'] == 'plc':
+            # P5-R3: INSERT waits until the PLC has evaluated this force sample.
+            if s.plc.get('verdict_seq') != st.press_samples % 32768:
+                return
+        elif st.force > s.config['stations']['S2']['force']['trip']:
             trip_s2(s)
             st.done = False
             return
@@ -181,18 +186,24 @@ def material_policy(s):
 def prediction(s):
     import numpy as np
     values = s.stations['S2'].forces
-    if len(values) < 5:
+    # A straight-line fit through a handful of noisy samples is unreliable.
+    if len(values) < s.config['stations']['S2']['warn']['min_samples']:
         return None
     slope, intercept = np.polyfit(*zip(*values), 1)
     if slope <= 0:
         return None
-    return max(0.0, float((160 - intercept) / slope - values[-1][0]))
+    trip = s.config['stations']['S2']['force']['trip']
+    return max(0.0, float((trip - intercept) / slope - values[-1][0]))
 
 
 def maintenance_policy(s):
     st = s.stations['S2']
     cycles = prediction(s)
-    if (st.force is not None and st.force > 135) or (cycles is not None and cycles < 60):
+    warn = s.config['stations']['S2']['warn']
+    # Smoothed force (mean of the last 5 presses), so one noisy sample cannot raise W202.
+    recent = [force for _, force in list(st.forces)[-5:]]
+    smoothed = sum(recent) / len(recent) if len(recent) == 5 else None
+    if (smoothed is not None and smoothed > warn['force']) or (cycles is not None and cycles < warn['cycles']):
         alarm(s, 'W202', 'S2', 'Tool wear high; plan a tool change.', 'WARN')
     if s.config['policy']['predictive_tool_change'] and not st.fault:
         st.pending_tool_change = any(a['code'] == 'W202' for a in active_alarms(s))
