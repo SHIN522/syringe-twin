@@ -38,3 +38,15 @@ def test_http_rejects_invalid_speed_and_estop_restart(tmp_path):
     assert response.status_code==409
     client.post('/api/commands',json={'cmd':'estop','args':{'active':True},'user':'QA'})
     assert client.post('/api/commands',json={'cmd':'start','user':'QA'}).status_code==409
+
+
+def test_motion_endpoint_is_fresh_and_light(tmp_path):
+    client,srv=client_service(tmp_path)
+    client.post('/api/commands',json={'cmd':'start','user':'QA'})
+    with srv.lock:
+        srv.engine.advance(30)  # no sample() call: /api/live would still be stale
+    motion=client.get('/api/motion').json()
+    assert motion['snapshot']['t']==srv.engine.state.t
+    assert {'transfers','station_progress','pallets','empty_queue','parts','last_decision'} <= set(motion['meta'])
+    assert all(v['status'] in ('WIP','PASS','FAIL') for v in motion['meta']['parts'].values())
+    assert all(1<=pid<=10 for pid in motion['meta']['empty_queue'])

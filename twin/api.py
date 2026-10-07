@@ -67,6 +67,28 @@ def create_app(service=None):
             data['meta']['engine_error'] = srv.last_error
             return data
 
+    @app.get('/api/motion')
+    def motion():
+        """Fresh, light state for 3D viewers that poll faster than the 2 Hz live sample."""
+        srv = app.state.service
+        with srv.lock:
+            s = srv.engine.state
+            p = srv.engine.payload()
+            m, k = p['meta'], p['kpi']
+            on_pallets = [serial for serial in s.pallets.values() if serial]
+            decided = [part for part in s.parts.values() if part.status != 'WIP']
+            last = max(decided, key=lambda part: part.t_out or 0, default=None)
+            return {'snapshot': {key: p['snapshot'][key] for key in
+                                 ('t', 'run', 'speed', 'lamp', 'stations', 'buffers', 'counts')},
+                    'meta': {**{key: m[key] for key in ('transfers', 'station_progress', 'pallets',
+                                                        'estop_active', 'estop_latched')},
+                             'empty_queue': list(s.empty),
+                             'parts': {serial: {'status': s.parts[serial].status,
+                                                'codes': s.parts[serial].reject_codes} for serial in on_pallets},
+                             'last_decision': None if last is None else
+                                 {'serial': last.serial, 'status': last.status, 'codes': last.reject_codes}},
+                    'kpi': {'th_ph': k['th_ph'], 'Q': k['Q'], 'oee_win': k['oee_win']['oee']}}
+
     @app.get('/api/snapshot')
     def snapshot():
         return live()['snapshot']
