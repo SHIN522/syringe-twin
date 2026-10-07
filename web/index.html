@@ -8,6 +8,7 @@
   <title>SyringeTwin · Assembly cell</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./styles.css">
+  <script defer src="./ladder.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -41,6 +42,7 @@
     <button class="nav-button" data-page="alarms"><svg><use href="#i-bell"/></svg>Alarms &amp; audit<span id="nav-alarm-count" class="nav-count" hidden>0</span></button>
     <button class="nav-button" data-page="trace"><svg><use href="#i-trace"/></svg>Traceability</button>
     <button class="nav-button" data-page="maintenance"><svg><use href="#i-tool"/></svg>Maintenance</button>
+    <button class="nav-button" data-page="plc"><svg><use href="#i-plc"/></svg>PLC logic</button>
     <button class="nav-button" data-page="decide"><svg><use href="#i-branch"/></svg>Decision support</button>
   </nav>
   <div class="sidebar-model"><div class="model-icon"><svg><use href="#i-cell"/></svg></div><strong>One cell. Every part.</strong><p>Follow the process from material input to packed syringes.</p><div><span>Design rate</span><b>360 <small>units/h</small></b></div><div><span>Ideal cycle</span><b>10 <small>seconds</small></b></div><div><span>Pallet loop</span><b>10 <small>pallets</small></b></div></div>
@@ -101,6 +103,13 @@
       <div class="maintenance-grid"><article class="panel tool-panel"><div class="panel-heading compact"><div><span class="panel-kicker">S2 · PRESS &amp; INSERT</span><h2>Tool condition</h2></div><svg class="tool-icon"><use href="#i-tool"/></svg></div><div class="tool-health"><b><span data-value="health">—</span><small>%</small></b><span>Remaining tool health</span></div><div class="progress-track large"><span id="health-progress"></span></div><div class="condition-grid"><div><span>LAST PRESS FORCE</span><b><span data-value="force">—</span><small>N</small></b></div><div><span>CYCLES TO OVERLOAD</span><b data-value="cycles-to-fault">—</b></div><div><span>MAINTENANCE REMAINING</span><b><span data-value="maintenance-time">—</span><small>sim-s</small></b></div></div><p class="panel-note">Prediction fits the latest 30 press samples. “—” means there is insufficient evidence or no rising trend.</p></article><article class="panel maintenance-actions"><div class="panel-heading compact"><div><span class="panel-kicker">MAINTENANCE ACTIONS</span><h2>Keep the cell moving</h2></div></div><button class="action-row" data-command="tool_change" data-args='{"station":"S2"}'><span class="action-icon"><svg><use href="#i-tool"/></svg></span><span><b>Schedule tool change</b><small>Next S2 WAIT boundary · 20 sim-s</small></span><svg><use href="#i-arrow"/></svg></button><button class="action-row" data-command="repair" data-args='{"station":"S2"}'><span class="action-icon"><svg><use href="#i-reset"/></svg></span><span><b>Repair S2</b><small>Fault recovery · 90 sim-s, then Reset</small></span><svg><use href="#i-arrow"/></svg></button><button class="action-row fault-action" data-command="inject_fault" data-args='{"code":"F201"}'><span class="action-icon"><svg><use href="#i-alert"/></svg></span><span><b>Inject F201 overload</b><small>While S2 is processing a part</small></span><svg><use href="#i-arrow"/></svg></button><div id="maintenance-status" class="maintenance-status">Waiting for the engine.</div></article></div>
       <div class="maintenance-guide"><svg><use href="#i-alert"/></svg><div><strong>F201 recovery sequence</strong><p>Keep the line running → Repair S2 → wait 90 sim-seconds → Reset alarms. The affected part retains its force trace and is rejected at inspection. Refills and maintenance timers advance while the line runs.</p></div></div>
       <article class="panel materials-panel"><div class="panel-heading compact"><div><span class="panel-kicker">30 SIM-SECOND REPLENISHMENT</span><h2>Material supplies</h2></div><span class="muted">Automatic low-stock refill enabled</span></div><div class="material-grid" id="maintenance-materials"></div></article>
+    </section>
+    <section class="page" id="page-plc" aria-label="PLC logic">
+      <div class="plc-source" id="plc-source"></div>
+      <div class="plc-grid">
+        <article class="panel"><div class="panel-heading compact"><div><span class="panel-kicker">LADDER = STRUCTURED TEXT · plc/openplc/syringetwin.st</span><h2>Control logic, live</h2></div><span class="muted">Green = power flowing · |P| = rising edge · (S)/(R) = latch set/reset</span></div><div class="ladder" id="ladder"></div></article>
+        <article class="panel plc-io"><div class="panel-heading compact"><div><span class="panel-kicker">MODBUS TCP REGISTER MAP</span><h2>PLC I/O</h2></div></div><div class="table-wrap" id="plc-io"></div><p class="panel-note">Full map: docs/plc/tag_dictionary.csv. The twin writes %MW registers; the PLC answers with %QX coils and %QW registers every 20 ms.</p></article>
+      </div>
     </section>
     <section class="page" id="page-decide" aria-label="Decision support">
       <ol class="loop-steps" id="loop-steps" aria-label="What-if loop">

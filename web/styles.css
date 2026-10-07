@@ -59,3 +59,19 @@
 @media(max-width:740px){.loop-steps{grid-template-columns:repeat(2,minmax(0,1fr))}.loop-steps li{font-size:9px;padding:9px}.decide-body{padding:0 16px 6px}.fork-grid{padding:0 16px 18px}.decide-options{grid-template-columns:1fr}.recommendation{padding:16px}.recommendation h3{font-size:14px}}
 .plc-lamps i.on.r{animation:plc-blink 1s steps(2,jump-none) infinite}@keyframes plc-blink{50%{opacity:.25}}
 .profile-tag{background:#fbf3df;color:#9a7a2c}
+/* PLC logic page */
+.plc-source{display:flex;gap:14px;align-items:flex-start;padding:15px 18px;border-radius:9px;margin-bottom:20px;border:1px solid #d6e3ef;background:#f5f9fd;color:#36597a;font-size:10.5px;line-height:1.6}
+.plc-source.live{border-color:#bfe1cb;background:#eef8f1;color:#2f6b45}.plc-source.down{border-color:#ecc7bb;background:#fff4ef;color:#a4543e}
+.plc-source strong{display:block;font-size:12px;margin-bottom:2px}.plc-source svg{width:26px;height:26px;margin-top:2px}.plc-source code{background:#fff;padding:1px 5px;border-radius:3px}
+.plc-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:20px;align-items:start}
+.ladder{padding:0 18px 18px}.ladder-group{font-size:10px;letter-spacing:1px;color:#7d917f;margin:18px 0 8px;font-weight:700;text-transform:uppercase}
+.ladder-rung{border:1px solid #e4eae2;border-radius:8px;margin-bottom:10px;background:#fcfdfb;overflow:hidden}.ladder-rung.energised{border-color:#b9dfc6;background:#f6fcf8}
+.ladder-head{display:flex;gap:10px;align-items:baseline;padding:8px 12px;border-bottom:1px solid #eef2ec;font-size:10.5px;color:#56685b}
+.ladder-head b{color:#2f4a38;font-size:11px;min-width:52px}.ladder-head em{margin-left:auto;font-style:normal;font-size:9px;letter-spacing:.6px;color:#a3ae9f}
+.ladder-rung.energised .ladder-head em{color:#22a35a;font-weight:700}
+.ladder-body{display:grid;grid-template-columns:minmax(0,1fr) minmax(200px,270px);align-items:center}
+.ladder-svg{overflow-x:auto;padding:4px 6px}.ladder-svg svg{display:block;max-width:none;font-family:var(--font)}
+.ladder-st{margin:0;height:100%;padding:10px 12px;background:#f3f6f2;border-left:1px solid #e4eae2;font:10px/1.55 Consolas,'Cascadia Mono',monospace;color:#2f4a38;white-space:pre-wrap}
+.ladder-st span{display:block;font:600 8px/1.4 var(--font);letter-spacing:.8px;color:#8a9a8c;text-transform:uppercase;margin-bottom:4px}
+.io-bit{display:inline-block;min-width:18px;text-align:center;border-radius:3px;background:#eef1ed;color:#8a9a8c;font-weight:700}.io-bit.on{background:#22a35a;color:#fff}
+@media(max-width:1200px){.plc-grid{grid-template-columns:1fr}.ladder-body{grid-template-columns:1fr}.ladder-st{border-left:0;border-top:1px solid #e4eae2}}

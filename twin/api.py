@@ -79,12 +79,14 @@ def create_app(service=None):
             decided = [part for part in s.parts.values() if part.status != 'WIP']
             last = max(decided, key=lambda part: part.t_out or 0, default=None)
             return {'snapshot': {key: p['snapshot'][key] for key in
-                                 ('t', 'run', 'speed', 'lamp', 'stations', 'buffers', 'counts')},
+                                 ('t', 'run', 'speed', 'lamp', 'stations', 'buffers', 'counts', 'alarms')},
                     'meta': {**{key: m[key] for key in ('transfers', 'station_progress', 'pallets',
                                                         'estop_active', 'estop_latched')},
                              'empty_queue': list(s.empty),
                              'parts': {serial: {'status': s.parts[serial].status,
                                                 'codes': s.parts[serial].reject_codes} for serial in on_pallets},
+                             'plc': srv.bridge.status(s) if srv.bridge else {'mode': 'internal'},
+                             'tool_ok': m['tool_ok'],
                              'last_decision': None if last is None else
                                  {'serial': last.serial, 'status': last.status, 'codes': last.reject_codes}},
                     'kpi': {'th_ph': k['th_ph'], 'Q': k['Q'], 'oee_win': k['oee_win']['oee']}}

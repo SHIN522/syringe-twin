@@ -205,6 +205,18 @@ class View:
         self.btn_stop = self.cyl([0.07, 0.07, 0.03], [px + 0.1, 0.29, 0.85], DIM, 'Btn_Stop', axis='y')
         self.btn_estop = self.cyl([0.12, 0.12, 0.05], [px, 0.28, 0.65], [0.55, 0.08, 0.06], 'Btn_EStop', axis='y')
         self.box([0.18, 0.02, 0.18], [px, 0.30, 0.65], YELLOW, 'EStopPlate')
+        # PLC cabinet: LEDs show the controller's own coils (OpenPLC over Modbus in PLC mode)
+        cx = -2.25
+        self.box([0.55, 0.32, 1.50], [cx, 0.45, 0.75], [0.62, 0.65, 0.68], 'PLC_Cabinet')
+        self.box([0.47, 0.02, 0.50], [cx, 0.285, 1.05], [0.20, 0.22, 0.25], 'PLC_Rack')
+        for i in range(5):  # I/O modules on the DIN rail
+            self.box([0.07, 0.025, 0.30], [cx - 0.18 + 0.09 * i, 0.272, 1.05], [0.12, 0.30, 0.55] if i == 0 else [0.32, 0.34, 0.37], 'PLC_Module')
+        self.label('OPENPLC', [cx, 0.285, 1.42], height=0.07)
+        self.plc_led = {name: self.cyl([0.06, 0.06, 0.03], [cx - 0.15 + 0.15 * i, 0.272, 0.70], DIM, f'PLC_LED_{name}', axis='y')
+                        for i, name in enumerate(('RUN', 'FAULT', 'LINK'))}
+        for i, name in enumerate(('RUN', 'FAULT', 'LINK')):
+            self.label(name, [cx - 0.15 + 0.15 * i, 0.285, 0.60], height=0.035)
+        self.plc_label = None
         pole = [11.95, 0.55]
         self.cyl([0.05, 0.05, 1.5], [*pole, 0.75], LEG, 'TowerPole')
         self.tower = {c: self.cyl([0.16, 0.16, 0.13], [*pole, 1.57 + 0.14 * i], DIM, f'Tower_{c}')
@@ -362,6 +374,17 @@ def frame(view, data, elapsed, dt):
     view.color(view.btn_start, [0.1, 0.95, 0.3] if s['run'] else DIM)
     view.color(view.btn_stop, [1.0, 0.2, 0.15] if not s['run'] else DIM)
     view.color(view.btn_estop, [1.0, 0.08, 0.05] if m.get('estop_latched') and blink else [0.55, 0.08, 0.06])
+    # PLC cabinet LEDs: real PLC coils in PLC mode, the twin's equivalent state otherwise
+    plc = m.get('plc') or {'mode': 'internal'}
+    if plc.get('mode') == 'plc':
+        coils = plc.get('coils') or {}
+        alive = plc.get('link_ok') and not plc.get('link_fault')
+        run, fault, link = alive and coils.get('M_SYS_RUN'), coils.get('M_ANY_FAULT') or not alive, alive
+    else:
+        run, fault, link = s['run'], any(a['code'] in ('F001', 'F201') for a in s.get('alarms', [])), False
+    view.color(view.plc_led['RUN'], [0.1, 0.95, 0.3] if run else DIM)
+    view.color(view.plc_led['FAULT'], [1.0, 0.12, 0.08] if fault and blink else DIM)
+    view.color(view.plc_led['LINK'], [0.2, 0.55, 1.0] if link and blink else DIM)
     # S2 press ram: down during PRESS, held during INSERT, up during RETRACT
     frac = step_fraction(data, 'S2', elapsed)
     drop = {'PRESS': frac, 'INSERT': 1.0, 'RETRACT': 1 - frac}.get(s['stations']['S2']['step'], 0.0) * 0.28

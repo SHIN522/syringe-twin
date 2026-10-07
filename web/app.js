@@ -12,6 +12,7 @@
     alarms:['Alarms & audit','Every alarm, operator action and process event in this run.'],
     trace:['Part traceability','Follow a serial from material input to its inspection outcome.'],
     maintenance:['Cell maintenance','Manage the press tool, recover faults and replenish material.'],
+    plc:['PLC logic','The supervisory logic of the cell as ladder rungs, side by side with the Structured Text it is compiled from.'],
     decide:['Decision support','Copy the live twin, change one decision, run it forward and compare before acting.']
   };
   let currentPage = pages[location.hash.slice(1)] ? location.hash.slice(1) : 'live';
@@ -235,6 +236,23 @@
     renderControl(m.plc);
     $('profile-tag').hidden = !m.profile; $('profile-tag').textContent = m.profile || '';
     if (currentPage === 'decide' && !whatifResult) renderFork(liveFork(),'Live twin now');
+    if (currentPage === 'plc') renderPlc(latest);
+  }
+
+  const PLC_IO = [
+    ['I_ESTOP_OK','%MW3','in'],['I_S2_TOOL_OK','%MW4','in'],['AI_S2_FORCE','%MW5','in','N × 10'],['TWIN_WARN','%MW10','in'],['ANY_BLOCKED','%MW11','in'],
+    ['M_SYS_RUN','%QX0.0','out'],['Q_LAMP_GREEN','%QX0.1','out'],['Q_LAMP_AMBER','%QX0.2','out'],['Q_LAMP_RED','%QX0.3','out'],['Q_HORN','%QX0.4','out'],
+    ['F201','%QX0.5','out'],['F001','%QX0.6','out'],['F002','%QX0.7','out'],['M_ANY_FAULT','%QX1.0','out'],['M_S2_REPAIRED','%QX1.3','out'],
+    ['C_IN','%QW2','out'],['C_GOOD','%QW3','out'],['C_REJECT','%QW4','out'],['BOX_FILL','%QW5','out'],['BOXES_TOTAL','%QW6','out']];
+  function renderPlc(data) {
+    if (!window.Ladder || !data) return;
+    const v = window.Ladder.render(data,$('ladder')), plc = data.meta.plc || {};
+    $('plc-source').className = `plc-source ${v.source === 'plc' ? (plc.link_ok && !plc.link_fault ? 'live' : 'down') : 'internal'}`;
+    $('plc-source').innerHTML = v.source === 'plc'
+      ? `${icon('plc')}<div><strong>${plc.link_ok && !plc.link_fault ? 'Live from OpenPLC Runtime' : 'OpenPLC link lost'} · ${esc(plc.endpoint)}</strong><span>Every value below is read from the PLC over Modbus TCP${plc.latency_ms != null ? ` (${fmt(plc.latency_ms)} ms round trip)` : ''}. The PLC decides run, E-stop and F201; the twin obeys.</span></div>`
+      : `${icon('plc')}<div><strong>Internal control mode</strong><span>The twin is applying the same logic itself; the values shown are its equivalent state. Start with <code>launch.py --plc HOST</code> to drive this page from OpenPLC.</span></div>`;
+    $('plc-io').innerHTML = table([['TAG',(r) => `<strong>${esc(r[0])}</strong>`],['ADDRESS',(r) => esc(r[1])],['DIR',(r) => r[2] === 'in' ? 'twin → PLC' : 'PLC → twin'],
+      ['VALUE',(r) => { const x = v[r[0]]; return typeof x === 'boolean' ? `<span class="io-bit ${x ? 'on' : ''}">${x ? '1' : '0'}</span>` : esc(x ?? '—'); }]],PLC_IO);
   }
 
   function renderControl(plc) {

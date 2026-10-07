@@ -19,6 +19,9 @@ COILS = ('M_SYS_RUN', 'Q_LAMP_GREEN', 'Q_LAMP_AMBER', 'Q_LAMP_RED', 'Q_HORN', 'F
          'F002', 'M_ANY_FAULT', 'F201_INJECTED', 'S2_RELEASE_PERMIT', 'M_S2_REPAIRED')
 REGISTERS = ('S2_VERDICT_SEQ', 'PLC_HEARTBEAT', 'C_IN', 'C_GOOD', 'C_REJECT', 'BOX_FILL', 'BOXES_TOTAL')
 PULSES = {'CMD_START': 0, 'CMD_STOP': 1, 'CMD_RESET': 2, 'CMD_INJECT_F201': 15}
+INPUTS = ('CMD_START', 'CMD_STOP', 'CMD_RESET', 'I_ESTOP_OK', 'I_S2_TOOL_OK', 'AI_S2_FORCE', 'S2_PRESS_SEQ',
+          'GOOD_SEQ', 'REJECT_SEQ', 'HEARTBEAT', 'TWIN_WARN', 'ANY_BLOCKED', 'S2_DONE', 'B3_ROOM', 'IN_SEQ',
+          'CMD_INJECT_F201')  # %MW0..%MW15, as written to the PLC
 
 
 def word(value):
@@ -35,6 +38,7 @@ class PlcBridge:
         self.pulses = {}
         self.coils = dict.fromkeys(COILS, False)
         self.registers = dict.fromkeys(REGISTERS, 0)
+        self.inputs = dict.fromkeys(INPUTS, 0)
         self.heartbeat = 0
         self.link_ok = False
         self.link_fault = False
@@ -79,6 +83,7 @@ class PlcBridge:
             values[20 + n] = STATE_CODES[s.stations[name].state]
         values[26] = round(st2.wear * 1000)
         values[27] = word(-1 if cycles is None else min(32767, round(cycles)))
+        self.inputs = dict(zip(INPUTS, values))
         return values
 
     def exchange(self, s):
@@ -198,7 +203,8 @@ class PlcBridge:
                              for p, t in (('C_IN', 'in'), ('C_GOOD', 'good'), ('C_REJECT', 'reject')))
         return {'mode': 'plc', 'endpoint': f'{self.host}:{self.port}', 'link_ok': self.link_ok,
                 'link_fault': self.link_fault, 'error': self.error, 'latency_ms': self.latency_ms,
-                'coils': dict(self.coils), 'counters': counters, 'counters_consistent': consistent}
+                'coils': dict(self.coils), 'counters': counters, 'counters_consistent': consistent,
+                'inputs': dict(self.inputs), 'verdict_seq': self.registers['S2_VERDICT_SEQ']}
 
 
 def from_env(value):
