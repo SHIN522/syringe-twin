@@ -1,6 +1,6 @@
 # Validation test matrix
 
-Generated 2026-10-07T01:19:19+05:30 by `python tools/validation_matrix.py`. Every *actual* value was measured in that run (seed 7). PLC-mode rows T33–T36 use the Modbus stand-in of `syringetwin.st`; PLC-xx rows are run on OpenPLC Runtime by `tools/plc_acceptance.py`.
+Generated 2026-10-07T20:32:30+05:30 by `python tools/validation_matrix.py`. Every *actual* value was measured in that run (seed 7). PLC-mode rows T33–T36 use the Modbus stand-in of `syringetwin.st`; PLC-xx rows are run on OpenPLC Runtime by `tools/plc_acceptance.py`.
 
 **Automated: 36/36 PASS.**
 
@@ -42,16 +42,16 @@ Generated 2026-10-07T01:19:19+05:30 by `python tools/validation_matrix.py`. Ever
 | T34 | PLC mode | PLC detects the overload and gates recovery | F201 coil on force > 160 N; Reset refused until repair; resume after Reset | F201 at force 161.1 N; held after early Reset = True; cleared after repair + Reset = True | **PASS** |
 | T35 | PLC mode | Lost PLC link stops the line safely | F002 within ~1 s; line stopped; Reset needed after the link returns | stopped with F002 = True; Start refused before Reset = True; running after Reset + Start = True | **PASS** |
 | T36 | PLC mode | PLC counters agree with the twin | C_IN, C_GOOD, C_REJECT match twin counts over 600 sim-s | PLC 64/48/7 vs twin 64/48/7; consistent = True | **PASS** |
-| PLC-01 | OpenPLC Runtime | Start pulse sets run permissive and green lamp | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-02 | OpenPLC Runtime | Stop pulse drops run | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-03 | OpenPLC Runtime | E-stop latches F001, red flashing, horn | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-04 | OpenPLC Runtime | Reset ignored while E-stop open | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-05 | OpenPLC Runtime | Release → Reset → Start recovers | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-06 | OpenPLC Runtime | Force 145.0 N: no F201, verdict echoed | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-07 | OpenPLC Runtime | Force 161.2 N: F201 set, line keeps running | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-08 | OpenPLC Runtime | Reset before repair refused | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-09 | OpenPLC Runtime | Repair (TOOL_OK 0→1) then Reset clears F201 | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-10 | OpenPLC Runtime | Counters and box of ten | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-11 | OpenPLC Runtime | Frozen heartbeat trips F002 and drops run | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-12 | OpenPLC Runtime | Heartbeat back, Reset, Start recovers | See PLC_SPEC.md §6 | not yet run | **PENDING** |
-| PLC-13 | OpenPLC Runtime | Twin warning gives amber lamp | See PLC_SPEC.md §6 | not yet run | **PENDING** |
+| PLC-01 | OpenPLC Runtime | Start pulse sets run permissive and green lamp | See PLC_SPEC.md §6 | run True, green True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-02 | OpenPLC Runtime | Stop pulse drops run | See PLC_SPEC.md §6 | run False, green False, any fault False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-03 | OpenPLC Runtime | E-stop latches F001, red flashing, horn | See PLC_SPEC.md §6 | F001 True, run False, horn True, red lamp flashing True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-04 | OpenPLC Runtime | Reset ignored while E-stop open | See PLC_SPEC.md §6 | F001 after Reset with E-stop open: True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-05 | OpenPLC Runtime | Release → Reset → Start recovers | See PLC_SPEC.md §6 | F001 cleared True, run after Start True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-06 | OpenPLC Runtime | Force 145.0 N: no F201, verdict echoed | See PLC_SPEC.md §6 | force 145.0 N: F201 False, verdict 1 = sample 1 (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-07 | OpenPLC Runtime | Force 161.2 N: F201 set, line keeps running | See PLC_SPEC.md §6 | force 161.2 N: F201 True, run still True, verdict echoed True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-08 | OpenPLC Runtime | Reset before repair refused | See PLC_SPEC.md §6 | F201 after Reset without repair: True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-09 | OpenPLC Runtime | Repair (TOOL_OK 0→1) then Reset clears F201 | See PLC_SPEC.md §6 | repair acknowledged True, F201 after Reset False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-10 | OpenPLC Runtime | Counters and box of ten | See PLC_SPEC.md §6 | +10 good, +2 reject, +1 box, box fill 0 → 0 (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-11 | OpenPLC Runtime | Frozen heartbeat trips F002 and drops run | See PLC_SPEC.md §6 | heartbeat frozen 1.5 s: F002 True, run False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-12 | OpenPLC Runtime | Heartbeat back, Reset, Start recovers | See PLC_SPEC.md §6 | F002 cleared True, run after Start True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |
+| PLC-13 | OpenPLC Runtime | Twin warning gives amber lamp | See PLC_SPEC.md §6 | amber True, green False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30) | **PASS** |

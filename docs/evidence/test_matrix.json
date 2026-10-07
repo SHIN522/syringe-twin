@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-07T01:19:19+05:30",
+  "generated": "2026-10-07T20:32:30+05:30",
   "rows": [
     {
       "id": "T01",
@@ -294,104 +294,104 @@
       "area": "OpenPLC Runtime",
       "title": "Start pulse sets run permissive and green lamp",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "run True, green True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-02",
       "area": "OpenPLC Runtime",
       "title": "Stop pulse drops run",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "run False, green False, any fault False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-03",
       "area": "OpenPLC Runtime",
       "title": "E-stop latches F001, red flashing, horn",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "F001 True, run False, horn True, red lamp flashing True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-04",
       "area": "OpenPLC Runtime",
       "title": "Reset ignored while E-stop open",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "F001 after Reset with E-stop open: True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-05",
       "area": "OpenPLC Runtime",
       "title": "Release → Reset → Start recovers",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "F001 cleared True, run after Start True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-06",
       "area": "OpenPLC Runtime",
       "title": "Force 145.0 N: no F201, verdict echoed",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "force 145.0 N: F201 False, verdict 1 = sample 1 (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-07",
       "area": "OpenPLC Runtime",
       "title": "Force 161.2 N: F201 set, line keeps running",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "force 161.2 N: F201 True, run still True, verdict echoed True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-08",
       "area": "OpenPLC Runtime",
       "title": "Reset before repair refused",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "F201 after Reset without repair: True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-09",
       "area": "OpenPLC Runtime",
       "title": "Repair (TOOL_OK 0→1) then Reset clears F201",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "repair acknowledged True, F201 after Reset False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-10",
       "area": "OpenPLC Runtime",
       "title": "Counters and box of ten",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "+10 good, +2 reject, +1 box, box fill 0 → 0 (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-11",
       "area": "OpenPLC Runtime",
       "title": "Frozen heartbeat trips F002 and drops run",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "heartbeat frozen 1.5 s: F002 True, run False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-12",
       "area": "OpenPLC Runtime",
       "title": "Heartbeat back, Reset, Start recovers",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "F002 cleared True, run after Start True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     },
     {
       "id": "PLC-13",
       "area": "OpenPLC Runtime",
       "title": "Twin warning gives amber lamp",
       "expected": "See PLC_SPEC.md §6",
-      "actual": "not yet run",
-      "result": "PENDING"
+      "actual": "amber True, green False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)",
+      "result": "PASS"
     }
   ]
 }

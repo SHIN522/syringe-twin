@@ -1,0 +1,54 @@
+{
+  "PLC-01": {
+    "result": "PASS",
+    "actual": "run True, green True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-02": {
+    "result": "PASS",
+    "actual": "run False, green False, any fault False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-03": {
+    "result": "PASS",
+    "actual": "F001 True, run False, horn True, red lamp flashing True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-04": {
+    "result": "PASS",
+    "actual": "F001 after Reset with E-stop open: True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-05": {
+    "result": "PASS",
+    "actual": "F001 cleared True, run after Start True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-06": {
+    "result": "PASS",
+    "actual": "force 145.0 N: F201 False, verdict 1 = sample 1 (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-07": {
+    "result": "PASS",
+    "actual": "force 161.2 N: F201 True, run still True, verdict echoed True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-08": {
+    "result": "PASS",
+    "actual": "F201 after Reset without repair: True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-09": {
+    "result": "PASS",
+    "actual": "repair acknowledged True, F201 after Reset False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-10": {
+    "result": "PASS",
+    "actual": "+10 good, +2 reject, +1 box, box fill 0 → 0 (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-11": {
+    "result": "PASS",
+    "actual": "heartbeat frozen 1.5 s: F002 True, run False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-12": {
+    "result": "PASS",
+    "actual": "F002 cleared True, run after Start True (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  },
+  "PLC-13": {
+    "result": "PASS",
+    "actual": "amber True, green False (OpenPLC Runtime v3, 2026-10-07T13:34:01+05:30)"
+  }
+}
