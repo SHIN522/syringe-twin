@@ -76,19 +76,19 @@ Stop everything with Ctrl+C in the launch terminal.
 git add docs/evidence && git commit -m "Record OpenPLC acceptance results on Ubuntu" && git push
 ```
 
-## 7. Live demo: OpenPLC → twin → CoppeliaSim (all on Ubuntu)
+## 7. Live demo: OpenPLC → twin → CoppeliaSim + HMI (all on Ubuntu)
 
-One-time, about 5 minutes (downloads CoppeliaSim Edu 4.10 into `~/CoppeliaSim`):
+One-time, about 10 minutes: CoppeliaSim Edu 4.10 into `~/CoppeliaSim`, FUXA into `~/fuxa-hmi` (both outside the repository).
 
 ```bash
-git pull && bash tools/ubuntu_coppelia.sh
+git pull && bash tools/ubuntu_coppelia.sh && bash tools/ubuntu_hmi.sh
 ```
 
-Then use three terminals. The OpenPLC program `syringetwin.st` must be running (section 4).
+Every demo:
 
-1. Twin under PLC control: `.venv/bin/python launch.py --plc 127.0.0.1 --profile demo --opcua`
-2. 3D cell: `.venv/bin/python tools/coppelia_view.py --launch`
-3. OpenPLC dashboard (http://localhost:8080 → *Monitoring*) next to the CoppeliaSim window.
+1. Start OpenPLC (`cd ~/OpenPLC_v3 && sudo ./start_openplc.sh`), open http://localhost:8080, **Start PLC** with `syringetwin.st`.
+2. From the repository: `bash tools/ubuntu_demo.sh`. It starts the twin under PLC control (with OPC UA), the FUXA HMI (loading `hmi/syringetwin_hmi.json`), and the CoppeliaSim cell, and opens the dashboard and HMI. Ctrl+C stops all of it. Logs: `.runtime/demo/`.
+3. Arrange the windows: CoppeliaSim, the dashboard (or FUXA HMI), and OpenPLC *Monitoring*.
 
 In the dashboard (http://127.0.0.1:8000): **Reset alarms**, then **Start line**, speed 2×. What to point at:
 

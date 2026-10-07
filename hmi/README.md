@@ -19,3 +19,5 @@
 3. Open http://127.0.0.1:1881. To load this screen on a new FUXA installation: Editor → Project → Open project → `syringetwin_hmi.json`.
 
 In PLC mode (`--plc`) the same screen still works: run, E-stop and F201 commands are forwarded by the twin to OpenPLC.
+
+**On Ubuntu** `bash tools/ubuntu_hmi.sh` installs FUXA once, and `bash tools/ubuntu_demo.sh` starts it with this project loaded (see `docs/plc/UBUNTU_RUNBOOK.md`, section 7).
