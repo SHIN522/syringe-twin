@@ -22,13 +22,13 @@ cleanup() {
 trap cleanup EXIT INT TERM
 
 wait_for() {  # url, name
-  for _ in $(seq 1 60); do curl -fsS -o /dev/null "$1" && return 0; sleep 1; done
+  for _ in $(seq 1 60); do curl -fs -o /dev/null "$1" && return 0; sleep 1; done
   echo "$2 did not come up; see $LOGS"; exit 1
 }
 
 if [ ${#PLC_ARGS[@]} -gt 0 ] && ! (exec 3<>/dev/tcp/127.0.0.1/502) 2>/dev/null; then
   echo "OpenPLC's Modbus server is not answering on port 502."
-  echo "Start OpenPLC (cd ~/OpenPLC_v3 && sudo ./start_openplc.sh), Start PLC with syringetwin.st, then rerun."
+  echo "Start OpenPLC (sudo systemctl start openplc), open http://localhost:8080, Start PLC with syringetwin.st, then rerun."
   echo "Or run without the PLC:  bash tools/ubuntu_demo.sh --no-plc"
   exit 1
 fi
@@ -51,8 +51,11 @@ else
 fi
 
 echo "== CoppeliaSim 3D cell"
-"$PY" "$REPO/tools/coppelia_view.py" --launch >"$LOGS/coppelia.log" 2>&1 &
+# CoppeliaSim's Qt build is most reliable on X11; under Wayland this runs it through XWayland.
+QT_QPA_PLATFORM="${QT_QPA_PLATFORM:-xcb}" "$PY" "$REPO/tools/coppelia_view.py" --launch >"$LOGS/coppelia.log" 2>&1 &
 pids+=($!)
+sleep 2
+kill -0 "${pids[-1]}" 2>/dev/null || echo "   3D view did not start: $(tail -n 1 "$LOGS/coppelia.log")"
 
 xdg-open http://127.0.0.1:8000 >/dev/null 2>&1 || true
 [ -f "$FUXA" ] && (xdg-open http://127.0.0.1:1881 >/dev/null 2>&1 || true)

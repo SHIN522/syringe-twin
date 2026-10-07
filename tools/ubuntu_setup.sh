@@ -31,15 +31,24 @@ if [ ! -d "$OPENPLC" ]; then
   git clone --depth 1 https://github.com/thiagoralves/OpenPLC_v3.git "$OPENPLC"
 fi
 (cd "$OPENPLC" && ./install.sh linux)
+# install.sh pipes through tee, so a failed build still exits 0: check its output instead.
+if [ ! -x "$OPENPLC/start_openplc.sh" ]; then
+  echo "OpenPLC build failed. See $OPENPLC/install_log.txt"; exit 1
+fi
 
 echo "== 4/4 SyringeTwin environment"
 (cd "$REPO" && "$PY" tools/setup_env.py --dev)
 
 echo
+# The installer enables the openplc systemd service but does not start it.
+sudo systemctl start openplc
+for _ in $(seq 1 30); do
+  curl -fsS -o /dev/null http://localhost:8080/login && break
+  sleep 1
+done
 if curl -fsS -o /dev/null http://localhost:8080/login; then
-  echo "OpenPLC is running: open http://localhost:8080"
+  echo "OpenPLC is running (systemd service, starts on boot): open http://localhost:8080"
 else
-  echo "Start OpenPLC in its own terminal:  cd $OPENPLC && sudo ./start_openplc.sh"
-  echo "then open http://localhost:8080"
+  echo "OpenPLC did not answer on port 8080. Check:  sudo systemctl status openplc"
 fi
 echo "Next steps: docs/plc/UBUNTU_RUNBOOK.md"

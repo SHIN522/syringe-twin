@@ -16,11 +16,15 @@ If the repository is already on this machine, run `git pull` inside it instead.
 bash tools/ubuntu_setup.sh
 ```
 
-It installs OpenPLC Runtime v3 into `~/OpenPLC_v3` and the twin's Python environment into `.venv`. If the script's last lines say OpenPLC is not running, start it in a separate terminal and leave that terminal open:
+It installs OpenPLC Runtime v3 into `~/OpenPLC_v3` and the twin's Python environment into `.venv`, then starts OpenPLC as the `openplc` systemd service, which also starts on every boot. No terminal needs to stay open:
 
 ```bash
-cd ~/OpenPLC_v3 && sudo ./start_openplc.sh
+sudo systemctl status openplc     # running?
+sudo systemctl start openplc      # start it if not
+sudo systemctl restart openplc    # restart it
 ```
+
+Do not also run `start_openplc.sh` by hand while the service runs: the second copy fails because port 8080 is taken.
 
 ## 2. Configure OpenPLC (browser, about 3 minutes)
 
@@ -86,7 +90,7 @@ git pull && bash tools/ubuntu_coppelia.sh && bash tools/ubuntu_hmi.sh
 
 Every demo:
 
-1. Start OpenPLC (`cd ~/OpenPLC_v3 && sudo ./start_openplc.sh`), open http://localhost:8080, **Start PLC** with `syringetwin.st`.
+1. Make sure OpenPLC is running (`sudo systemctl start openplc`; it normally starts on boot), open http://localhost:8080, **Start PLC** with `syringetwin.st`.
 2. From the repository: `bash tools/ubuntu_demo.sh`. It starts the twin under PLC control (with OPC UA), the FUXA HMI (loading `hmi/syringetwin_hmi.json`), and the CoppeliaSim cell, and opens the dashboard and HMI. Ctrl+C stops all of it. Logs: `.runtime/demo/`.
 3. Arrange the windows: CoppeliaSim, the dashboard (or FUXA HMI), and OpenPLC *Monitoring*.
 
@@ -107,8 +111,10 @@ The **Stop PLC** step is the proof that the PLC is in the loop: the 3D line cann
 
 | Symptom | Fix |
 |---|---|
+| Setup script: "OpenPLC build failed" | Read the end of `~/OpenPLC_v3/install_log.txt`, install what is missing, rerun `bash tools/ubuntu_setup.sh`. |
+| http://localhost:8080 does not load | `sudo systemctl status openplc`; `sudo journalctl -u openplc -n 50` shows why it stopped. |
 | `plc_probe.py`: no Modbus server | Settings → Modbus enabled on 502, then **Start PLC** (Modbus only runs while the PLC runs). |
 | Compile error on upload | Make sure the file is `syringetwin.st` from this repository; it is verified with the matiec compiler. |
 | Port 8000 in use | `.venv/bin/python launch.py --stop`, or choose `--api-port 8001 --ui-port 8502`. |
 | Twin shows F002 immediately | The PLC is stopped, or the program is `spike.st` instead of `syringetwin.st`. |
-| CoppeliaSim on Ubuntu does not start | Run `~/CoppeliaSim/coppeliaSim.sh` in its own terminal to see the error, then run the viewer without `--launch`. |
+| CoppeliaSim on Ubuntu does not start | Run `QT_QPA_PLATFORM=xcb ~/CoppeliaSim/coppeliaSim.sh` in its own terminal to see the error; once it is open, run `.venv/bin/python tools/coppelia_view.py` (without `--launch`). |
