@@ -1,8 +1,11 @@
-"""Read-only OPC UA server for the twin (DECISIONS D11).
+"""OPC UA server for the twin (DECISIONS D11, D13).
 
 Publishes the latest service payload every 0.5 s wall time under ns=2;s=Line1.*,
 using the node IDs in docs/plc/tag_dictionary.csv. Undefined values are sent
 with Bad_WaitingForInitialData quality instead of an invented number.
+Line1.HMI.* are the only writable nodes: an HMI (FUXA) writes a command bit, the
+server runs the same validated, audited command as the dashboard (user "HMI (OPC UA)")
+and clears the bit; the outcome is published in Line1.HMI.LastResult.
 Bound to localhost, no security: a demonstration interface, not a plant network.
 """
 import asyncio
@@ -37,7 +40,33 @@ def flatten(payload):
         'Line1.S2.Force': (s['stations']['S2']['force'], D), 'Line1.S2.Wear': (s['stations']['S2']['wear'], D),
         'Line1.S2.Health': (k['s2']['health'], D), 'Line1.S2.CyclesToFault': (k['s2']['cycles_to_fault'], D),
         'Line1.S2.ToolOK': (m['tool_ok'], B),
+        'Line1.S2.MaintenanceRemaining_s': (m.get('maintenance_remaining_s'), D),
+        'Line1.S2.ToolChangeQueued': (m.get('tool_change_queued', False), B),
+        'Line1.Tower.Green': (s['lamp'] == 'GREEN', B), 'Line1.Tower.Amber': (s['lamp'] == 'AMBER', B),
+        'Line1.Tower.Red': (s['lamp'] == 'RED', B),
     }
+    codes = {a['code'] for a in active}
+    for code in ('F001', 'F201', 'F002', 'W202'):
+        out[f'Line1.Alarms.{code}'] = (code in codes, B)
+    for name, serials in s['buffers'].items():
+        out[f'Line1.Buffers.{name}.Count'] = (len(serials), I)
+    # Pre-formatted strings for HMI panels (raw numeric nodes above stay unrounded)
+    fmt = lambda v, pattern: '—' if v is None else pattern.format(v)
+    state = ('E-STOP LATCHED' if m['estop_latched'] else 'FAULT' if any(a['sev'] == 'FAULT' for a in active)
+             else 'RUNNING' if s['run'] else 'STOPPED')
+    for node, value in (('LineState', state), ('SimTime', fmt(s['t'] / 60, '{:.1f} min')), ('Speed', f"{s['speed']}x"),
+                        ('Force', fmt(s['stations']['S2']['force'], '{:.1f} N')),
+                        ('Health', fmt(k['s2']['health'] and k['s2']['health'] * 100, '{:.0f} %')),
+                        ('CyclesToFault', fmt(k['s2']['cycles_to_fault'], '{:.0f}')),
+                        ('Maintenance', fmt(m.get('maintenance_remaining_s') or None, '{:.0f} s')),
+                        ('Throughput', fmt(k['th_ph'], '{:.0f} /h')), ('OEE10', fmt(k['oee_win']['oee'] and k['oee_win']['oee'] * 100, '{:.0f} %')),
+                        ('Yield', fmt(k['Q'] and k['Q'] * 100, '{:.0f} %')), ('LeadTime', fmt(k['lead_s'], '{:.0f} s'))):
+        out[f'Line1.Display.{node}'] = (value, S)
+    last = m.get('last_decision')
+    out['Line1.LastInspection.Serial'] = (last['serial'] if last else '', S)
+    out['Line1.LastInspection.Status'] = (last['status'] if last else '', S)
+    out['Line1.LastInspection.Codes'] = (' '.join(last['codes']) if last else '', S)
+    out['Line1.LastInspection.Pass'] = (bool(last) and last['status'] == 'PASS', B)
     for name in ('In', 'Good', 'Reject', 'WIP', 'Boxes'):
         out[f'Line1.Counts.{name}'] = (s['counts'][name.lower() if name != 'In' else 'in'], I)
     for name, st in s['stations'].items():
@@ -63,9 +92,18 @@ def flatten(payload):
     return out
 
 
+# Writable HMI command nodes -> (command, args); E-stop needs engage and release as separate pulses.
+COMMANDS = {'Start': ('start', {}), 'Stop': ('stop', {}), 'Reset': ('reset', {}),
+            'EStopEngage': ('estop', {'active': True}), 'EStopRelease': ('estop', {'active': False}),
+            'RepairS2': ('repair', {'station': 'S2'}), 'ToolChangeS2': ('tool_change', {'station': 'S2'}),
+            'InjectF201': ('inject_fault', {'code': 'F201'})}
+HMI_USER = 'HMI (OPC UA)'
+
+
 class OpcUaServer:
-    def __init__(self, endpoint=ENDPOINT):
+    def __init__(self, endpoint=ENDPOINT, on_command=None):
         self.endpoint = endpoint
+        self.on_command = on_command  # callable(cmd, args, user) -> result dict; raises ValueError when refused
         self.latest = None
         self.ready, self.stopping = Event(), Event()
         self.error = None
@@ -95,32 +133,62 @@ class OpcUaServer:
             idx = await server.register_namespace(NAMESPACE)
             nodes, folders = {}, {}
             objects = server.nodes.objects
+
+            async def ensure(path, vtype):
+                if path not in nodes:
+                    parent = objects
+                    parts = path.split('.')
+                    for depth in range(1, len(parts)):
+                        key = '.'.join(parts[:depth])
+                        if key not in folders:
+                            folders[key] = await parent.add_object(ua.NodeId(key, idx), parts[depth - 1])
+                        parent = folders[key]
+                    nodes[path] = await parent.add_variable(ua.NodeId(path, idx), parts[-1],
+                                                            DEFAULTS[vtype], varianttype=vtype)
+                return nodes[path]
+
+            commands, speed, result = {}, None, None
+            if self.on_command:
+                for name in COMMANDS:
+                    commands[name] = await ensure(f'Line1.HMI.{name}', B)
+                    await commands[name].set_writable()
+                speed = await ensure('Line1.HMI.SpeedCmd', I)
+                await speed.set_writable()
+                result = await ensure('Line1.HMI.LastResult', S)
+            published = None
             async with server:
                 self.ready.set()
                 while not self.stopping.is_set():
                     values = self.latest
-                    if values:
+                    if values is not None and values is not published:
+                        published = values
                         for path, (value, vtype) in values.items():
-                            if path not in nodes:
-                                parent = objects
-                                parts = path.split('.')
-                                for depth in range(1, len(parts)):
-                                    key = '.'.join(parts[:depth])
-                                    if key not in folders:
-                                        folders[key] = await parent.add_object(ua.NodeId(key, idx), parts[depth - 1])
-                                    parent = folders[key]
-                                nodes[path] = await parent.add_variable(ua.NodeId(path, idx), parts[-1],
-                                                                        DEFAULTS[vtype], varianttype=vtype)
+                            node = await ensure(path, vtype)
                             if value is None:
                                 dv = ua.DataValue(ua.Variant(DEFAULTS[vtype], vtype),
                                                   StatusCode=ua.StatusCode(ua.StatusCodes.BadWaitingForInitialData))
                             else:
                                 dv = ua.DataValue(ua.Variant(int(value) if vtype is I else value, vtype))
-                            await nodes[path].write_value(dv)
-                    await asyncio.sleep(0.5)
+                            await node.write_value(dv)
+                    for name, node in commands.items():
+                        if await node.read_value():
+                            await node.write_value(False)
+                            await result.write_value(self._run(*COMMANDS[name]))
+                    if speed is not None:
+                        x = await speed.read_value()
+                        if x:
+                            await speed.write_value(ua.Variant(0, I))
+                            await result.write_value(self._run('set_speed', {'x': int(x)}))
+                    await asyncio.sleep(0.1)
         except Exception as exc:  # report, never take the twin down with it
             self.error = f'{type(exc).__name__}: {exc}'
             self.ready.set()
+
+    def _run(self, cmd, args):
+        try:
+            return self.on_command(cmd, dict(args), HMI_USER)['message']
+        except ValueError as exc:
+            return 'Refused: ' + str(exc)
 
     def status(self):
         return {'endpoint': self.endpoint, 'running': self.thread is not None and self.thread.is_alive(),

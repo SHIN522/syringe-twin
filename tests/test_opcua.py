@@ -47,3 +47,29 @@ def test_client_reads_live_twin_values(tmp_path):
         assert plc_run.StatusCode.value == ua.StatusCodes.BadWaitingForInitialData  # no PLC: no fake value
     finally:
         service.close()
+
+
+def test_hmi_writes_run_audited_commands(tmp_path):
+    endpoint = f'opc.tcp://127.0.0.1:{free_port()}/syringetwin/'
+    service = Service(tmp_path, opcua=OpcUaServer(endpoint))
+    try:
+        service.opcua.start()
+
+        async def press(node_name, value=True, vtype=ua.VariantType.Boolean):
+            async with Client(endpoint) as client:
+                idx = await client.get_namespace_index('urn:syringetwin')
+                node = client.get_node(ua.NodeId(f'Line1.HMI.{node_name}', idx))
+                await node.write_value(ua.DataValue(ua.Variant(value, vtype)))
+                for _ in range(30):
+                    await asyncio.sleep(0.1)
+                    if not await node.read_value():
+                        break
+                return await client.get_node(ua.NodeId('Line1.HMI.LastResult', idx)).read_value()
+        assert asyncio.run(press('Start')) == 'Line started.'
+        assert service.engine.state.run
+        assert service.engine.state.commands[-1]['user'] == 'HMI (OPC UA)'
+        assert asyncio.run(press('RepairS2')).startswith('Refused:')  # nothing to repair
+        assert asyncio.run(press('SpeedCmd', 2, ua.VariantType.Int32)).startswith('Simulation speed set to 2')
+        assert service.engine.state.speed == 2
+    finally:
+        service.close()

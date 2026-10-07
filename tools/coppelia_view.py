@@ -18,6 +18,7 @@ Only one viewer may run at a time. Loading another scene makes it rebuild.
 """
 import argparse
 import math
+import os
 import socket
 import subprocess
 import time
@@ -26,7 +27,20 @@ import requests
 from coppeliasim_zmqremoteapi_client import RemoteAPIClient
 
 ROOT = Path(__file__).resolve().parents[1]
-COPPELIA = Path(r'C:\Program Files\CoppeliaRobotics\CoppeliaSimEdu\coppeliaSim.exe')
+ZMQ_PORT = 23000  # CoppeliaSim's ZeroMQ remote API
+
+
+def coppelia_executable():
+    """CoppeliaSim on Windows (installer) or Linux (tarball in ~/CoppeliaSim*, see tools/ubuntu_coppelia.sh)."""
+    if os.environ.get('COPPELIASIM_ROOT'):
+        root = Path(os.environ['COPPELIASIM_ROOT'])
+        return root / ('coppeliaSim.exe' if os.name == 'nt' else 'coppeliaSim.sh')
+    if os.name == 'nt':
+        return Path(r'C:\Program Files\CoppeliaRobotics\CoppeliaSimEdu\coppeliaSim.exe')
+    found = sorted(Path.home().glob('CoppeliaSim*/coppeliaSim.sh'))
+    return found[-1] if found else Path.home() / 'CoppeliaSim' / 'coppeliaSim.sh'
+
+
 LOCK_PORT = 23990
 X = {'IN': 0.0, 'B1': 1.2, 'S1': 2.4, 'B2': 3.6, 'S2': 4.8, 'B3': 6.0, 'S3': 7.2, 'B4': 8.4, 'S4': 9.6, 'OUT': 10.8}
 STATIONS = ('IN', 'S1', 'S2', 'S3', 'S4', 'OUT')
@@ -451,11 +465,14 @@ def single_instance():
 
 
 def connect(launch):
-    running = subprocess.run(['tasklist', '/FI', 'IMAGENAME eq coppeliaSim.exe'], capture_output=True, text=True).stdout
-    if launch and 'coppeliaSim.exe' not in running:
-        if not COPPELIA.is_file():
-            raise SystemExit(f'CoppeliaSim not found at {COPPELIA}; start it manually and run without --launch.')
-        subprocess.Popen([str(COPPELIA)], cwd=str(COPPELIA.parent),
+    with socket.socket() as probe:
+        running = probe.connect_ex(('127.0.0.1', ZMQ_PORT)) == 0
+    if launch and not running:
+        exe = coppelia_executable()
+        if not exe.is_file():
+            raise SystemExit(f'CoppeliaSim not found at {exe}; set COPPELIASIM_ROOT, '
+                             'or start it manually and run without --launch.')
+        subprocess.Popen([str(exe)], cwd=str(exe.parent),
                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         print('Starting CoppeliaSim…', flush=True)
         time.sleep(12)

@@ -1,0 +1,2490 @@
+{
+ "version": "1.02",
+ "name": "SyringeTwin HMI",
+ "devices": {
+  "d_syringetwin": {
+   "id": "d_syringetwin",
+   "name": "SyringeTwin",
+   "type": "OPCUA",
+   "enabled": true,
+   "polling": 500,
+   "property": {
+    "address": "opc.tcp://127.0.0.1:4840/syringetwin/"
+   },
+   "tags": {
+    "t_Line1_Display_LineState": {
+     "id": "t_Line1_Display_LineState",
+     "name": "Line1.Display.LineState",
+     "label": "Line1.Display.LineState",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.LineState",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_SimTime": {
+     "id": "t_Line1_Display_SimTime",
+     "name": "Line1.Display.SimTime",
+     "label": "Line1.Display.SimTime",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.SimTime",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_Speed": {
+     "id": "t_Line1_Display_Speed",
+     "name": "Line1.Display.Speed",
+     "label": "Line1.Display.Speed",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.Speed",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Tower_Green": {
+     "id": "t_Line1_Tower_Green",
+     "name": "Line1.Tower.Green",
+     "label": "Line1.Tower.Green",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.Tower.Green",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Tower_Amber": {
+     "id": "t_Line1_Tower_Amber",
+     "name": "Line1.Tower.Amber",
+     "label": "Line1.Tower.Amber",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.Tower.Amber",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Tower_Red": {
+     "id": "t_Line1_Tower_Red",
+     "name": "Line1.Tower.Red",
+     "label": "Line1.Tower.Red",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.Tower.Red",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_IN_StateCode": {
+     "id": "t_Line1_Stations_IN_StateCode",
+     "name": "Line1.Stations.IN.StateCode",
+     "label": "Line1.Stations.IN.StateCode",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.IN.StateCode",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_IN_State": {
+     "id": "t_Line1_Stations_IN_State",
+     "name": "Line1.Stations.IN.State",
+     "label": "Line1.Stations.IN.State",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.IN.State",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_IN_Step": {
+     "id": "t_Line1_Stations_IN_Step",
+     "name": "Line1.Stations.IN.Step",
+     "label": "Line1.Stations.IN.Step",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.IN.Step",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_IN_Cycles": {
+     "id": "t_Line1_Stations_IN_Cycles",
+     "name": "Line1.Stations.IN.Cycles",
+     "label": "Line1.Stations.IN.Cycles",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.IN.Cycles",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Buffers_B1_Count": {
+     "id": "t_Line1_Buffers_B1_Count",
+     "name": "Line1.Buffers.B1.Count",
+     "label": "Line1.Buffers.B1.Count",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Buffers.B1.Count",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S1_StateCode": {
+     "id": "t_Line1_Stations_S1_StateCode",
+     "name": "Line1.Stations.S1.StateCode",
+     "label": "Line1.Stations.S1.StateCode",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S1.StateCode",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S1_State": {
+     "id": "t_Line1_Stations_S1_State",
+     "name": "Line1.Stations.S1.State",
+     "label": "Line1.Stations.S1.State",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S1.State",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S1_Step": {
+     "id": "t_Line1_Stations_S1_Step",
+     "name": "Line1.Stations.S1.Step",
+     "label": "Line1.Stations.S1.Step",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S1.Step",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S1_Cycles": {
+     "id": "t_Line1_Stations_S1_Cycles",
+     "name": "Line1.Stations.S1.Cycles",
+     "label": "Line1.Stations.S1.Cycles",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S1.Cycles",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Buffers_B2_Count": {
+     "id": "t_Line1_Buffers_B2_Count",
+     "name": "Line1.Buffers.B2.Count",
+     "label": "Line1.Buffers.B2.Count",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Buffers.B2.Count",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S2_StateCode": {
+     "id": "t_Line1_Stations_S2_StateCode",
+     "name": "Line1.Stations.S2.StateCode",
+     "label": "Line1.Stations.S2.StateCode",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S2.StateCode",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S2_State": {
+     "id": "t_Line1_Stations_S2_State",
+     "name": "Line1.Stations.S2.State",
+     "label": "Line1.Stations.S2.State",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S2.State",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S2_Step": {
+     "id": "t_Line1_Stations_S2_Step",
+     "name": "Line1.Stations.S2.Step",
+     "label": "Line1.Stations.S2.Step",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S2.Step",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S2_Cycles": {
+     "id": "t_Line1_Stations_S2_Cycles",
+     "name": "Line1.Stations.S2.Cycles",
+     "label": "Line1.Stations.S2.Cycles",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S2.Cycles",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Buffers_B3_Count": {
+     "id": "t_Line1_Buffers_B3_Count",
+     "name": "Line1.Buffers.B3.Count",
+     "label": "Line1.Buffers.B3.Count",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Buffers.B3.Count",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S3_StateCode": {
+     "id": "t_Line1_Stations_S3_StateCode",
+     "name": "Line1.Stations.S3.StateCode",
+     "label": "Line1.Stations.S3.StateCode",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S3.StateCode",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S3_State": {
+     "id": "t_Line1_Stations_S3_State",
+     "name": "Line1.Stations.S3.State",
+     "label": "Line1.Stations.S3.State",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S3.State",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S3_Step": {
+     "id": "t_Line1_Stations_S3_Step",
+     "name": "Line1.Stations.S3.Step",
+     "label": "Line1.Stations.S3.Step",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S3.Step",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S3_Cycles": {
+     "id": "t_Line1_Stations_S3_Cycles",
+     "name": "Line1.Stations.S3.Cycles",
+     "label": "Line1.Stations.S3.Cycles",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S3.Cycles",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Buffers_B4_Count": {
+     "id": "t_Line1_Buffers_B4_Count",
+     "name": "Line1.Buffers.B4.Count",
+     "label": "Line1.Buffers.B4.Count",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Buffers.B4.Count",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S4_StateCode": {
+     "id": "t_Line1_Stations_S4_StateCode",
+     "name": "Line1.Stations.S4.StateCode",
+     "label": "Line1.Stations.S4.StateCode",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S4.StateCode",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S4_State": {
+     "id": "t_Line1_Stations_S4_State",
+     "name": "Line1.Stations.S4.State",
+     "label": "Line1.Stations.S4.State",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S4.State",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S4_Step": {
+     "id": "t_Line1_Stations_S4_Step",
+     "name": "Line1.Stations.S4.Step",
+     "label": "Line1.Stations.S4.Step",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.S4.Step",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_S4_Cycles": {
+     "id": "t_Line1_Stations_S4_Cycles",
+     "name": "Line1.Stations.S4.Cycles",
+     "label": "Line1.Stations.S4.Cycles",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.S4.Cycles",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_OUT_StateCode": {
+     "id": "t_Line1_Stations_OUT_StateCode",
+     "name": "Line1.Stations.OUT.StateCode",
+     "label": "Line1.Stations.OUT.StateCode",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.OUT.StateCode",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_OUT_State": {
+     "id": "t_Line1_Stations_OUT_State",
+     "name": "Line1.Stations.OUT.State",
+     "label": "Line1.Stations.OUT.State",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.OUT.State",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_OUT_Step": {
+     "id": "t_Line1_Stations_OUT_Step",
+     "name": "Line1.Stations.OUT.Step",
+     "label": "Line1.Stations.OUT.Step",
+     "type": "String",
+     "address": "ns=2;s=Line1.Stations.OUT.Step",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Stations_OUT_Cycles": {
+     "id": "t_Line1_Stations_OUT_Cycles",
+     "name": "Line1.Stations.OUT.Cycles",
+     "label": "Line1.Stations.OUT.Cycles",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Stations.OUT.Cycles",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Counts_Good": {
+     "id": "t_Line1_Counts_Good",
+     "name": "Line1.Counts.Good",
+     "label": "Line1.Counts.Good",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Counts.Good",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Counts_Reject": {
+     "id": "t_Line1_Counts_Reject",
+     "name": "Line1.Counts.Reject",
+     "label": "Line1.Counts.Reject",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Counts.Reject",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Counts_In": {
+     "id": "t_Line1_Counts_In",
+     "name": "Line1.Counts.In",
+     "label": "Line1.Counts.In",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Counts.In",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Counts_Boxes": {
+     "id": "t_Line1_Counts_Boxes",
+     "name": "Line1.Counts.Boxes",
+     "label": "Line1.Counts.Boxes",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Counts.Boxes",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_Throughput": {
+     "id": "t_Line1_Display_Throughput",
+     "name": "Line1.Display.Throughput",
+     "label": "Line1.Display.Throughput",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.Throughput",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_Yield": {
+     "id": "t_Line1_Display_Yield",
+     "name": "Line1.Display.Yield",
+     "label": "Line1.Display.Yield",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.Yield",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_OEE10": {
+     "id": "t_Line1_Display_OEE10",
+     "name": "Line1.Display.OEE10",
+     "label": "Line1.Display.OEE10",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.OEE10",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_LeadTime": {
+     "id": "t_Line1_Display_LeadTime",
+     "name": "Line1.Display.LeadTime",
+     "label": "Line1.Display.LeadTime",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.LeadTime",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Counts_WIP": {
+     "id": "t_Line1_Counts_WIP",
+     "name": "Line1.Counts.WIP",
+     "label": "Line1.Counts.WIP",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.Counts.WIP",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_Force": {
+     "id": "t_Line1_Display_Force",
+     "name": "Line1.Display.Force",
+     "label": "Line1.Display.Force",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.Force",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_S2_Force": {
+     "id": "t_Line1_S2_Force",
+     "name": "Line1.S2.Force",
+     "label": "Line1.S2.Force",
+     "type": "Double",
+     "address": "ns=2;s=Line1.S2.Force",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_Health": {
+     "id": "t_Line1_Display_Health",
+     "name": "Line1.Display.Health",
+     "label": "Line1.Display.Health",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.Health",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_CyclesToFault": {
+     "id": "t_Line1_Display_CyclesToFault",
+     "name": "Line1.Display.CyclesToFault",
+     "label": "Line1.Display.CyclesToFault",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.CyclesToFault",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_S2_ToolOK": {
+     "id": "t_Line1_S2_ToolOK",
+     "name": "Line1.S2.ToolOK",
+     "label": "Line1.S2.ToolOK",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.S2.ToolOK",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_S2_ToolChangeQueued": {
+     "id": "t_Line1_S2_ToolChangeQueued",
+     "name": "Line1.S2.ToolChangeQueued",
+     "label": "Line1.S2.ToolChangeQueued",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.S2.ToolChangeQueued",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Display_Maintenance": {
+     "id": "t_Line1_Display_Maintenance",
+     "name": "Line1.Display.Maintenance",
+     "label": "Line1.Display.Maintenance",
+     "type": "String",
+     "address": "ns=2;s=Line1.Display.Maintenance",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Alarms_F001": {
+     "id": "t_Line1_Alarms_F001",
+     "name": "Line1.Alarms.F001",
+     "label": "Line1.Alarms.F001",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.Alarms.F001",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Alarms_F201": {
+     "id": "t_Line1_Alarms_F201",
+     "name": "Line1.Alarms.F201",
+     "label": "Line1.Alarms.F201",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.Alarms.F201",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Alarms_W202": {
+     "id": "t_Line1_Alarms_W202",
+     "name": "Line1.Alarms.W202",
+     "label": "Line1.Alarms.W202",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.Alarms.W202",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_Alarms_F002": {
+     "id": "t_Line1_Alarms_F002",
+     "name": "Line1.Alarms.F002",
+     "label": "Line1.Alarms.F002",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.Alarms.F002",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_LastInspection_Pass": {
+     "id": "t_Line1_LastInspection_Pass",
+     "name": "Line1.LastInspection.Pass",
+     "label": "Line1.LastInspection.Pass",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.LastInspection.Pass",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_LastInspection_Serial": {
+     "id": "t_Line1_LastInspection_Serial",
+     "name": "Line1.LastInspection.Serial",
+     "label": "Line1.LastInspection.Serial",
+     "type": "String",
+     "address": "ns=2;s=Line1.LastInspection.Serial",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_LastInspection_Status": {
+     "id": "t_Line1_LastInspection_Status",
+     "name": "Line1.LastInspection.Status",
+     "label": "Line1.LastInspection.Status",
+     "type": "String",
+     "address": "ns=2;s=Line1.LastInspection.Status",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_LastInspection_Codes": {
+     "id": "t_Line1_LastInspection_Codes",
+     "name": "Line1.LastInspection.Codes",
+     "label": "Line1.LastInspection.Codes",
+     "type": "String",
+     "address": "ns=2;s=Line1.LastInspection.Codes",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_Start": {
+     "id": "t_Line1_HMI_Start",
+     "name": "Line1.HMI.Start",
+     "label": "Line1.HMI.Start",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.Start",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_Stop": {
+     "id": "t_Line1_HMI_Stop",
+     "name": "Line1.HMI.Stop",
+     "label": "Line1.HMI.Stop",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.Stop",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_Reset": {
+     "id": "t_Line1_HMI_Reset",
+     "name": "Line1.HMI.Reset",
+     "label": "Line1.HMI.Reset",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.Reset",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_RepairS2": {
+     "id": "t_Line1_HMI_RepairS2",
+     "name": "Line1.HMI.RepairS2",
+     "label": "Line1.HMI.RepairS2",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.RepairS2",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_ToolChangeS2": {
+     "id": "t_Line1_HMI_ToolChangeS2",
+     "name": "Line1.HMI.ToolChangeS2",
+     "label": "Line1.HMI.ToolChangeS2",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.ToolChangeS2",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_InjectF201": {
+     "id": "t_Line1_HMI_InjectF201",
+     "name": "Line1.HMI.InjectF201",
+     "label": "Line1.HMI.InjectF201",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.InjectF201",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_EStopEngage": {
+     "id": "t_Line1_HMI_EStopEngage",
+     "name": "Line1.HMI.EStopEngage",
+     "label": "Line1.HMI.EStopEngage",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.EStopEngage",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_EStopRelease": {
+     "id": "t_Line1_HMI_EStopRelease",
+     "name": "Line1.HMI.EStopRelease",
+     "label": "Line1.HMI.EStopRelease",
+     "type": "Boolean",
+     "address": "ns=2;s=Line1.HMI.EStopRelease",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_SpeedCmd": {
+     "id": "t_Line1_HMI_SpeedCmd",
+     "name": "Line1.HMI.SpeedCmd",
+     "label": "Line1.HMI.SpeedCmd",
+     "type": "Int32",
+     "address": "ns=2;s=Line1.HMI.SpeedCmd",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    },
+    "t_Line1_HMI_LastResult": {
+     "id": "t_Line1_HMI_LastResult",
+     "name": "Line1.HMI.LastResult",
+     "label": "Line1.HMI.LastResult",
+     "type": "String",
+     "address": "ns=2;s=Line1.HMI.LastResult",
+     "daq": {
+      "enabled": false,
+      "interval": 60,
+      "changed": false
+     }
+    }
+   }
+  }
+ },
+ "hmi": {
+  "views": [
+   {
+    "id": "v_operator",
+    "name": "Operator",
+    "profile": {
+     "width": 1280,
+     "height": 800,
+     "bkcolor": "#1b222bff"
+    },
+    "items": {
+     "VAL_0006": {
+      "id": "VAL_0006",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.LineState",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.LineState",
+       "variableId": "t_Line1_Display_LineState",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0008": {
+      "id": "VAL_0008",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.SimTime",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.SimTime",
+       "variableId": "t_Line1_Display_SimTime",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0010": {
+      "id": "VAL_0010",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.Speed",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.Speed",
+       "variableId": "t_Line1_Display_Speed",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "GSE_0012": {
+      "id": "GSE_0012",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Tower.Green",
+      "property": {
+       "events": [],
+       "variable": "Line1.Tower.Green",
+       "variableId": "t_Line1_Tower_Green",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#22c55e"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0013": {
+      "id": "GSE_0013",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Tower.Amber",
+      "property": {
+       "events": [],
+       "variable": "Line1.Tower.Amber",
+       "variableId": "t_Line1_Tower_Amber",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#f59e0b"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0014": {
+      "id": "GSE_0014",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Tower.Red",
+      "property": {
+       "events": [],
+       "variable": "Line1.Tower.Red",
+       "variableId": "t_Line1_Tower_Red",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#ef4444"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0020": {
+      "id": "GSE_0020",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Stations.IN.StateCode",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.IN.StateCode",
+       "variableId": "t_Line1_Stations_IN_StateCode",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#5b6472"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#9aa5b1"
+        },
+        {
+         "type": "range",
+         "min": "2",
+         "max": "2",
+         "color": "#22c55e"
+        },
+        {
+         "type": "range",
+         "min": "3",
+         "max": "3",
+         "color": "#f59e0b"
+        },
+        {
+         "type": "range",
+         "min": "4",
+         "max": "4",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "5",
+         "max": "5",
+         "color": "#3b82f6"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0021": {
+      "id": "VAL_0021",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.IN.State",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.IN.State",
+       "variableId": "t_Line1_Stations_IN_State",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0023": {
+      "id": "VAL_0023",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.IN.Step",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.IN.Step",
+       "variableId": "t_Line1_Stations_IN_Step",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0025": {
+      "id": "VAL_0025",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.IN.Cycles",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.IN.Cycles",
+       "variableId": "t_Line1_Stations_IN_Cycles",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0028": {
+      "id": "VAL_0028",
+      "type": "svg-ext-value",
+      "name": "Line1.Buffers.B1.Count",
+      "property": {
+       "events": [],
+       "variable": "Line1.Buffers.B1.Count",
+       "variableId": "t_Line1_Buffers_B1_Count",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "unit",
+         "min": 0,
+         "max": 0,
+         "text": " / 2"
+        }
+       ]
+      },
+      "label": "Value"
+     },
+     "GSE_0031": {
+      "id": "GSE_0031",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Stations.S1.StateCode",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S1.StateCode",
+       "variableId": "t_Line1_Stations_S1_StateCode",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#5b6472"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#9aa5b1"
+        },
+        {
+         "type": "range",
+         "min": "2",
+         "max": "2",
+         "color": "#22c55e"
+        },
+        {
+         "type": "range",
+         "min": "3",
+         "max": "3",
+         "color": "#f59e0b"
+        },
+        {
+         "type": "range",
+         "min": "4",
+         "max": "4",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "5",
+         "max": "5",
+         "color": "#3b82f6"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0032": {
+      "id": "VAL_0032",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S1.State",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S1.State",
+       "variableId": "t_Line1_Stations_S1_State",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0034": {
+      "id": "VAL_0034",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S1.Step",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S1.Step",
+       "variableId": "t_Line1_Stations_S1_Step",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0036": {
+      "id": "VAL_0036",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S1.Cycles",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S1.Cycles",
+       "variableId": "t_Line1_Stations_S1_Cycles",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0039": {
+      "id": "VAL_0039",
+      "type": "svg-ext-value",
+      "name": "Line1.Buffers.B2.Count",
+      "property": {
+       "events": [],
+       "variable": "Line1.Buffers.B2.Count",
+       "variableId": "t_Line1_Buffers_B2_Count",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "unit",
+         "min": 0,
+         "max": 0,
+         "text": " / 2"
+        }
+       ]
+      },
+      "label": "Value"
+     },
+     "GSE_0042": {
+      "id": "GSE_0042",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Stations.S2.StateCode",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S2.StateCode",
+       "variableId": "t_Line1_Stations_S2_StateCode",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#5b6472"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#9aa5b1"
+        },
+        {
+         "type": "range",
+         "min": "2",
+         "max": "2",
+         "color": "#22c55e"
+        },
+        {
+         "type": "range",
+         "min": "3",
+         "max": "3",
+         "color": "#f59e0b"
+        },
+        {
+         "type": "range",
+         "min": "4",
+         "max": "4",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "5",
+         "max": "5",
+         "color": "#3b82f6"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0043": {
+      "id": "VAL_0043",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S2.State",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S2.State",
+       "variableId": "t_Line1_Stations_S2_State",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0045": {
+      "id": "VAL_0045",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S2.Step",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S2.Step",
+       "variableId": "t_Line1_Stations_S2_Step",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0047": {
+      "id": "VAL_0047",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S2.Cycles",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S2.Cycles",
+       "variableId": "t_Line1_Stations_S2_Cycles",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0050": {
+      "id": "VAL_0050",
+      "type": "svg-ext-value",
+      "name": "Line1.Buffers.B3.Count",
+      "property": {
+       "events": [],
+       "variable": "Line1.Buffers.B3.Count",
+       "variableId": "t_Line1_Buffers_B3_Count",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "unit",
+         "min": 0,
+         "max": 0,
+         "text": " / 2"
+        }
+       ]
+      },
+      "label": "Value"
+     },
+     "GSE_0053": {
+      "id": "GSE_0053",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Stations.S3.StateCode",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S3.StateCode",
+       "variableId": "t_Line1_Stations_S3_StateCode",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#5b6472"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#9aa5b1"
+        },
+        {
+         "type": "range",
+         "min": "2",
+         "max": "2",
+         "color": "#22c55e"
+        },
+        {
+         "type": "range",
+         "min": "3",
+         "max": "3",
+         "color": "#f59e0b"
+        },
+        {
+         "type": "range",
+         "min": "4",
+         "max": "4",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "5",
+         "max": "5",
+         "color": "#3b82f6"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0054": {
+      "id": "VAL_0054",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S3.State",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S3.State",
+       "variableId": "t_Line1_Stations_S3_State",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0056": {
+      "id": "VAL_0056",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S3.Step",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S3.Step",
+       "variableId": "t_Line1_Stations_S3_Step",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0058": {
+      "id": "VAL_0058",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S3.Cycles",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S3.Cycles",
+       "variableId": "t_Line1_Stations_S3_Cycles",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0061": {
+      "id": "VAL_0061",
+      "type": "svg-ext-value",
+      "name": "Line1.Buffers.B4.Count",
+      "property": {
+       "events": [],
+       "variable": "Line1.Buffers.B4.Count",
+       "variableId": "t_Line1_Buffers_B4_Count",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "unit",
+         "min": 0,
+         "max": 0,
+         "text": " / 2"
+        }
+       ]
+      },
+      "label": "Value"
+     },
+     "GSE_0064": {
+      "id": "GSE_0064",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Stations.S4.StateCode",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S4.StateCode",
+       "variableId": "t_Line1_Stations_S4_StateCode",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#5b6472"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#9aa5b1"
+        },
+        {
+         "type": "range",
+         "min": "2",
+         "max": "2",
+         "color": "#22c55e"
+        },
+        {
+         "type": "range",
+         "min": "3",
+         "max": "3",
+         "color": "#f59e0b"
+        },
+        {
+         "type": "range",
+         "min": "4",
+         "max": "4",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "5",
+         "max": "5",
+         "color": "#3b82f6"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0065": {
+      "id": "VAL_0065",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S4.State",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S4.State",
+       "variableId": "t_Line1_Stations_S4_State",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0067": {
+      "id": "VAL_0067",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S4.Step",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S4.Step",
+       "variableId": "t_Line1_Stations_S4_Step",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0069": {
+      "id": "VAL_0069",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.S4.Cycles",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.S4.Cycles",
+       "variableId": "t_Line1_Stations_S4_Cycles",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "GSE_0072": {
+      "id": "GSE_0072",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Stations.OUT.StateCode",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.OUT.StateCode",
+       "variableId": "t_Line1_Stations_OUT_StateCode",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#5b6472"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#9aa5b1"
+        },
+        {
+         "type": "range",
+         "min": "2",
+         "max": "2",
+         "color": "#22c55e"
+        },
+        {
+         "type": "range",
+         "min": "3",
+         "max": "3",
+         "color": "#f59e0b"
+        },
+        {
+         "type": "range",
+         "min": "4",
+         "max": "4",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "5",
+         "max": "5",
+         "color": "#3b82f6"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0073": {
+      "id": "VAL_0073",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.OUT.State",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.OUT.State",
+       "variableId": "t_Line1_Stations_OUT_State",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0075": {
+      "id": "VAL_0075",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.OUT.Step",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.OUT.Step",
+       "variableId": "t_Line1_Stations_OUT_Step",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0077": {
+      "id": "VAL_0077",
+      "type": "svg-ext-value",
+      "name": "Line1.Stations.OUT.Cycles",
+      "property": {
+       "events": [],
+       "variable": "Line1.Stations.OUT.Cycles",
+       "variableId": "t_Line1_Stations_OUT_Cycles",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0082": {
+      "id": "VAL_0082",
+      "type": "svg-ext-value",
+      "name": "Line1.Counts.Good",
+      "property": {
+       "events": [],
+       "variable": "Line1.Counts.Good",
+       "variableId": "t_Line1_Counts_Good",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0084": {
+      "id": "VAL_0084",
+      "type": "svg-ext-value",
+      "name": "Line1.Counts.Reject",
+      "property": {
+       "events": [],
+       "variable": "Line1.Counts.Reject",
+       "variableId": "t_Line1_Counts_Reject",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0086": {
+      "id": "VAL_0086",
+      "type": "svg-ext-value",
+      "name": "Line1.Counts.In",
+      "property": {
+       "events": [],
+       "variable": "Line1.Counts.In",
+       "variableId": "t_Line1_Counts_In",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0088": {
+      "id": "VAL_0088",
+      "type": "svg-ext-value",
+      "name": "Line1.Counts.Boxes",
+      "property": {
+       "events": [],
+       "variable": "Line1.Counts.Boxes",
+       "variableId": "t_Line1_Counts_Boxes",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0090": {
+      "id": "VAL_0090",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.Throughput",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.Throughput",
+       "variableId": "t_Line1_Display_Throughput",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0092": {
+      "id": "VAL_0092",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.Yield",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.Yield",
+       "variableId": "t_Line1_Display_Yield",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0094": {
+      "id": "VAL_0094",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.OEE10",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.OEE10",
+       "variableId": "t_Line1_Display_OEE10",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0096": {
+      "id": "VAL_0096",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.LeadTime",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.LeadTime",
+       "variableId": "t_Line1_Display_LeadTime",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0098": {
+      "id": "VAL_0098",
+      "type": "svg-ext-value",
+      "name": "Line1.Counts.WIP",
+      "property": {
+       "events": [],
+       "variable": "Line1.Counts.WIP",
+       "variableId": "t_Line1_Counts_WIP",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0102": {
+      "id": "VAL_0102",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.Force",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.Force",
+       "variableId": "t_Line1_Display_Force",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "GXP_0103": {
+      "id": "GXP_0103",
+      "type": "svg-ext-gauge_progress",
+      "name": "Line1.S2.Force",
+      "property": {
+       "events": [],
+       "variable": "Line1.S2.Force",
+       "variableId": "t_Line1_S2_Force",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "minmax",
+         "min": 0,
+         "max": 200,
+         "style": [
+          true,
+          true
+         ],
+         "color": "#38bdf8"
+        }
+       ]
+      },
+      "label": "HtmlProgress"
+     },
+     "VAL_0109": {
+      "id": "VAL_0109",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.Health",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.Health",
+       "variableId": "t_Line1_Display_Health",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0111": {
+      "id": "VAL_0111",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.CyclesToFault",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.CyclesToFault",
+       "variableId": "t_Line1_Display_CyclesToFault",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "GSE_0113": {
+      "id": "GSE_0113",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.S2.ToolOK",
+      "property": {
+       "events": [],
+       "variable": "Line1.S2.ToolOK",
+       "variableId": "t_Line1_S2_ToolOK",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#22c55e"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0115": {
+      "id": "GSE_0115",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.S2.ToolChangeQueued",
+      "property": {
+       "events": [],
+       "variable": "Line1.S2.ToolChangeQueued",
+       "variableId": "t_Line1_S2_ToolChangeQueued",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#3b82f6"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0117": {
+      "id": "VAL_0117",
+      "type": "svg-ext-value",
+      "name": "Line1.Display.Maintenance",
+      "property": {
+       "events": [],
+       "variable": "Line1.Display.Maintenance",
+       "variableId": "t_Line1_Display_Maintenance",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "GSE_0120": {
+      "id": "GSE_0120",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Alarms.F001",
+      "property": {
+       "events": [],
+       "variable": "Line1.Alarms.F001",
+       "variableId": "t_Line1_Alarms_F001",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#ef4444"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0122": {
+      "id": "GSE_0122",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Alarms.F201",
+      "property": {
+       "events": [],
+       "variable": "Line1.Alarms.F201",
+       "variableId": "t_Line1_Alarms_F201",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#ef4444"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0124": {
+      "id": "GSE_0124",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Alarms.W202",
+      "property": {
+       "events": [],
+       "variable": "Line1.Alarms.W202",
+       "variableId": "t_Line1_Alarms_W202",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#f59e0b"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0126": {
+      "id": "GSE_0126",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.Alarms.F002",
+      "property": {
+       "events": [],
+       "variable": "Line1.Alarms.F002",
+       "variableId": "t_Line1_Alarms_F002",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#39424e"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#ef4444"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "GSE_0129": {
+      "id": "GSE_0129",
+      "type": "svg-ext-gauge_semaphore",
+      "name": "Line1.LastInspection.Pass",
+      "property": {
+       "events": [],
+       "variable": "Line1.LastInspection.Pass",
+       "variableId": "t_Line1_LastInspection_Pass",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": "",
+       "ranges": [
+        {
+         "type": "range",
+         "min": "0",
+         "max": "0",
+         "color": "#ef4444"
+        },
+        {
+         "type": "range",
+         "min": "1",
+         "max": "1",
+         "color": "#22c55e"
+        }
+       ]
+      },
+      "label": "HtmlSemaphore"
+     },
+     "VAL_0130": {
+      "id": "VAL_0130",
+      "type": "svg-ext-value",
+      "name": "Line1.LastInspection.Serial",
+      "property": {
+       "events": [],
+       "variable": "Line1.LastInspection.Serial",
+       "variableId": "t_Line1_LastInspection_Serial",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0131": {
+      "id": "VAL_0131",
+      "type": "svg-ext-value",
+      "name": "Line1.LastInspection.Status",
+      "property": {
+       "events": [],
+       "variable": "Line1.LastInspection.Status",
+       "variableId": "t_Line1_LastInspection_Status",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "VAL_0132": {
+      "id": "VAL_0132",
+      "type": "svg-ext-value",
+      "name": "Line1.LastInspection.Codes",
+      "property": {
+       "events": [],
+       "variable": "Line1.LastInspection.Codes",
+       "variableId": "t_Line1_LastInspection_Codes",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     },
+     "HXB_0135": {
+      "id": "HXB_0135",
+      "type": "svg-ext-html_button",
+      "name": "START",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.Start",
+       "variableId": "t_Line1_HMI_Start",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0136": {
+      "id": "HXB_0136",
+      "type": "svg-ext-html_button",
+      "name": "STOP",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.Stop",
+       "variableId": "t_Line1_HMI_Stop",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0137": {
+      "id": "HXB_0137",
+      "type": "svg-ext-html_button",
+      "name": "RESET",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.Reset",
+       "variableId": "t_Line1_HMI_Reset",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0138": {
+      "id": "HXB_0138",
+      "type": "svg-ext-html_button",
+      "name": "REPAIR S2",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.RepairS2",
+       "variableId": "t_Line1_HMI_RepairS2",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0139": {
+      "id": "HXB_0139",
+      "type": "svg-ext-html_button",
+      "name": "TOOL CHANGE S2",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.ToolChangeS2",
+       "variableId": "t_Line1_HMI_ToolChangeS2",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0140": {
+      "id": "HXB_0140",
+      "type": "svg-ext-html_button",
+      "name": "INJECT F201",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.InjectF201",
+       "variableId": "t_Line1_HMI_InjectF201",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0141": {
+      "id": "HXB_0141",
+      "type": "svg-ext-html_button",
+      "name": "EMERGENCY STOP",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.EStopEngage",
+       "variableId": "t_Line1_HMI_EStopEngage",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0142": {
+      "id": "HXB_0142",
+      "type": "svg-ext-html_button",
+      "name": "RELEASE E-STOP",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.EStopRelease",
+       "variableId": "t_Line1_HMI_EStopRelease",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0144": {
+      "id": "HXB_0144",
+      "type": "svg-ext-html_button",
+      "name": "1x",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "1"
+        }
+       ],
+       "variable": "Line1.HMI.SpeedCmd",
+       "variableId": "t_Line1_HMI_SpeedCmd",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0145": {
+      "id": "HXB_0145",
+      "type": "svg-ext-html_button",
+      "name": "2x",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "2"
+        }
+       ],
+       "variable": "Line1.HMI.SpeedCmd",
+       "variableId": "t_Line1_HMI_SpeedCmd",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0146": {
+      "id": "HXB_0146",
+      "type": "svg-ext-html_button",
+      "name": "5x",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "5"
+        }
+       ],
+       "variable": "Line1.HMI.SpeedCmd",
+       "variableId": "t_Line1_HMI_SpeedCmd",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "HXB_0147": {
+      "id": "HXB_0147",
+      "type": "svg-ext-html_button",
+      "name": "10x",
+      "property": {
+       "events": [
+        {
+         "type": "click",
+         "action": "onSetValue",
+         "actparam": "10"
+        }
+       ],
+       "variable": "Line1.HMI.SpeedCmd",
+       "variableId": "t_Line1_HMI_SpeedCmd",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "HtmlButton"
+     },
+     "VAL_0149": {
+      "id": "VAL_0149",
+      "type": "svg-ext-value",
+      "name": "Line1.HMI.LastResult",
+      "property": {
+       "events": [],
+       "variable": "Line1.HMI.LastResult",
+       "variableId": "t_Line1_HMI_LastResult",
+       "variableSrc": "d_syringetwin",
+       "alarmId": "",
+       "alarmSrc": "",
+       "alarm": "",
+       "alarmColor": ""
+      },
+      "label": "Value"
+     }
+    },
+    "variables": {},
+    "svgcontent": "<svg width=\"1280\" height=\"800\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns:html=\"http://www.w3.org/1999/xhtml\"><g><title>Layer 1</title><rect id=\"svg_0001\" x=\"0\" y=\"0\" width=\"1280\" height=\"800\" rx=\"0\" fill=\"#1b222b\" stroke=\"#1b222b\" stroke-width=\"0\"/><rect id=\"svg_0002\" x=\"0\" y=\"0\" width=\"1280\" height=\"64\" rx=\"0\" fill=\"#141a21\" stroke=\"#141a21\" stroke-width=\"0\"/><text id=\"svg_0003\" x=\"24\" y=\"40\" font-family=\"sans-serif\" font-size=\"24\" font-weight=\"bold\" fill=\"#7dd3fc\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">SYRINGETWIN</text><text id=\"svg_0004\" x=\"206\" y=\"40\" font-family=\"sans-serif\" font-size=\"16\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">LINE 1 \u00b7 OPERATOR PANEL</text><text id=\"svg_0005\" x=\"560\" y=\"26\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">LINE STATE</text><g id=\"VAL_0006\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"20\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0006_t\" x=\"560\" y=\"48\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"20\" fill=\"#ffffff\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0007\" x=\"800\" y=\"26\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">SIM TIME</text><g id=\"VAL_0008\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0008_t\" x=\"800\" y=\"48\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0009\" x=\"930\" y=\"26\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">SPEED</text><g id=\"VAL_0010\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0010_t\" x=\"930\" y=\"48\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0011\" x=\"1132\" y=\"8\" width=\"132\" height=\"48\" rx=\"6\" fill=\"#0d1117\" stroke=\"#3a4656\" stroke-width=\"1\"/><g id=\"GSE_0012\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0012_e\" cx=\"1158\" cy=\"32\" rx=\"13\" ry=\"13\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"GSE_0013\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0013_e\" cx=\"1198\" cy=\"32\" rx=\"13\" ry=\"13\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"GSE_0014\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0014_e\" cx=\"1238\" cy=\"32\" rx=\"13\" ry=\"13\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><rect id=\"svg_0015\" x=\"20\" y=\"78\" width=\"1240\" height=\"250\" rx=\"8\" fill=\"#262f3a\" stroke=\"#3a4656\" stroke-width=\"1\"/><text id=\"svg_0016\" x=\"36\" y=\"104\" font-family=\"sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">PROCESS OVERVIEW \u00b7 SYRINGE ASSEMBLY CELL</text><line id=\"svg_0017\" x1=\"48\" y1=\"286\" x2=\"1232\" y2=\"286\" stroke=\"#56657a\" stroke-width=\"10\" fill=\"none\"/><rect id=\"svg_0018\" x=\"42\" y=\"112\" width=\"156\" height=\"150\" rx=\"8\" fill=\"#1e2630\" stroke=\"#4b586b\" stroke-width=\"1.5\"/><text id=\"svg_0019\" x=\"120\" y=\"138\" font-family=\"sans-serif\" font-size=\"15\" font-weight=\"bold\" fill=\"#ffffff\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">IN \u00b7 LOAD</text><g id=\"GSE_0020\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0020_e\" cx=\"68\" cy=\"170\" rx=\"14\" ry=\"14\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"VAL_0021\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0021_t\" x=\"90\" y=\"176\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0022\" x=\"56\" y=\"206\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">STEP</text><g id=\"VAL_0023\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0023_t\" x=\"56\" y=\"224\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0024\" x=\"56\" y=\"248\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">CYCLES</text><g id=\"VAL_0025\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0025_t\" x=\"124\" y=\"248\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0026\" x=\"202\" y=\"268\" width=\"44\" height=\"36\" rx=\"6\" fill=\"#0d1117\" stroke=\"#f5c518\" stroke-width=\"1.5\"/><text id=\"svg_0027\" x=\"224\" y=\"264\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"bold\" fill=\"#f5c518\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">B1</text><g id=\"VAL_0028\" type=\"svg-ext-value\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0028_t\" x=\"224\" y=\"292\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"#ffffff\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0029\" x=\"250\" y=\"112\" width=\"156\" height=\"150\" rx=\"8\" fill=\"#1e2630\" stroke=\"#4b586b\" stroke-width=\"1.5\"/><text id=\"svg_0030\" x=\"328\" y=\"138\" font-family=\"sans-serif\" font-size=\"15\" font-weight=\"bold\" fill=\"#ffffff\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">S1 \u00b7 PRINT</text><g id=\"GSE_0031\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0031_e\" cx=\"276\" cy=\"170\" rx=\"14\" ry=\"14\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"VAL_0032\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0032_t\" x=\"298\" y=\"176\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0033\" x=\"264\" y=\"206\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">STEP</text><g id=\"VAL_0034\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0034_t\" x=\"264\" y=\"224\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0035\" x=\"264\" y=\"248\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">CYCLES</text><g id=\"VAL_0036\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0036_t\" x=\"332\" y=\"248\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0037\" x=\"410\" y=\"268\" width=\"44\" height=\"36\" rx=\"6\" fill=\"#0d1117\" stroke=\"#f5c518\" stroke-width=\"1.5\"/><text id=\"svg_0038\" x=\"432\" y=\"264\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"bold\" fill=\"#f5c518\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">B2</text><g id=\"VAL_0039\" type=\"svg-ext-value\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0039_t\" x=\"432\" y=\"292\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"#ffffff\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0040\" x=\"458\" y=\"112\" width=\"156\" height=\"150\" rx=\"8\" fill=\"#1e2630\" stroke=\"#4b586b\" stroke-width=\"1.5\"/><text id=\"svg_0041\" x=\"536\" y=\"138\" font-family=\"sans-serif\" font-size=\"15\" font-weight=\"bold\" fill=\"#ffffff\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">S2 \u00b7 PRESS</text><g id=\"GSE_0042\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0042_e\" cx=\"484\" cy=\"170\" rx=\"14\" ry=\"14\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"VAL_0043\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0043_t\" x=\"506\" y=\"176\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0044\" x=\"472\" y=\"206\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">STEP</text><g id=\"VAL_0045\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0045_t\" x=\"472\" y=\"224\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0046\" x=\"472\" y=\"248\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">CYCLES</text><g id=\"VAL_0047\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0047_t\" x=\"540\" y=\"248\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0048\" x=\"618\" y=\"268\" width=\"44\" height=\"36\" rx=\"6\" fill=\"#0d1117\" stroke=\"#f5c518\" stroke-width=\"1.5\"/><text id=\"svg_0049\" x=\"640\" y=\"264\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"bold\" fill=\"#f5c518\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">B3</text><g id=\"VAL_0050\" type=\"svg-ext-value\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0050_t\" x=\"640\" y=\"292\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"#ffffff\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0051\" x=\"666\" y=\"112\" width=\"156\" height=\"150\" rx=\"8\" fill=\"#1e2630\" stroke=\"#4b586b\" stroke-width=\"1.5\"/><text id=\"svg_0052\" x=\"744\" y=\"138\" font-family=\"sans-serif\" font-size=\"15\" font-weight=\"bold\" fill=\"#ffffff\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">S3 \u00b7 CAP</text><g id=\"GSE_0053\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0053_e\" cx=\"692\" cy=\"170\" rx=\"14\" ry=\"14\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"VAL_0054\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0054_t\" x=\"714\" y=\"176\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0055\" x=\"680\" y=\"206\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">STEP</text><g id=\"VAL_0056\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0056_t\" x=\"680\" y=\"224\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0057\" x=\"680\" y=\"248\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">CYCLES</text><g id=\"VAL_0058\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0058_t\" x=\"748\" y=\"248\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0059\" x=\"826\" y=\"268\" width=\"44\" height=\"36\" rx=\"6\" fill=\"#0d1117\" stroke=\"#f5c518\" stroke-width=\"1.5\"/><text id=\"svg_0060\" x=\"848\" y=\"264\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"bold\" fill=\"#f5c518\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">B4</text><g id=\"VAL_0061\" type=\"svg-ext-value\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0061_t\" x=\"848\" y=\"292\" text-anchor=\"middle\" font-family=\"sans-serif\" font-size=\"15\" fill=\"#ffffff\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0062\" x=\"874\" y=\"112\" width=\"156\" height=\"150\" rx=\"8\" fill=\"#1e2630\" stroke=\"#4b586b\" stroke-width=\"1.5\"/><text id=\"svg_0063\" x=\"952\" y=\"138\" font-family=\"sans-serif\" font-size=\"15\" font-weight=\"bold\" fill=\"#ffffff\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">S4 \u00b7 INSPECT</text><g id=\"GSE_0064\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0064_e\" cx=\"900\" cy=\"170\" rx=\"14\" ry=\"14\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"VAL_0065\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0065_t\" x=\"922\" y=\"176\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0066\" x=\"888\" y=\"206\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">STEP</text><g id=\"VAL_0067\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0067_t\" x=\"888\" y=\"224\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0068\" x=\"888\" y=\"248\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">CYCLES</text><g id=\"VAL_0069\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0069_t\" x=\"956\" y=\"248\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0070\" x=\"1082\" y=\"112\" width=\"156\" height=\"150\" rx=\"8\" fill=\"#1e2630\" stroke=\"#4b586b\" stroke-width=\"1.5\"/><text id=\"svg_0071\" x=\"1160\" y=\"138\" font-family=\"sans-serif\" font-size=\"15\" font-weight=\"bold\" fill=\"#ffffff\" text-anchor=\"middle\" stroke-width=\"0\" xml:space=\"preserve\">OUT \u00b7 PACK</text><g id=\"GSE_0072\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0072_e\" cx=\"1108\" cy=\"170\" rx=\"14\" ry=\"14\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"VAL_0073\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0073_t\" x=\"1130\" y=\"176\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0074\" x=\"1096\" y=\"206\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">STEP</text><g id=\"VAL_0075\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0075_t\" x=\"1096\" y=\"224\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0076\" x=\"1096\" y=\"248\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">CYCLES</text><g id=\"VAL_0077\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0077_t\" x=\"1164\" y=\"248\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"13\" fill=\"#cbd5e1\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0078\" x=\"1232\" y=\"318\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"end\" stroke-width=\"0\" xml:space=\"preserve\">STATE COLOURS:  grey stopped \u00b7 light grey starved \u00b7 green running \u00b7 amber blocked \u00b7 red fault \u00b7 blue maintenance</text><rect id=\"svg_0079\" x=\"20\" y=\"342\" width=\"400\" height=\"214\" rx=\"8\" fill=\"#262f3a\" stroke=\"#3a4656\" stroke-width=\"1\"/><text id=\"svg_0080\" x=\"36\" y=\"368\" font-family=\"sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">PRODUCTION</text><text id=\"svg_0081\" x=\"40\" y=\"378\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">GOOD</text><g id=\"VAL_0082\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0082_t\" x=\"40\" y=\"412\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"#4ade80\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0083\" x=\"132\" y=\"378\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">REJECT</text><g id=\"VAL_0084\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0084_t\" x=\"132\" y=\"412\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"#f87171\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0085\" x=\"224\" y=\"378\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">LOADED</text><g id=\"VAL_0086\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0086_t\" x=\"224\" y=\"412\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0087\" x=\"316\" y=\"378\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">BOXES</text><g id=\"VAL_0088\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0088_t\" x=\"316\" y=\"412\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"28\" fill=\"#fbbf24\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0089\" x=\"40\" y=\"456\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">THROUGHPUT</text><g id=\"VAL_0090\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0090_t\" x=\"40\" y=\"482\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"#e2e8f0\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0091\" x=\"132\" y=\"456\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">YIELD</text><g id=\"VAL_0092\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0092_t\" x=\"132\" y=\"482\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"#e2e8f0\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0093\" x=\"224\" y=\"456\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">OEE 10 MIN</text><g id=\"VAL_0094\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0094_t\" x=\"224\" y=\"482\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"#e2e8f0\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0095\" x=\"316\" y=\"456\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">LEAD TIME</text><g id=\"VAL_0096\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0096_t\" x=\"316\" y=\"482\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"17\" fill=\"#e2e8f0\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0097\" x=\"40\" y=\"524\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">WORK IN PROGRESS</text><g id=\"VAL_0098\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"15\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0098_t\" x=\"160\" y=\"525\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"15\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0099\" x=\"440\" y=\"342\" width=\"400\" height=\"214\" rx=\"8\" fill=\"#262f3a\" stroke=\"#3a4656\" stroke-width=\"1\"/><text id=\"svg_0100\" x=\"456\" y=\"368\" font-family=\"sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">S2 PRESS \u00b7 CONDITION MONITORING</text><text id=\"svg_0101\" x=\"460\" y=\"378\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">PRESS FORCE</text><g id=\"VAL_0102\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"30\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0102_t\" x=\"460\" y=\"414\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"30\" fill=\"#7dd3fc\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><g id=\"GXP_0103\" type=\"svg-ext-gauge_progress\" font-family=\"sans-serif\" font-size=\"14\" stroke=\"null\"><rect id=\"A-GXP_0103\" x=\"790\" y=\"368\" width=\"30\" height=\"172\" fill=\"#11161cff\" stroke=\"null\"/><rect id=\"B-GXP_0103\" x=\"790\" y=\"454.0\" width=\"30\" height=\"86.0\" fill=\"#38bdf8\" stroke=\"null\"/><foreignObject id=\"H-GXP_0103\" x=\"790\" y=\"368\" width=\"30\" height=\"172\" font-size=\"14\"/></g><line id=\"svg_0104\" x1=\"782\" y1=\"419.6\" x2=\"828\" y2=\"419.6\" stroke=\"#f59e0b\" stroke-width=\"2\" fill=\"none\"/><text id=\"svg_0105\" x=\"778\" y=\"423.6\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#f59e0b\" text-anchor=\"end\" stroke-width=\"0\" xml:space=\"preserve\">140</text><line id=\"svg_0106\" x1=\"782\" y1=\"402.4\" x2=\"828\" y2=\"402.4\" stroke=\"#ef4444\" stroke-width=\"2\" fill=\"none\"/><text id=\"svg_0107\" x=\"778\" y=\"406.4\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#ef4444\" text-anchor=\"end\" stroke-width=\"0\" xml:space=\"preserve\">160</text><text id=\"svg_0108\" x=\"460\" y=\"452\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">TOOL HEALTH</text><g id=\"VAL_0109\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0109_t\" x=\"460\" y=\"478\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0110\" x=\"580\" y=\"452\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">CYCLES TO OVERLOAD</text><g id=\"VAL_0111\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0111_t\" x=\"580\" y=\"478\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"18\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0112\" x=\"460\" y=\"512\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">TOOL OK</text><g id=\"GSE_0113\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0113_e\" cx=\"530\" cy=\"508\" rx=\"9\" ry=\"9\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><text id=\"svg_0114\" x=\"560\" y=\"512\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">TOOL CHANGE QUEUED</text><g id=\"GSE_0115\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0115_e\" cx=\"690\" cy=\"508\" rx=\"9\" ry=\"9\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><text id=\"svg_0116\" x=\"460\" y=\"540\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">MAINTENANCE LEFT</text><g id=\"VAL_0117\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0117_t\" x=\"580\" y=\"541\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0118\" x=\"860\" y=\"342\" width=\"400\" height=\"214\" rx=\"8\" fill=\"#262f3a\" stroke=\"#3a4656\" stroke-width=\"1\"/><text id=\"svg_0119\" x=\"876\" y=\"368\" font-family=\"sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">ALARMS & INSPECTION</text><g id=\"GSE_0120\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0120_e\" cx=\"884\" cy=\"380\" rx=\"9\" ry=\"9\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><text id=\"svg_0121\" x=\"902\" y=\"385\" font-family=\"sans-serif\" font-size=\"13\" font-weight=\"normal\" fill=\"#e8eef4\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">F001  EMERGENCY STOP</text><g id=\"GSE_0122\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0122_e\" cx=\"884\" cy=\"408\" rx=\"9\" ry=\"9\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><text id=\"svg_0123\" x=\"902\" y=\"413\" font-family=\"sans-serif\" font-size=\"13\" font-weight=\"normal\" fill=\"#e8eef4\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">F201  PRESS OVERLOAD</text><g id=\"GSE_0124\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0124_e\" cx=\"884\" cy=\"436\" rx=\"9\" ry=\"9\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><text id=\"svg_0125\" x=\"902\" y=\"441\" font-family=\"sans-serif\" font-size=\"13\" font-weight=\"normal\" fill=\"#e8eef4\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">W202  TOOL WEAR WARNING</text><g id=\"GSE_0126\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0126_e\" cx=\"884\" cy=\"464\" rx=\"9\" ry=\"9\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><text id=\"svg_0127\" x=\"902\" y=\"469\" font-family=\"sans-serif\" font-size=\"13\" font-weight=\"normal\" fill=\"#e8eef4\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">F002  PLC LINK LOST</text><text id=\"svg_0128\" x=\"880\" y=\"508\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">LAST INSPECTION</text><g id=\"GSE_0129\" type=\"svg-ext-gauge_semaphore\" fill=\"#000000\" stroke=\"#000000\" font-size=\"14\" font-family=\"sans-serif\"><ellipse id=\"GSE_0129_e\" cx=\"892\" cy=\"532\" rx=\"11\" ry=\"11\" fill=\"#39424e\" stroke=\"#11161c\" stroke-width=\"2\"/></g><g id=\"VAL_0130\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0130_t\" x=\"912\" y=\"537\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#e8eef4\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><g id=\"VAL_0131\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"15\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0131_t\" x=\"1080\" y=\"537\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"15\" fill=\"#ffffff\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><g id=\"VAL_0132\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0132_t\" x=\"1140\" y=\"537\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#fca5a5\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><rect id=\"svg_0133\" x=\"20\" y=\"570\" width=\"1240\" height=\"168\" rx=\"8\" fill=\"#262f3a\" stroke=\"#3a4656\" stroke-width=\"1\"/><text id=\"svg_0134\" x=\"36\" y=\"596\" font-family=\"sans-serif\" font-size=\"12\" font-weight=\"bold\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">OPERATOR COMMANDS \u00b7 written to the twin over OPC UA, audited as \"HMI (OPC UA)\"</text><g id=\"HXB_0135\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"15\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0135_r\" stroke-width=\"0\" x=\"40\" y=\"610\" width=\"130\" height=\"52\" fill=\"#16a34aff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0135\" x=\"40\" y=\"610\" width=\"130\" height=\"52\"><BUTTON id=\"B-HXB_0135\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 15px; font-weight: bold; background-color: rgb(22, 163, 74); color: #ffffff; border-radius: 6px;\">START</BUTTON></foreignObject></g><g id=\"HXB_0136\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"15\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0136_r\" stroke-width=\"0\" x=\"182\" y=\"610\" width=\"130\" height=\"52\" fill=\"#475569ff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0136\" x=\"182\" y=\"610\" width=\"130\" height=\"52\"><BUTTON id=\"B-HXB_0136\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 15px; font-weight: bold; background-color: rgb(71, 85, 105); color: #ffffff; border-radius: 6px;\">STOP</BUTTON></foreignObject></g><g id=\"HXB_0137\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"15\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0137_r\" stroke-width=\"0\" x=\"324\" y=\"610\" width=\"130\" height=\"52\" fill=\"#d97706ff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0137\" x=\"324\" y=\"610\" width=\"130\" height=\"52\"><BUTTON id=\"B-HXB_0137\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 15px; font-weight: bold; background-color: rgb(217, 119, 6); color: #ffffff; border-radius: 6px;\">RESET</BUTTON></foreignObject></g><g id=\"HXB_0138\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"15\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0138_r\" stroke-width=\"0\" x=\"486\" y=\"610\" width=\"150\" height=\"52\" fill=\"#2563ebff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0138\" x=\"486\" y=\"610\" width=\"150\" height=\"52\"><BUTTON id=\"B-HXB_0138\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 15px; font-weight: bold; background-color: rgb(37, 99, 235); color: #ffffff; border-radius: 6px;\">REPAIR S2</BUTTON></foreignObject></g><g id=\"HXB_0139\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"14\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0139_r\" stroke-width=\"0\" x=\"648\" y=\"610\" width=\"160\" height=\"52\" fill=\"#2563ebff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0139\" x=\"648\" y=\"610\" width=\"160\" height=\"52\"><BUTTON id=\"B-HXB_0139\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 14px; font-weight: bold; background-color: rgb(37, 99, 235); color: #ffffff; border-radius: 6px;\">TOOL CHANGE S2</BUTTON></foreignObject></g><g id=\"HXB_0140\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"14\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0140_r\" stroke-width=\"0\" x=\"820\" y=\"610\" width=\"150\" height=\"52\" fill=\"#7c3aedff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0140\" x=\"820\" y=\"610\" width=\"150\" height=\"52\"><BUTTON id=\"B-HXB_0140\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 14px; font-weight: bold; background-color: rgb(124, 58, 237); color: #ffffff; border-radius: 6px;\">INJECT F201</BUTTON></foreignObject></g><g id=\"HXB_0141\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"17\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0141_r\" stroke-width=\"0\" x=\"1000\" y=\"596\" width=\"240\" height=\"62\" fill=\"#dc2626ff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0141\" x=\"1000\" y=\"596\" width=\"240\" height=\"62\"><BUTTON id=\"B-HXB_0141\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 17px; font-weight: bold; background-color: rgb(220, 38, 38); color: #ffffff; border-radius: 6px;\">EMERGENCY STOP</BUTTON></foreignObject></g><g id=\"HXB_0142\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"13\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0142_r\" stroke-width=\"0\" x=\"1000\" y=\"668\" width=\"240\" height=\"40\" fill=\"#7f1d1dff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0142\" x=\"1000\" y=\"668\" width=\"240\" height=\"40\"><BUTTON id=\"B-HXB_0142\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 13px; font-weight: bold; background-color: rgb(127, 29, 29); color: #ffffff; border-radius: 6px;\">RELEASE E-STOP</BUTTON></foreignObject></g><text id=\"svg_0143\" x=\"40\" y=\"698\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">SPEED</text><g id=\"HXB_0144\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"14\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0144_r\" stroke-width=\"0\" x=\"90\" y=\"676\" width=\"64\" height=\"36\" fill=\"#334155ff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0144\" x=\"90\" y=\"676\" width=\"64\" height=\"36\"><BUTTON id=\"B-HXB_0144\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 14px; font-weight: bold; background-color: rgb(51, 65, 85); color: #ffffff; border-radius: 6px;\">1x</BUTTON></foreignObject></g><g id=\"HXB_0145\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"14\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0145_r\" stroke-width=\"0\" x=\"164\" y=\"676\" width=\"64\" height=\"36\" fill=\"#334155ff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0145\" x=\"164\" y=\"676\" width=\"64\" height=\"36\"><BUTTON id=\"B-HXB_0145\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 14px; font-weight: bold; background-color: rgb(51, 65, 85); color: #ffffff; border-radius: 6px;\">2x</BUTTON></foreignObject></g><g id=\"HXB_0146\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"14\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0146_r\" stroke-width=\"0\" x=\"238\" y=\"676\" width=\"64\" height=\"36\" fill=\"#334155ff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0146\" x=\"238\" y=\"676\" width=\"64\" height=\"36\"><BUTTON id=\"B-HXB_0146\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 14px; font-weight: bold; background-color: rgb(51, 65, 85); color: #ffffff; border-radius: 6px;\">5x</BUTTON></foreignObject></g><g id=\"HXB_0147\" type=\"svg-ext-html_button\" fill=\"#FFFFFF\" font-size=\"14\" font-family=\"sans-serif\" stroke=\"#000000\"><rect id=\"HXB_0147_r\" stroke-width=\"0\" x=\"312\" y=\"676\" width=\"64\" height=\"36\" fill=\"#334155ff\" stroke=\"#ffffff\"/><foreignObject id=\"H-HXB_0147\" x=\"312\" y=\"676\" width=\"64\" height=\"36\"><BUTTON id=\"B-HXB_0147\" class=\"md-btn md-btn-raised\" style=\"width: 100%; height: 100%; font-size: 14px; font-weight: bold; background-color: rgb(51, 65, 85); color: #ffffff; border-radius: 6px;\">10x</BUTTON></foreignObject></g><text id=\"svg_0148\" x=\"410\" y=\"698\" font-family=\"sans-serif\" font-size=\"10\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">LAST COMMAND</text><g id=\"VAL_0149\" type=\"svg-ext-value\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"none\" stroke-width=\"0\"><text id=\"VAL_0149_t\" x=\"500\" y=\"698\" text-anchor=\"start\" font-family=\"sans-serif\" font-size=\"14\" fill=\"#fde68a\" stroke-width=\"0\" xml:space=\"preserve\">##.##</text></g><text id=\"svg_0150\" x=\"20\" y=\"772\" font-family=\"sans-serif\" font-size=\"11\" font-weight=\"normal\" fill=\"#93a3b5\" text-anchor=\"start\" stroke-width=\"0\" xml:space=\"preserve\">OPC UA \u00b7 opc.tcp://127.0.0.1:4840/syringetwin/ \u00b7 node IDs per docs/plc/tag_dictionary.csv \u00b7 SyringeTwin Group 07</text></g></svg>"
+   }
+  ],
+  "layout": {
+   "start": "v_operator",
+   "navigation": {
+    "mode": "void",
+    "type": "block",
+    "items": []
+   },
+   "header": {
+    "title": "SyringeTwin HMI"
+   },
+   "zoom": "autoresize"
+  }
+ },
+ "charts": [],
+ "server": {
+  "id": "0",
+  "name": "FUXA Server",
+  "type": "FuxaServer",
+  "property": {}
+ }
+}

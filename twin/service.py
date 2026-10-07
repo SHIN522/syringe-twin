@@ -11,6 +11,8 @@ class Service:
     def __init__(self, data_dir='data', config=None, plc=None, opcua=None):
         self.engine = Engine(config)
         self.opcua = opcua  # OpcUaServer, or None when OPC UA is disabled
+        if opcua is not None and opcua.on_command is None:
+            opcua.on_command = self.command  # HMI writes run the same audited command path
         self.bridge = plc  # PlcBridge in PLC mode, None in internal mode
         if plc:
             plc.attach(self.engine.state)
@@ -69,6 +71,10 @@ class Service:
         self.latest['meta']['plc'] = (self.bridge.status(self.engine.state) if self.bridge
                                       else {'mode': 'internal'})
         self.latest['meta']['opcua'] = self.opcua.status() if self.opcua else None
+        decided = [p for p in self.engine.state.parts.values() if p.status != 'WIP']
+        last = max(decided, key=lambda p: p.t_out or 0, default=None)
+        self.latest['meta']['last_decision'] = None if last is None else {
+            'serial': last.serial, 'status': last.status, 'codes': last.reject_codes}
         if self.opcua:
             self.opcua.publish(self.latest)
         k = self.latest['kpi']

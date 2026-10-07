@@ -76,6 +76,33 @@ Stop everything with Ctrl+C in the launch terminal.
 git add docs/evidence && git commit -m "Record OpenPLC acceptance results on Ubuntu" && git push
 ```
 
+## 7. Live demo: OpenPLC → twin → CoppeliaSim (all on Ubuntu)
+
+One-time, about 5 minutes (downloads CoppeliaSim Edu 4.10 into `~/CoppeliaSim`):
+
+```bash
+git pull && bash tools/ubuntu_coppelia.sh
+```
+
+Then use three terminals. The OpenPLC program `syringetwin.st` must be running (section 4).
+
+1. Twin under PLC control: `.venv/bin/python launch.py --plc 127.0.0.1 --profile demo --opcua`
+2. 3D cell: `.venv/bin/python tools/coppelia_view.py --launch`
+3. OpenPLC dashboard (http://localhost:8080 → *Monitoring*) next to the CoppeliaSim window.
+
+In the dashboard (http://127.0.0.1:8000): **Reset alarms**, then **Start line**, speed 2×. What to point at:
+
+| Action | PLC | CoppeliaSim |
+|---|---|---|
+| Start line | `M_SYS_RUN` true | PLC cabinet RUN LED green, pallets move, stack light green |
+| Every S2 press | PLC decides F201 and returns the verdict sequence | S2 only releases the pallet after the PLC verdict |
+| E-stop | PLC latches `F001` | everything freezes, panel E-stop blinks, stack light red |
+| Natural F201 (~87 s at 10×) | PLC sets `F201` | S2 housing red, upstream blocks, downstream starves |
+| **Stop PLC** in OpenPLC | Modbus stops answering | twin raises F002 within 1 s, line halts, cabinet LINK LED goes dark and FAULT blinks |
+| Start PLC → Reset → Start | | line resumes |
+
+The **Stop PLC** step is the proof that the PLC is in the loop: the 3D line cannot run without it.
+
 ## Troubleshooting
 
 | Symptom | Fix |
@@ -84,3 +111,4 @@ git add docs/evidence && git commit -m "Record OpenPLC acceptance results on Ubu
 | Compile error on upload | Make sure the file is `syringetwin.st` from this repository; it is verified with the matiec compiler. |
 | Port 8000 in use | `.venv/bin/python launch.py --stop`, or choose `--api-port 8001 --ui-port 8502`. |
 | Twin shows F002 immediately | The PLC is stopped, or the program is `spike.st` instead of `syringetwin.st`. |
+| CoppeliaSim on Ubuntu does not start | Run `~/CoppeliaSim/coppeliaSim.sh` in its own terminal to see the error, then run the viewer without `--launch`. |

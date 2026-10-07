@@ -148,3 +148,8 @@ These override the scope cut in §2 where they conflict.
 - **Demo profile** `config/profiles/demo.yaml` (`launch.py --profile demo`): fresh S2 tool, wear 0.010 per cycle, W202 trend warning at < 25 cycles. Seed 7 at 10× gives, in video time: W202 ≈ 41 s, first R2 ≈ 45 s, natural F201 ≈ 87 s. The dashboard shows a "Demo profile" badge for every run that uses it.
 - **W202** is raised on the **mean of the last 5 press forces** > 135 N (not a single sample), or when the force trend predicts fewer than `warn.cycles` cycles to 160 N. The trend needs at least **15** samples. Thresholds live in `config/line.yaml` under `stations.S2.warn`.
 - **Rolling OEE**: the same A × P × Q formula over the trailing 600 sim-s (`kpi.oee_win`), next to the run-to-date value. The dashboard OEE tile and trend show the rolling value, so a fault dip and its recovery are both visible.
+
+### D13 — Operator HMI over OPC UA
+- The HMI is **FUXA** (open-source HMI/SCADA), project `hmi/syringetwin_hmi.json`, connected to the twin as an **OPC UA client**.
+- The twin's OPC UA server stays read-only except `Line1.HMI.*`: Start, Stop, Reset, EStopEngage, EStopRelease, RepairS2, ToolChangeS2, InjectF201 (Boolean pulses) and SpeedCmd (Int32). Each write runs the normal command path, is audited as user "HMI (OPC UA)", and its outcome is published in `Line1.HMI.LastResult`.
+- `Line1.Display.*` publishes pre-formatted strings for panels; the raw numeric nodes are unchanged.
