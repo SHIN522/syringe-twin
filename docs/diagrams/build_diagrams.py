@@ -93,13 +93,14 @@ def architecture():
     d.box('<b>Historian</b><br>SQLite per run · parts · events<br>alarms · commands · KPI samples', 290, 175, 230, 95, 'grey', parent=l3)
     d.box('<b>Commands + audit</b><br>commands.py<br>who · what · when for every action', 550, 175, 220, 95, 'grey', parent=l3)
     api = d.box('<b>Service + REST API</b><br>service.py · api.py · FastAPI :8000<br>/api/live · /commands · /parts · /whatif', 800, 175, 300, 95, 'twin', parent=l3)
-    opcua = d.box('<b>OPC UA server</b><br>opc.tcp://127.0.0.1:4840<br>read-only Line1.* namespace', 1130, 175, 250, 95, 'twin', parent=l3)
+    opcua = d.box('<b>OPC UA server</b><br>opc.tcp://127.0.0.1:4840<br>Line1.* values · Line1.HMI.* commands<br>(validated + audited)', 1130, 175, 260, 95, 'twin', parent=l3)
 
     l2 = d.lane('Level 2 · Supervision and operation', 40, 470, 1520, 160, 'ops')
-    d.box('<b>Streamlit dashboard</b><br>fallback HMI · :8501 · via REST API', 230, 45, 220, 90, 'grey', parent=l2)
-    d.box('<b>Hosted browser copy</b><br>same Python model in Pyodide<br>independent, no laptop needed', 480, 45, 250, 90, 'grey', parent=l2)
-    dash = d.box('<b>Web dashboard</b> (HMI + MES views)<br>live cell · performance · alarms &amp; audit<br>traceability · maintenance · decision support', 760, 45, 380, 90, 'ops', parent=l2)
-    uaexpert = d.box('<b>UaExpert</b><br>OPC UA client · browse / trend', 1145, 45, 220, 90, 'grey', parent=l2)
+    d.box('<b>Streamlit dashboard</b><br>fallback views · :8501', 250, 45, 200, 90, 'grey', parent=l2)
+    coppelia = d.box('<b>CoppeliaSim 3D cell</b><br>coppelia_view.py · 20 Hz<br>pallets · S4 pass/fail · PLC cabinet', 480, 45, 220, 90, 'ops', parent=l2)
+    dash = d.box('<b>Web dashboard</b> (HMI + MES views)<br>live cell · performance · alarms &amp; audit<br>traceability · PLC ladder · decision support', 720, 45, 320, 90, 'ops', parent=l2)
+    fuxa = d.box('<b>FUXA operator HMI</b><br>OPC UA client · :1881<br>Start · E-stop · Repair · speed', 1060, 45, 200, 90, 'ops', parent=l2)
+    uaexpert = d.box('<b>UaExpert</b><br>OPC UA client<br>browse / trend', 1280, 45, 200, 90, 'grey', parent=l2)
 
     l1 = d.lane('Level 1 · Control (IEC 61131-3)', 40, 670, 1520, 165, 'plc')
     openplc = d.box('<b>OpenPLC Runtime</b> · syringetwin.st · task 20 ms<br>P1 master control: run seal-in, E-stop latch, tower light<br>P5 S2 force check · F201 latch · INSERT permissive<br>P8 reset rules · F002 watchdog · P9 counters', 30, 40, 520, 105, 'plc', parent=l1)
@@ -108,8 +109,10 @@ def architecture():
     l0 = d.lane('Level 0 · Simulated process (modelled by plant.py)', 40, 875, 1520, 120, 'grey')
     d.box('<b>Syringe assembly cell</b>: IN → B1 → S1 print/cure → B2 → <b>S2 press/insert (bottleneck)</b> → B3 → S3 cap/mark → B4 → S4 inspection → OUT packing · 10 pallets · 2 s transfers', 30, 38, 1100, 62, 'white', parent=l0)
 
-    d.edge(dash, api, 'HTTP JSON · 2 Hz poll + commands', color='#9A7A2C', extra=down)
-    d.edge(uaexpert, opcua, 'OPC UA', color='#46733D', extra=down)
+    d.edge(dash, api, 'HTTP JSON · poll + commands', color='#9A7A2C', extra='exitX=0.5;exitY=0;entryX=0.27;entryY=1;')
+    d.edge(coppelia, api, '/api/motion', color='#9A7A2C', extra='exitX=0.5;exitY=0;entryX=0.06;entryY=1;')
+    d.edge(fuxa, opcua, 'OPC UA read + write', color='#46733D', extra='exitX=0.5;exitY=0;entryX=0.115;entryY=1;')
+    d.edge(uaexpert, opcua, 'OPC UA', color='#46733D', extra='exitX=0.5;exitY=0;entryX=0.96;entryY=1;')
     d.edge(bridge, openplc, 'Modbus TCP :502 · %MW0–27 → PLC · %QX / %QW → twin', color='#3F6B93',
            extra='exitX=0.5;exitY=1;entryX=0.221;entryY=0;')
     d.write('01_system_architecture')
